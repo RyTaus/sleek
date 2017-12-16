@@ -1,0 +1,27 @@
+{
+  "name": "visualjs",
+  "version": "0.0.1",
+  "description": "visual scripting service for js",
+  "main": "index.js",
+  "dependencies": {
+    "eslint": "^4.13.1"
+  },
+  "devDependencies": {
+    "eslint": "^4.13.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-plugin-import": "^2.8.0"
+  },
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RyTaus/visualjs.git"
+  },
+  "author": "RyTaus",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/RyTaus/visualjs/issues"
+  },
+  "homepage": "https://github.com/RyTaus/visualjs#readme"
+}
