@@ -1,0 +1,12 @@
+rect {
+  stroke-width: 5;
+  stroke: rgb(100, 0, 0);
+}
+
+svg {
+  width: 95%;
+  height: 95%;
+  margin: 0;
+  padding: 0;
+  border: 3px solid black;
+}
