@@ -16,7 +16,7 @@ class Player extends Person {
   }
 
   win(enemy, score) {
-    console.log(true);
+    console.log(this.number + enemy + score);
   }
 }
 
@@ -24,19 +24,19 @@ Object.getPropsByDepth = (object) => {
   const results = {};
   const getProps = (obj) => {
     if (obj === null) {
-      return
+      return;
     }
     results[obj.constructor.name] = Object.getOwnPropertyNames(obj);
     // console.log(obj);
 
     getProps(Object.getPrototypeOf(obj));
-  }
-  results['this'] = Object.keys(object);
+  };
+  results.this = Object.keys(object);
   getProps(Object.getPrototypeOf(object));
 
   return results;
-}
+};
 
-let matt = new Player('matt', 10, 'PF');
+const matt = new Player('matt', 10, 'PF');
 console.log(Object.getPropsByDepth(matt));
 // console.log(Object.getPropsByDepth({a: 'ok', b: 'cmon'}));

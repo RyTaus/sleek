@@ -18,6 +18,9 @@ function createWindow() {
   // Open the DevTools.
   // win.toggleDevTools();
 
+  // Maximize
+  win.maximize();
+
   // Emitted when the window is closed.
   win.on('closed', () => {
     // Dereference the window object, usually you would store windows

@@ -10,7 +10,6 @@
 }
 
 .val {
-  stroke-width: 1;
   stroke: rgb(0, 0, 160);
 }
 
@@ -18,15 +17,9 @@
   stroke: rgb(160, 160, 160);
 }
 
-.class-handler {
-  border: 1px solid green;
-  width: 20%;
-  height: 80%;
-}
-
-.file-handler {
-  border: 1px solid green;
-  height: 20%;
+.input {
+  stroke: rgb(0, 160, 0);
+  fill: green;
 }
 
 svg {
