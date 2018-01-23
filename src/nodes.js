@@ -1,4 +1,3 @@
-const Snap = require('snapsvg');
 
 const Direction = {
   IN: 'in',
@@ -6,9 +5,8 @@ const Direction = {
 };
 
 class Pin {
-  constructor(node, edge) {
-    this.edge = edge;
-    this.node = node;
+  constructor(isFlow = false) {
+    this.isFlow = isFlow;
   }
 
   init(node, direction) {
@@ -17,12 +15,27 @@ class Pin {
   }
 
   draw(svg, node, index) {
-    svg.rect(
-      this.node.transform.x + (this.direction === Direction.IN ? 10 : 100 - 20),
-      this.node.transform.y + 10 + (20 * index),
-      10,
-      10
-    ).addClass('pin');
+    const xOffset = this.node.transform.x + (this.direction === Direction.IN ? 10 : 100 - 20);
+    const yOffset = this.node.transform.y + 10 + (20 * index);
+    if (this.isFlow) {
+      svg.polyline(
+        xOffset,
+        yOffset,
+        xOffset + 10,
+        yOffset + 5,
+        xOffset,
+        yOffset + 10,
+        xOffset,
+        yOffset
+      ).addClass('pin').addClass('flow');
+    } else {
+      svg.rect(
+        xOffset,
+        yOffset,
+        10,
+        10
+      ).addClass('pin').addClass('val');
+    }
   }
 }
 
@@ -45,13 +58,16 @@ class Node {
     this.inPins.forEach(pin => pin.init(this, Direction.IN), this);
     this.outPins.forEach(pin => pin.init(this, Direction.OUT), this);
 
-
     this.transform = {
       x,
       y,
       width: 100,
       height: Math.max(this.inPins.length, this.outPins.length) * 50
     };
+  }
+
+  compile(closure) {
+    return;
   }
 
   draw(svg) {

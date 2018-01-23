@@ -16,7 +16,7 @@ function createWindow() {
   }));
 
   // Open the DevTools.
-  win.toggleDevTools();
+  // win.toggleDevTools();
 
   // Emitted when the window is closed.
   win.on('closed', () => {

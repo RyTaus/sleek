@@ -6,13 +6,32 @@
 
 .pin {
   stroke-width: 1;
-  stroke: rgb(0, 0, 160);
   fill: white;
 }
 
+.val {
+  stroke-width: 1;
+  stroke: rgb(0, 0, 160);
+}
+
+.flow {
+  stroke: rgb(160, 160, 160);
+}
+
+.class-handler {
+  border: 1px solid green;
+  width: 20%;
+  height: 80%;
+}
+
+.file-handler {
+  border: 1px solid green;
+  height: 20%;
+}
+
 svg {
-  width: 95%;
-  height: 95%;
+  width: 80%;
+  height: 80%;
   margin: 0;
   padding: 0;
   border: 3px solid black;
