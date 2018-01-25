@@ -4,7 +4,7 @@ const Pin = require('./pin.js');
 
 class PrimNumber extends Node {
   constructor(x, y) {
-    super('Number', '', x, y, [new Pin(Pin.Type.INPUT)], [new Pin(Pin.Type.VAL)]);
+    super('Number', '', x, y, [new Pin.Input()], [new Pin.Value()]);
   }
 
   compile() {
@@ -14,7 +14,7 @@ class PrimNumber extends Node {
 
 class Add extends Node {
   constructor(x, y) {
-    super('ADD', '', x, y, [new Pin(true), new Pin(), new Pin()], [new Pin(true), new Pin()]);
+    super('ADD', '', x, y, [new Pin.Flow(), new Pin.Value(), new Pin.Value()], [new Pin.Flow(), new Pin.Value()]);
   }
 
   compile() {

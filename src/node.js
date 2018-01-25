@@ -1,4 +1,4 @@
-const Pin = require('./pin.js');
+const { Pin } = require('./pin.js');
 
 class Node {
   constructor(name, value, x, y, inPins, outPins) {
@@ -15,14 +15,12 @@ class Node {
       x,
       y,
       width: 100,
-      height: Math.max(this.inPins.length, this.outPins.length) * 50
+      height: 30 + (Math.max(this.inPins.length, this.outPins.length) * 10)
     };
   }
 
   draw(svg) {
     const node = svg
-      // .data(this.transform)
-      // .enter()
       .append('rect')
       .attr('width', this.transform.width)
       .attr('height', this.transform.height)
