@@ -16,7 +16,7 @@ function createWindow() {
   }));
 
   // Open the DevTools.
-  // win.toggleDevTools();
+  win.toggleDevTools();
 
   // Maximize
   win.maximize();

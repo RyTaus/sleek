@@ -1,5 +1,5 @@
-const Node = require('./node.js');
-const Pin = require('./pin.js');
+const Node = require('./visual/node.js');
+const Pin = require('./visual/pin.js');
 
 
 class PrimNumber extends Node {

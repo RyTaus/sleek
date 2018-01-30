@@ -8,14 +8,14 @@ class Node {
     this.inPins = inPins;
     this.outPins = outPins;
 
-    this.inPins.forEach(pin => pin.init(this, Pin.Direction.IN), this);
-    this.outPins.forEach(pin => pin.init(this, Pin.Direction.OUT), this);
+    this.inPins.forEach((pin, i) => pin.init(this, Pin.Direction.IN, i), this);
+    this.outPins.forEach((pin, i) => pin.init(this, Pin.Direction.OUT, i), this);
 
     this.transform = {
       x,
       y,
       width: 100,
-      height: 30 + (Math.max(this.inPins.length, this.outPins.length) * 10)
+      height: 30 + (Math.max(this.inPins.length, this.outPins.length) * 20)
     };
   }
 
@@ -29,9 +29,12 @@ class Node {
       .classed('node', true)
       .on('click', () => { this.transform.x += 20; });
 
-    this.inPins.forEach((pin, i) => pin.draw(svg, node, i));
-    this.outPins.forEach((pin, i) => pin.draw(svg, node, i));
+    const self = this;
+    this.inPins.forEach((pin, i) => pin.draw(svg, node, self));
+    this.outPins.forEach((pin, i) => pin.draw(svg, node, self));
   }
+
+  // TODO when I compile maybe I need to know which pin I came from.
 }
 
 module.exports = Node;

@@ -9,8 +9,17 @@
   fill: white;
 }
 
+.pin:hover {
+  fill: rgb(200, 200, 200)
+}
+
 .val {
   stroke: rgb(0, 0, 160);
+}
+
+.line {
+  stroke-width: 2;
+  stroke: black;
 }
 
 .flow {
