@@ -13,10 +13,10 @@
     "eslint": "^4.13.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
-    "jasmine": "^2.9.0"
+    "mocha": "^5.0.0"
   },
   "scripts": {
-    "test": "test",
+    "test": "mocha tests",
     "run": ".\\node_modules\\.bin\\electron .",
     "build": "browserifyinc .\\src\\drawer.js -o .\\src\\static\\bundle.js",
     "start": "npm run-script build && npm run-script run"
