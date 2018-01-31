@@ -4,7 +4,10 @@ class Pin {
   }
 
   baseCanConnect(pin) {
-    return this.direction !== pin.direction;
+    if (this.direction !== pin.direction) {
+      return true;
+    }
+    throw Pin.Error.direction(this, pin);
   }
 
   canConnect(pin) {
@@ -12,12 +15,12 @@ class Pin {
   }
 
   connect(pin) {
-    if (this.canConnect(pin) && pin.canConnect(this)) {
+    if (this.baseCanConnect(pin) && this.canConnect(pin) && pin.canConnect(this)) {
       this.connection = pin;
       pin.connection = this;
-    } else {
-      console.error('CANNOT CONNECT PIN');
+      return this;
     }
+    throw new Error('Cannot Connect Pins');
   }
 
   init(node, direction, index) {
@@ -62,7 +65,10 @@ class PinInput extends Pin {
   }
 
   canConnect(pin) {
-    return this.direction === Pin.Direction.IN && pin.type === Pin.Type.Value;
+    if (this.direction === Pin.Direction.IN && pin.type === Pin.Type.Value) {
+      return true;
+    }
+    throw Pin.Error.type(this, pin);
   }
 
   draw(svg, node) {
@@ -99,10 +105,13 @@ class PinFlow extends Pin {
   }
 
   canConnect(pin) {
-    return this.baseCanConnect(pin) && pin.type === Pin.Type.Flow;
+    if (pin.type === Pin.Type.FLOW) {
+      return true;
+    }
+    throw Pin.Error.type(this, pin);
   }
 
-  draw(svg, node, nodeObject) {
+  draw(svg, node) {
     const offset = this.getOffsets(node, this.index);
     const makePolyString = () => {
       const pair = (x, y) => `${offset.x + x},${offset.y + y}`;
@@ -126,9 +135,10 @@ class PinValue extends Pin {
   }
 
   canConnect(pin) {
-    return this.baseCanConnect(pin) && this.type === Pin.Direction.IN ?
-      pin.type === Pin.Type.VAL :
-      [Pin.Type.VAL, Pin.Type.INPUT].includes(pin.type);
+    if (this.type === Pin.Direction.IN ? pin.type === Pin.Type.VAL : [Pin.Type.VAL, Pin.Type.INPUT].includes(pin.type)) {
+      return true;
+    }
+    throw Pin.Error.type(this, pin);
   }
 
   draw(svg, node) {
@@ -159,6 +169,11 @@ Pin.Type = {
 Pin.Direction = {
   IN: 'in',
   OUT: 'out'
+};
+
+Pin.Error = {
+  type: (a, b) => new Error(`cannot match pin types ${a.type}:${a.direction} with ${b.type}:${b.direction}`),
+  direction: (a, b) => new Error(`cannot match pin directions ${a.direction} and ${b.direction}`)
 };
 
 module.exports = {
