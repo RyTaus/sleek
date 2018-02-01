@@ -1,45 +1,41 @@
 const d3 = require('d3');
 
 const Canvas = require('./visual/canvas.js');
-const Pin = require('./visual/pin.js');
-const Node = require('./visual/node.js');
-
 
 const SVG = d3.select('svg');
 
-// const n = new Node('Test', [0, 1, 4, 8], 50, 80, [new Pin.Flow(), new Pin.Value(), new Pin.Input()], [new Pin.Flow()]);
-
-// console.log(n);
-// n.draw(SVG);
-// console.log(SVG);
-
 const pb = require('./prebuilt-nodes.js');
 
-const canvas = new Canvas();
+const canvas = new Canvas(SVG);
 
-const add = new pb.Add(350, 160);
-const n1 = new pb.PrimNumber(150, 100);
-const n2 = new pb.PrimNumber(150, 250);
-
+const add = new pb.Add(350, 160, SVG);
+const n1 = new pb.PrimNumber(150, 100, SVG);
+const n2 = new pb.PrimNumber(150, 250, SVG);
+//
 n1.inPins[0].setValue(4);
 n2.inPins[0].setValue(-87);
-
-
-// add.inPins[1].connect(n1.outPins[0]);
-// add.inPins[2].connect(n2.outPins[0]);
-
+//
 canvas.addNode(0, add);
 canvas.addNode(0, n1);
 canvas.addNode(0, n2);
+//
+canvas.render();
 
-
-console.log(add);
-console.log(n1);
-console.log(n2);
-
-canvas.draw(SVG);
-
-console.log(add.compile());
-
-
-// add.draw(SVG);
+const dataset = [5, 10, 17, 99];
+console.log(dataset);
+// d3.select("body").selectAll("p")
+//   .data(dataset)
+//   .enter()
+//   .append('p')
+//   .attr('id', function(d) { return '_' + dataset.indexOf(d); })
+//   .text(function(d) { return d; });
+//
+// d3.select("body")
+//   .on('click', () => {
+//     dataset.forEach((e, i) => {
+//       dataset[i] = Math.random();
+//     });
+//     console.log(d3.select("body").selectAll("#_2"));
+//     d3.select("body").selectAll("#_2").data([5]).text(function(d) { return d; });
+//     console.log(dataset);
+//   })

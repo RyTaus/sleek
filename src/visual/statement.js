@@ -1,14 +1,17 @@
 class Statement {
-  constructor() {
+  constructor(svg, canvas) {
     this.nodes = [];
+    this.svg = svg;
+    this.canvas = canvas;
   }
 
   addNode(node) {
+    node.canvas = this.canvas;
     this.nodes.push(node);
   }
 
-  draw(svg) {
-    this.nodes.forEach(n => n.draw(svg));
+  render() {
+    this.nodes.forEach(n => n.render());
   }
 }
 

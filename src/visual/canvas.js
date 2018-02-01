@@ -7,26 +7,27 @@
 const Statement = require('./statement.js');
 
 class Canvas {
-  constructor() {
-    this.statements = [new Statement()];
+  constructor(svg) {
+    this.statements = [new Statement(svg, this)];
     this.values = {
       zoom: 100
     };
     this.mouse = {
       infocus: null
     };
+    this.svg = svg;
   }
 
   addNode(index, node) {
     this.statements[index].addNode(node);
-    node.canvas = this;
   }
 
-  draw(svg) {
-    svg.on('mouseup', () => {
+  render() {
+    this.svg.on('mouseup', () => {
+      console.log('test');
       this.mouse.infocus = null;
     });
-    this.statements.forEach(s => s.draw(svg));
+    this.statements.forEach(s => s.render());
   }
 }
 module.exports = Canvas;
