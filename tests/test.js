@@ -44,11 +44,13 @@ describe('Pin', () => {
   describe('connection', () => {
     it('should connect viable pins', () => {
       const {
-        A, B, C, D, E
+        A, B, C, D, E, F
       } = createTestPins();
       assert.ok(A.connect(C));
       assert.ok(B.connect(C));
       assert.ok(D.connect(E));
+      assert.ok(F.connect(D));
+      assert.equal(E.connection, null);
     });
     it('should throw errors for invalid inputs', () => {
       const {

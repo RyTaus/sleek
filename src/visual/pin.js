@@ -94,20 +94,19 @@ class PinInput extends Pin {
 
   render() {
     const offset = this.getOffsets(this.node, this.index);
-    // const node = this.svg.append('foreignObject')
-    //   .attr('x', offset.x)
-    //   .attr('y', offset.y)
-    //   .attr('width', 10)
-    //   .attr('height', 10)
-    //   .classed('pin', true)
-    //   .classed('input', true)
-    //   .append('div')
-    //   .attr('type', 'text')
-    //   .text('THIS IS TEST')
-    //   .classed('pin', true)
-    //   .classed('input', true)
-    //   .append('xhtml:div');
-    // this.baseDraw(node);
+    const node = this.getNode()
+      .data([{ pin: this, offset }])
+      .attr('x', d => d.offset.x)
+      .attr('y', d => d.offset.y)
+      .attr('width', 10)
+      .attr('height', 10)
+      .classed('pin', true)
+      .classed('input', true)
+      .attr("contentEditable", true)
+      .text(function(d) { return d.pin.value })
+      .on("keyup", function(d) { d.pin.update('value', d3.select(this).text()) });
+
+    this.baseRender(node);
   }
 
   setValue(value) {
@@ -190,7 +189,7 @@ Pin.Type = {
   toTag: {
     val: 'rect',
     flow: 'polygon',
-    input: 'foreignObject'
+    input: 'text'
   }
 };
 
