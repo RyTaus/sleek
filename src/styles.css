@@ -1,7 +1,7 @@
 .node {
   stroke-width: 1;
   stroke: rgb(100, 0, 0);
-  fill: white;
+  fill: gray;
 }
 
 .pin {
@@ -26,9 +26,20 @@
   stroke: rgb(160, 160, 160);
 }
 
+.inputbg {
+  fill: grey;
+  stroke: white;
+}
+
+.infocus {
+  fill: white;
+}
+
 .input {
-  stroke: rgb(0, 160, 0);
-  fill: green;
+  stroke: none;
+  fill: black;
+  font-size: 10;
+  user-select: none;
 }
 
 svg {

@@ -1,4 +1,5 @@
 const Component = require('./component.js');
+const Canvas = require('./canvas.js');
 const d3 = require('d3');
 
 // in pins keep track of edges
@@ -43,7 +44,11 @@ class Pin extends Component {
     this.direction = direction;
     this.index = index;
     this.svg = node.svg;
-    this.createSvgNode(Pin.Type.toTag[this.type]);
+    if (this.type === Pin.Type.INPUT) {
+      this.createSvgNodeInput();
+    } else {
+      this.createSvgNode(Pin.Type.toTag[this.type]);
+    }
   }
 
   getOffsets() {
@@ -57,18 +62,15 @@ class Pin extends Component {
     const self = this;
     d3Node
       .on('mousedown', () => {
-        console.log(this.node);
-        this.node.canvas.mouse.infocus = self;
+        this.node.canvas.setFocus(self, Canvas.event.dragPin);
       })
       .on('mouseup', () => {
-        console.log(this.node.canvas.mouse.infocus);
         if (this.node.canvas.mouse.infocus) {
           this.connect(this.node.canvas.mouse.infocus);
         }
       });
 
     if (this.connection) {
-      console.log(this.connection);
       if (this.direction === Pin.Direction.IN) {
         d3.selectAll(`#edge${this.id}`).remove();
         this.svg.append('polygon')
@@ -81,8 +83,24 @@ class Pin extends Component {
 }
 
 class PinInput extends Pin {
-  constructor() {
+  constructor(inputType) {
     super(Pin.Type.INPUT);
+    this.inputType = inputType;
+  }
+
+  processInput(event) {
+    const prevValue = String(this.value);
+    if (this.inputType === PinInput.type.number) {
+      if ('01234567890'.includes(event.key)) {
+        this.update('value', prevValue + (d3.event.key));
+      } else if (event.keyCode === 8) {
+        this.update('value', prevValue.slice(0, -1));
+      } else if (event.key === '-' && prevValue.length === 0) {
+        this.update('value', prevValue + (d3.event.key));
+      } else if (event.key === '.' && !prevValue.includes('.')) {
+        this.update('value', prevValue + (d3.event.key));
+      }
+    }
   }
 
   canConnect(pin) {
@@ -93,18 +111,33 @@ class PinInput extends Pin {
   }
 
   render() {
+    const self = this;
     const offset = this.getOffsets(this.node, this.index);
     const node = this.getNode()
       .data([{ pin: this, offset }])
       .attr('x', d => d.offset.x)
-      .attr('y', d => d.offset.y)
+      .attr('y', d => d.offset.y + 10)
       .attr('width', 10)
       .attr('height', 10)
       .classed('pin', true)
       .classed('input', true)
-      .attr("contentEditable", true)
-      .text(function(d) { return d.pin.value })
-      .on("keyup", function(d) { d.pin.update('value', d3.select(this).text()) });
+      .text(d => d.pin.value);
+
+
+    const bg = d3.select('svg').selectAll('#' + this.id + '_border')
+      .data([{ pin: this, offset }])
+      .attr('x', d => d.offset.x)
+      .attr('y', d => d.offset.y)
+      .attr('width', 40)
+      .attr('height', 10)
+      .classed('inputbg', true)
+      .attr('id', this.id + '_border')
+      .on('click', () => {
+        node.classed('focus', true);
+        self.node.canvas.setFocus(self, Canvas.event.editText);
+        d3.event.stopPropagation();
+        bg.classed('infocus', true)
+      });
 
     this.baseRender(node);
   }
@@ -117,6 +150,11 @@ class PinInput extends Pin {
     return this.value;
   }
 }
+
+PinInput.type = {
+  number: 'number',
+  string: 'string'
+};
 
 class PinFlow extends Pin {
   constructor() {

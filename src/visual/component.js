@@ -6,13 +6,17 @@ const d3 = require('d3');
 class Component {
   constructor(svg) {
     this.svg = svg;
-    this.onChange = () => {};
     this.id = `comp_id_${Component.currentID}`;
     Component.currentID += 1;
   }
 
   createSvgNode(className) {
     this.svg.append(className).attr('id', this.id);
+  }
+
+  createSvgNodeInput() {
+    this.svg.append('rect').classed('inputbg', true).attr('id', this.id + '_border');
+    this.svg.append('text').attr('id', this.id);
   }
 
   getNode() {
@@ -28,10 +32,8 @@ class Component {
   }
 
   update(prop, value) {
-    console.log('update');
     this[prop] = value;
     this.render();
-    // callback(value); // TODO might need prop
   }
 
   onRender(elem) {
