@@ -1,5 +1,6 @@
 const { Pin } = require('./pin.js');
 const Component = require('./component.js');
+const d3 = require('d3');
 
 class Node extends Component {
   constructor(name, value, x, y, inPins, outPins, svg) {
@@ -21,17 +22,34 @@ class Node extends Component {
       width: 100,
       height: 30 + (Math.max(this.inPins.length, this.outPins.length) * 20)
     };
+
   }
 
   render() {
     this.getNode()
-      .data([this.transform])
-      .attr('width', d => d.width)
-      .attr('height', d => d.height)
-      .attr('x', d => d.x)
-      .attr('y', d => d.y)
+      .data([this])
+      .attr('width', d => d.transform.width)
+      .attr('height', d => d.transform.height)
+      .attr('x', d => d.transform.x)
+      .attr('y', d => d.transform.y)
       .classed('node', true)
-      .on('click', () => {console.log(this);});
+      .on('click', () => { console.log(this); })
+      .call(d3.drag()
+        .on('start', () => {
+          console.log('dragging');
+        })
+        .on('drag', (d) => {
+          d.transform.x += d3.event.dx;
+          d.transform.y += d3.event.dy;
+          d.update();
+          d.outPins.forEach((p) => {
+            if (p.connection) {
+              p.connection.render();
+            }
+          })
+          // d3.select(this).attr()
+        })
+      );
 
     this.inPins.forEach(pin => pin.render());
     this.outPins.forEach(pin => pin.render());

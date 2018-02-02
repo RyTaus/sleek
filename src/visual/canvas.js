@@ -25,8 +25,8 @@ class Canvas {
 
   setFocus(component, event) {
     if (this.mouse.event === Canvas.event.editText) {
-      d3.select('svg').selectAll('#' + this.mouse.infocus.id + '_border')
-        .classed('infocus', false)
+      d3.select('svg').selectAll(`#${this.mouse.infocus.id}_border`)
+        .classed('infocus', false);
     }
     this.mouse.infocus = component;
     this.mouse.event = event;

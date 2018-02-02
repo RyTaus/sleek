@@ -7,6 +7,7 @@ class Pin extends Component {
   constructor(pinType) {
     super();
     this.type = pinType;
+
   }
 
   baseCanConnect(pin) {
@@ -60,6 +61,7 @@ class Pin extends Component {
 
   baseRender(d3Node) {
     const self = this;
+
     d3Node
       .on('mousedown', () => {
         this.node.canvas.setFocus(self, Canvas.event.dragPin);
@@ -124,19 +126,19 @@ class PinInput extends Pin {
       .text(d => d.pin.value);
 
 
-    const bg = d3.select('svg').selectAll('#' + this.id + '_border')
+    const bg = d3.select('svg').selectAll(`#${this.id}_border`)
       .data([{ pin: this, offset }])
       .attr('x', d => d.offset.x)
       .attr('y', d => d.offset.y)
       .attr('width', 40)
       .attr('height', 10)
       .classed('inputbg', true)
-      .attr('id', this.id + '_border')
+      .attr('id', `${this.id}_border`)
       .on('click', () => {
         node.classed('focus', true);
         self.node.canvas.setFocus(self, Canvas.event.editText);
         d3.event.stopPropagation();
-        bg.classed('infocus', true)
+        bg.classed('infocus', true);
       });
 
     this.baseRender(node);

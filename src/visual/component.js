@@ -15,7 +15,7 @@ class Component {
   }
 
   createSvgNodeInput() {
-    this.svg.append('rect').classed('inputbg', true).attr('id', this.id + '_border');
+    this.svg.append('rect').classed('inputbg', true).attr('id', `${this.id}_border`);
     this.svg.append('text').attr('id', this.id);
   }
 

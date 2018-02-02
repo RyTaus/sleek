@@ -25,4 +25,4 @@ d3.select('body').selectAll('button')
   .on('click', () => {
     console.log(add.compile());
     console.log(eval(add.compile()));
-  })
+  });
