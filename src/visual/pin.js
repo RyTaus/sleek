@@ -7,7 +7,6 @@ class Pin extends Component {
   constructor(pinType) {
     super();
     this.type = pinType;
-
   }
 
   baseCanConnect(pin) {
@@ -60,17 +59,42 @@ class Pin extends Component {
   }
 
   baseRender(d3Node) {
-    const self = this;
+    // const self = this;
+    // const makeLineString()
 
     d3Node
-      .on('mousedown', () => {
-        this.node.canvas.setFocus(self, Canvas.event.dragPin);
+      .on('mouseenter', () => {
+        this.node.canvas.lastElementOver = this;
       })
-      .on('mouseup', () => {
-        if (this.node.canvas.mouse.infocus) {
-          this.connect(this.node.canvas.mouse.infocus);
-        }
-      });
+      .on('mouseleave', () => {
+        this.node.canvas.lastElementOver = null;
+      })
+      .call(d3.drag()
+        .on('start', () => {
+          this.node.canvas.setFocus(this, Canvas.event.dragPin);
+          d3.select('svg').append('line')
+            .classed('drawingline', true)
+            .attr('x1', this.getOffsets().x)
+            .attr('y1', this.getOffsets().y)
+            .attr('x2', this.getOffsets().x)
+            .attr('y2', this.getOffsets().y);
+        })
+        .on('drag', () => {
+          d3.select('.drawingline')
+            .attr('x1', this.getOffsets().x)
+            .attr('y1', this.getOffsets().y)
+            .attr('x2', d3.mouse(this.svg.node())[0])
+            .attr('y2', d3.mouse(this.svg.node())[1]);
+        })
+        .on('end', () => {
+          d3.select('.drawingline').remove();
+          if (this.node.canvas.mouse.infocus &&
+          this.node.canvas.mouse.event === Canvas.event.dragPin) {
+            this.connect(this.node.canvas.getUnderMouse());
+            this.node.canvas.setFocus();
+          }
+        })
+      );
 
     if (this.connection) {
       if (this.direction === Pin.Direction.IN) {

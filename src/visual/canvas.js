@@ -6,6 +6,7 @@
 */
 const d3 = require('d3');
 const Statement = require('./statement.js');
+const $ = require('jquery');
 
 class Canvas {
   constructor(svg) {
@@ -21,6 +22,10 @@ class Canvas {
 
   addNode(index, node) {
     this.statements[index].addNode(node);
+  }
+
+  getUnderMouse() {
+    return this.lastElementOver;
   }
 
   setFocus(component, event) {

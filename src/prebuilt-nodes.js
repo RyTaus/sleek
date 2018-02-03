@@ -21,5 +21,15 @@ class Add extends Node {
   }
 }
 
+class Multiply extends Node {
+  constructor(x, y, svg) {
+    super('ADD', '', x, y, [new Pin.Flow(), new Pin.Value(), new Pin.Value()], [new Pin.Flow(), new Pin.Value()], svg);
+  }
 
-module.exports = { PrimNumber, Add };
+  compile() {
+    return `${this.inPins[1].compile()} * ${this.inPins[2].compile()}`;
+  }
+}
+
+
+module.exports = { PrimNumber, Add, Multiply };

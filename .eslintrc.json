@@ -9,6 +9,7 @@
         "exports": "never",
         "functions": "never"
     }],
-    "no-console": 0
+    "no-console": 0,
+    "function-paren-newline": 0
     }
 }

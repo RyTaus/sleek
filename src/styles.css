@@ -22,6 +22,12 @@
   stroke: black;
 }
 
+line {
+  stroke-width: 2;
+  stroke: black;
+  pointer-events: none;
+}
+
 .flow {
   stroke: rgb(160, 160, 160);
 }
@@ -40,6 +46,7 @@
   fill: black;
   font-size: 10;
   user-select: none;
+  pointer-events: none;
 }
 
 svg {

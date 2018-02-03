@@ -22,7 +22,6 @@ class Node extends Component {
       width: 100,
       height: 30 + (Math.max(this.inPins.length, this.outPins.length) * 20)
     };
-
   }
 
   render() {

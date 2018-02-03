@@ -8,7 +8,7 @@ const pb = require('./prebuilt-nodes.js');
 
 const canvas = new Canvas(SVG);
 
-const add = new pb.Add(350, 160, SVG);
+const add = new pb.Multiply(350, 160, SVG);
 const n1 = new pb.PrimNumber(150, 100, SVG);
 const n2 = new pb.PrimNumber(150, 250, SVG);
 
