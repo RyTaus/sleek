@@ -7,18 +7,24 @@
 const d3 = require('d3');
 const Statement = require('./statement.js');
 
+
 class Canvas {
   constructor(svg) {
     this.statements = [new Statement(svg, this)];
     this.camera = {
       offset: { x: 0, y: 0 },
-      width: 800,
+      width: 600,
       ratio: 6 / 8
 
     };
     this.mouse = {
       infocus: null
     };
+
+    // const start = new Start(this.svg)
+
+    // this.addNode(0, start);
+
     this.svg = svg;
 
     this.svg
@@ -36,11 +42,9 @@ class Canvas {
         console.log(this);
       })
       .on('drag', () => {
-        // console.log(this);
         this.camera.offset.x = this.camera.offset.x - d3.event.dx;
         this.camera.offset.y = this.camera.offset.y - d3.event.dy;
         this.setCamera();
-
       })
       .on('end', () => {
         console.log(this);
@@ -80,4 +84,6 @@ Canvas.event = {
   dragNode: 'dragNode',
   editText: 'editText'
 };
+
+console.log(Canvas);
 module.exports = Canvas;

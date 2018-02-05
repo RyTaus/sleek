@@ -28,6 +28,10 @@ line {
   pointer-events: none;
 }
 
+.label {
+  font-size: 12;
+}
+
 .flow {
   stroke: rgb(160, 160, 160);
 }

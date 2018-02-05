@@ -1,6 +1,12 @@
+const { Start } = require('./../prebuilt-nodes.js');
+
 class Statement {
   constructor(svg, canvas) {
-    this.nodes = [];
+    this.start = new Start(svg);
+    this.start.canvas = canvas;
+    this.nodes = [
+      this.start
+    ];
     this.svg = svg;
     this.canvas = canvas;
   }
@@ -10,10 +16,21 @@ class Statement {
     this.nodes.push(node);
   }
 
-  get
-
   compile() {
-    this.nodes[0].compile()
+    let result = '';
+    let curr = this.start;
+    const nodeStack = [];
+    while (curr) {
+      console.log(curr);
+      console.log(curr.next);
+      console.log(curr.next.connection[0]);
+      nodeStack.push(curr);
+      // result += curr.compile();
+      curr = curr.getNextPin();
+    }
+
+
+    return nodeStack[nodeStack.length - 1].compile();
   }
 
   render() {

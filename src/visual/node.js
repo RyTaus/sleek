@@ -12,7 +12,7 @@ class Node extends Component {
     this.inPins = inPins;
     this.outPins = outPins;
 
-    this.createSvgNode('rect');
+    this.createSvgNodeNode();
 
     this.inPins.forEach((pin, i) => pin.init(this, Pin.Direction.IN, i));
     this.outPins.forEach((pin, i) => pin.init(this, Pin.Direction.OUT, i));
@@ -50,18 +50,31 @@ class Node extends Component {
         })
       );
 
+      const bg = d3.select('svg').selectAll(`#${this.id}_label`)
+        .data([this])
+        .attr('x', d => d.transform.x + 30)
+        .attr('y', d => d.transform.y + 30)
+        .classed('label', true)
+        .text(d => d.name)
+
+
     this.inPins.forEach(pin => pin.render());
     this.outPins.forEach(pin => pin.render());
   }
 
   /* next returns the next statement to be compiled */
-  next() {
+  getNextPin() {
     /*
        right now assumes that the first pin is the next flow pin. Anything that breaks
        that trend needs to be specified. maybe nodes take in another input outside of outPins
        that will say what next is? Actully thats what ill do.
     */
-
+    if (this.next) {
+      if (this.next.connection[0]) {
+        return this.next.connection[0].node;
+      }
+    }
+    return null;
   }
 
   // TODO when I compile maybe I need to know which pin I came from.

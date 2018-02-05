@@ -20,13 +20,14 @@ n2.inPins[0].setValue(-87);
 canvas.addNode(0, add);
 canvas.addNode(0, n1);
 canvas.addNode(0, n2);
+canvas.addNode(0, multiply);
 
 canvas.render();
 
 d3.select('body').selectAll('button')
   .on('click', () => {
-    // const result = canvas.statement[0].compile();
-    const result = add.compile();
+    const result = canvas.statements[0].compile();
+    // const result = add.compile();
     console.log(result);
     console.log(eval(result));
   });

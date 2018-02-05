@@ -7,7 +7,7 @@ class PrimNumber extends Node {
     super('Number', x, y, svg, [new Pin.Input(Pin.Input.type.number)], [new Pin.Value()], null);
   }
   compile() {
-    return `${this.inPins[0].compile()}`;
+    return `(${this.inPins[0].compile()})`;
   }
 }
 
@@ -18,7 +18,7 @@ class Add extends Node {
   }
 
   compile() {
-    return `${this.inPins[1].compile()} + ${this.inPins[2].compile()}`;
+    return `(${this.inPins[1].compile()} + ${this.inPins[2].compile()})`;
   }
 }
 
@@ -29,9 +29,22 @@ class Multiply extends Node {
   }
 
   compile() {
-    return `${this.inPins[1].compile()} * ${this.inPins[2].compile()}`;
+    return `(${this.inPins[1].compile()} * ${this.inPins[2].compile()})`;
+  }
+}
+
+class Start extends Node {
+  constructor(svg) {
+    const next = new Pin.Flow();
+    super('START', 0, 0, svg, [], [next], next);
+  }
+
+  compile() {
+    return `\n`;
   }
 }
 
 
-module.exports = { PrimNumber, Add, Multiply };
+module.exports = {
+  Start, PrimNumber, Add, Multiply
+};

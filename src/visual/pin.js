@@ -68,6 +68,7 @@ class Pin extends Component {
     // const self = this;
     // const makeLineString()
 
+    /* Magic strings cant be gotten from canvas file. Maybe make new File For enum like things? */
     d3Node
       .on('mouseenter', () => {
         this.node.canvas.lastElementOver = this;
@@ -77,7 +78,10 @@ class Pin extends Component {
       })
       .call(d3.drag()
         .on('start', () => {
-          this.node.canvas.setFocus(this, Canvas.event.dragPin);
+          // console.log(Canvas);
+
+          this.node.canvas.setFocus(this, 'dragPin');
+          // this.node.canvas.setFocus(this, Canvas.event.dragPin);
           d3.select('svg').append('line')
             .classed('drawingline', true)
             .attr('x1', this.getOffsets().x)
@@ -95,7 +99,7 @@ class Pin extends Component {
         .on('end', () => {
           d3.select('.drawingline').remove();
           if (this.node.canvas.mouse.infocus &&
-          this.node.canvas.mouse.event === Canvas.event.dragPin) {
+          this.node.canvas.mouse.event === 'dragPin') {
             this.connect(this.node.canvas.getUnderMouse());
             this.node.canvas.setFocus();
           }
@@ -111,6 +115,10 @@ class Pin extends Component {
           .attr('id', `edge${this.id}`);
       }
     }
+  }
+
+  compile() {
+    return this.node.compile();
   }
 }
 
@@ -166,7 +174,8 @@ class PinInput extends Pin {
       .attr('id', `${this.id}_border`)
       .on('click', () => {
         node.classed('focus', true);
-        self.node.canvas.setFocus(self, Canvas.event.editText);
+        self.node.canvas.setFocus(self, 'editText');
+        // self.node.canvas.setFocus(self, Canvas.event.editText);
         d3.event.stopPropagation();
         bg.classed('infocus', true);
       });

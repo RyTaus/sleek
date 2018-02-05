@@ -19,6 +19,11 @@ class Component {
     this.svg.append('text').attr('id', this.id);
   }
 
+  createSvgNodeNode() {
+    this.svg.append('rect').attr('id', `${this.id}`);
+    this.svg.append('text').classed('label', true).attr('id', `${this.id}_label`);
+  }
+
   getNode() {
     return d3.select('svg').selectAll(`#${this.id}`);
   }
