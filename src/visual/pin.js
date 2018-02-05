@@ -23,10 +23,13 @@ class Pin extends Component {
   createConnection(pin) {
     if (this.direction === Pin.Direction.IN) {
       if (this.connection) {
-        this.connection.connection = null;
+        this.connection.connection.splice(this.connection.connection.indexOf(this), 1);
       }
+      this.update('connection', pin);
+    } else {
+      this.connection.push(pin);
+      this.update('connection', this.connection);
     }
-    this.update('connection', pin);
   }
 
   connect(pin) {
@@ -42,6 +45,9 @@ class Pin extends Component {
   init(node, direction, index) {
     this.node = node;
     this.direction = direction;
+    if (this.direction === Pin.Direction.OUT) {
+      this.connection = [];
+    }
     this.index = index;
     this.svg = node.svg;
     if (this.type === Pin.Type.INPUT) {
@@ -152,10 +158,10 @@ class PinInput extends Pin {
 
     const bg = d3.select('svg').selectAll(`#${this.id}_border`)
       .data([{ pin: this, offset }])
-      .attr('x', d => d.offset.x)
-      .attr('y', d => d.offset.y)
+      .attr('x', d => d.offset.x - 2)
+      .attr('y', d => d.offset.y - 1)
       .attr('width', 40)
-      .attr('height', 10)
+      .attr('height', 12)
       .classed('inputbg', true)
       .attr('id', `${this.id}_border`)
       .on('click', () => {

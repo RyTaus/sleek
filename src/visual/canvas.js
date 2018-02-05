@@ -6,18 +6,50 @@
 */
 const d3 = require('d3');
 const Statement = require('./statement.js');
-const $ = require('jquery');
 
 class Canvas {
   constructor(svg) {
     this.statements = [new Statement(svg, this)];
-    this.values = {
-      zoom: 100
+    this.camera = {
+      offset: { x: 0, y: 0 },
+      width: 800,
+      ratio: 6 / 8
+
     };
     this.mouse = {
       infocus: null
     };
     this.svg = svg;
+
+    this.svg
+      .on('mouseup', () => {
+        this.setFocus();
+      });
+    d3.select('body').on('keydown', () => {
+      if (this.mouse.event === Canvas.event.editText) {
+        this.mouse.infocus.processInput(d3.event);
+      }
+    });
+
+    this.svg.call(d3.drag()
+      .on('start', () => {
+        console.log(this);
+      })
+      .on('drag', () => {
+        // console.log(this);
+        this.camera.offset.x = this.camera.offset.x - d3.event.dx;
+        this.camera.offset.y = this.camera.offset.y - d3.event.dy;
+        this.setCamera();
+
+      })
+      .on('end', () => {
+        console.log(this);
+      })
+    );
+  }
+
+  setCamera() {
+    this.svg.attr('viewBox', `${this.camera.offset.x} ${this.camera.offset.y} ${this.camera.width} ${this.camera.width * this.camera.ratio}`);
   }
 
   addNode(index, node) {
@@ -38,15 +70,7 @@ class Canvas {
   }
 
   render() {
-    this.svg
-      .on('mouseup', () => {
-        this.setFocus();
-      });
-    d3.select('body').on('keydown', () => {
-      if (this.mouse.event === Canvas.event.editText) {
-        this.mouse.infocus.processInput(d3.event);
-      }
-    });
+    this.setCamera();
     this.statements.forEach(s => s.render());
   }
 }

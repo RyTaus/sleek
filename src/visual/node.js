@@ -3,10 +3,11 @@ const Component = require('./component.js');
 const d3 = require('d3');
 
 class Node extends Component {
-  constructor(name, value, x, y, inPins, outPins, svg) {
+  constructor(name, x, y, svg, inPins, outPins, nextNode) {
     super(svg);
     this.name = name;
-    this.value = value;
+
+    this.next = nextNode;
 
     this.inPins = inPins;
     this.outPins = outPins;
@@ -34,24 +35,33 @@ class Node extends Component {
       .classed('node', true)
       .on('click', () => { console.log(this); })
       .call(d3.drag()
-        .on('start', () => {
-          console.log('dragging');
+        .on('start', (d) => {
+          d.canvas.mouse.infocus = d;
         })
         .on('drag', (d) => {
           d.transform.x += d3.event.dx;
           d.transform.y += d3.event.dy;
           d.update();
           d.outPins.forEach((p) => {
-            if (p.connection) {
-              p.connection.render();
+            if (p.connection.length) {
+              p.connection.forEach(c => c.render());
             }
-          })
-          // d3.select(this).attr()
+          });
         })
       );
 
     this.inPins.forEach(pin => pin.render());
     this.outPins.forEach(pin => pin.render());
+  }
+
+  /* next returns the next statement to be compiled */
+  next() {
+    /*
+       right now assumes that the first pin is the next flow pin. Anything that breaks
+       that trend needs to be specified. maybe nodes take in another input outside of outPins
+       that will say what next is? Actully thats what ill do.
+    */
+
   }
 
   // TODO when I compile maybe I need to know which pin I came from.

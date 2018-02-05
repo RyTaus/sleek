@@ -8,7 +8,9 @@ const pb = require('./prebuilt-nodes.js');
 
 const canvas = new Canvas(SVG);
 
-const add = new pb.Multiply(350, 160, SVG);
+const multiply = new pb.Multiply(350, 160, SVG);
+const add = new pb.Add(350, 260, SVG);
+
 const n1 = new pb.PrimNumber(150, 100, SVG);
 const n2 = new pb.PrimNumber(150, 250, SVG);
 
@@ -23,6 +25,8 @@ canvas.render();
 
 d3.select('body').selectAll('button')
   .on('click', () => {
-    console.log(add.compile());
-    console.log(eval(add.compile()));
+    // const result = canvas.statement[0].compile();
+    const result = add.compile();
+    console.log(result);
+    console.log(eval(result));
   });

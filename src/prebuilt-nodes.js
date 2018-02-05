@@ -4,7 +4,7 @@ const Pin = require('./visual/pin.js');
 
 class PrimNumber extends Node {
   constructor(x, y, svg) {
-    super('Number', '', x, y, [new Pin.Input(Pin.Input.type.number)], [new Pin.Value()], svg);
+    super('Number', x, y, svg, [new Pin.Input(Pin.Input.type.number)], [new Pin.Value()], null);
   }
   compile() {
     return `${this.inPins[0].compile()}`;
@@ -13,7 +13,8 @@ class PrimNumber extends Node {
 
 class Add extends Node {
   constructor(x, y, svg) {
-    super('ADD', '', x, y, [new Pin.Flow(), new Pin.Value(), new Pin.Value()], [new Pin.Flow(), new Pin.Value()], svg);
+    const next = new Pin.Flow();
+    super('ADD', x, y, svg, [new Pin.Flow(), new Pin.Value(), new Pin.Value()], [next, new Pin.Value()], next);
   }
 
   compile() {
@@ -23,7 +24,8 @@ class Add extends Node {
 
 class Multiply extends Node {
   constructor(x, y, svg) {
-    super('ADD', '', x, y, [new Pin.Flow(), new Pin.Value(), new Pin.Value()], [new Pin.Flow(), new Pin.Value()], svg);
+    const next = new Pin.Flow();
+    super('MULTIPLY', x, y, svg, [new Pin.Flow(), new Pin.Value(), new Pin.Value()], [next, new Pin.Value()], next);
   }
 
   compile() {

@@ -10,6 +10,12 @@ class Statement {
     this.nodes.push(node);
   }
 
+  get
+
+  compile() {
+    this.nodes[0].compile()
+  }
+
   render() {
     this.nodes.forEach(n => n.render());
   }
