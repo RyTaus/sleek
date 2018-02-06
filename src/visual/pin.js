@@ -27,7 +27,15 @@ class Pin extends Component {
       }
       this.update('connection', pin);
     } else {
-      this.connection.push(pin);
+      if (this.type === Pin.Type.FLOW) {
+        console.log(this.connection);
+        if (this.connection[0]) {
+          this.connection[0].update('connection', null);
+        }
+        this.connection[0] = pin;
+      } else {
+        this.connection.push(pin);
+      }
       this.update('connection', this.connection);
     }
   }
@@ -60,7 +68,7 @@ class Pin extends Component {
   getOffsets() {
     return {
       x: this.node.transform.x + (this.direction === Pin.Direction.IN ? 10 : 100 - 20),
-      y: this.node.transform.y + 10 + (20 * this.index)
+      y: this.node.transform.y + 15 + (15 * this.index)
     };
   }
 
@@ -72,9 +80,11 @@ class Pin extends Component {
     d3Node
       .on('mouseenter', () => {
         this.node.canvas.lastElementOver = this;
+        this.getNode().classed('hovered', true);
       })
       .on('mouseleave', () => {
         this.node.canvas.lastElementOver = null;
+        this.getNode().classed('hovered', false);
       })
       .call(d3.drag()
         .on('start', () => {
@@ -105,13 +115,13 @@ class Pin extends Component {
           }
         })
       );
-
+    d3.selectAll(`#edge${this.id}`).remove();
     if (this.connection) {
       if (this.direction === Pin.Direction.IN) {
-        d3.selectAll(`#edge${this.id}`).remove();
         this.svg.append('polygon')
           .attr('points', `${this.getOffsets().x},${this.getOffsets().y} ${this.connection.getOffsets().x},${this.connection.getOffsets().y}`)
           .classed('line', true)
+          .classed('flow', this.type === Pin.Type.FLOW)
           .attr('id', `edge${this.id}`);
       }
     }

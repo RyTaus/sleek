@@ -4,7 +4,7 @@ const Pin = require('./visual/pin.js');
 
 class PrimNumber extends Node {
   constructor(x, y, svg) {
-    super('Number', x, y, svg, [new Pin.Input(Pin.Input.type.number)], [new Pin.Value()], null);
+    super('NUMBER', x, y, svg, [new Pin.Input(Pin.Input.type.number)], [new Pin.Value()], null);
   }
   compile() {
     return `(${this.inPins[0].compile()})`;

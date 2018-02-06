@@ -17,20 +17,11 @@ class Statement {
   }
 
   compile() {
-    let result = '';
     let curr = this.start;
-    const nodeStack = [];
-    while (curr) {
-      console.log(curr);
-      console.log(curr.next);
-      console.log(curr.next.connection[0]);
-      nodeStack.push(curr);
-      // result += curr.compile();
+    while (curr.getNextPin()) {
       curr = curr.getNextPin();
     }
-
-
-    return nodeStack[nodeStack.length - 1].compile();
+    return curr.compile();
   }
 
   render() {

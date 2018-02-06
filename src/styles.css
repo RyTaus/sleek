@@ -1,7 +1,7 @@
 .node {
   stroke-width: 1;
   stroke: rgb(100, 0, 0);
-  fill: gray;
+  fill: rgb(230, 230, 230);
 }
 
 .pin {
@@ -9,7 +9,7 @@
   fill: white;
 }
 
-.pin:hover {
+.hovered {
   fill: rgb(200, 200, 200)
 }
 
@@ -20,6 +20,7 @@
 .line {
   stroke-width: 2;
   stroke: black;
+  pointer-events: none;
 }
 
 line {
@@ -28,8 +29,13 @@ line {
   pointer-events: none;
 }
 
+text {
+  font-family: "Gill Sans", sans-serif;
+}
+
 .label {
-  font-size: 12;
+  font-size: 10;
+  pointer-events: none;
 }
 
 .flow {
@@ -37,11 +43,13 @@ line {
 }
 
 .inputbg {
-  fill: grey;
-  stroke: white;
+  /* fill: grey; */
+  fill-opacity: 0;
+  stroke: rgb(100, 0, 0);
 }
 
 .infocus {
+  fill-opacity: 1;
   fill: white;
 }
 

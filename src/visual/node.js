@@ -21,7 +21,7 @@ class Node extends Component {
       x,
       y,
       width: 100,
-      height: 30 + (Math.max(this.inPins.length, this.outPins.length) * 20)
+      height: 20 + (Math.max(this.inPins.length, this.outPins.length) * 15)
     };
   }
 
@@ -51,11 +51,12 @@ class Node extends Component {
       );
 
       const bg = d3.select('svg').selectAll(`#${this.id}_label`)
-        .data([this])
-        .attr('x', d => d.transform.x + 30)
-        .attr('y', d => d.transform.y + 30)
-        .classed('label', true)
-        .text(d => d.name)
+      .data([this])
+      .attr('x', d => d.transform.x + 50)
+      .attr('y', d => d.transform.y + 10)
+      .attr('text-anchor', 'middle')
+      .classed('label', true)
+      .text(d => d.name)
 
 
     this.inPins.forEach(pin => pin.render());
