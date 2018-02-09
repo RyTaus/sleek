@@ -37,6 +37,6 @@ Object.getPropsByDepth = (object) => {
   return results;
 };
 
-const matt = new Player('matt', 10, 'PF');
-console.log(Object.getPropsByDepth(matt));
+const maddie = new Player('maddie', 10, 'PF');
+console.log(Object.getPropsByDepth(maddie));
 // console.log(Object.getPropsByDepth({a: 'ok', b: 'cmon'}));

@@ -6,6 +6,7 @@
 */
 const d3 = require('d3');
 const Statement = require('./statement.js');
+const NodeSearcher = require('./node-searcher.js');
 
 
 class Canvas {
@@ -21,15 +22,21 @@ class Canvas {
       infocus: null
     };
 
-    // const start = new Start(this.svg)
-
-    // this.addNode(0, start);
-
     this.svg = svg;
+
+    this.nodeSearcher = new NodeSearcher(this);
 
     this.svg
       .on('mouseup', () => {
         this.setFocus();
+      })
+      .on('contextmenu', () => {
+        console.log('right click');
+        this.nodeSearcher.remove();
+
+        this.nodeSearcher.setPosition(d3.mouse(this.svg.node()));
+        this.nodeSearcher.active = true;
+        this.nodeSearcher.render();
       });
     d3.select('body').on('keydown', () => {
       if (this.mouse.event === Canvas.event.editText) {
@@ -39,7 +46,7 @@ class Canvas {
 
     this.svg.call(d3.drag()
       .on('start', () => {
-        console.log(this);
+        // console.log(this);
       })
       .on('drag', () => {
         this.camera.offset.x = this.camera.offset.x - d3.event.dx;
@@ -47,10 +54,12 @@ class Canvas {
         this.setCamera();
       })
       .on('end', () => {
-        console.log(this);
+        // console.log(this);
       })
     );
   }
+
+
 
   setCamera() {
     this.svg.attr('viewBox', `${this.camera.offset.x} ${this.camera.offset.y} ${this.camera.width} ${this.camera.width * this.camera.ratio}`);
@@ -74,8 +83,10 @@ class Canvas {
   }
 
   render() {
+    // this.svg.selectAll('*').remove();
     this.setCamera();
     this.statements.forEach(s => s.render());
+    this.nodeSearcher.render();
   }
 }
 

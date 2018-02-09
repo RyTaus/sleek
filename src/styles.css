@@ -61,6 +61,32 @@ text {
   pointer-events: none;
 }
 
+.search-bg {
+  fill: grey;
+  stroke: black;
+}
+
+.search-search {
+  fill: grey;
+  stroke: black;
+}
+
+.search-body {
+  fill: white;
+  stroke: black;
+}
+
+.search-result {
+  fill: green;
+  stroke: black;
+}
+
+.search-result-label {
+  font-size: 8;
+  stroke: black;
+  pointer-events: none;
+}
+
 svg {
   width: 80%;
   height: 80%;

@@ -8,6 +8,7 @@ class Component {
     this.svg = svg;
     this.id = `comp_id_${Component.currentID}`;
     Component.currentID += 1;
+    console.log(this.id, this);
   }
 
   createSvgNode(className) {
@@ -24,8 +25,14 @@ class Component {
     this.svg.append('text').classed('label', true).attr('id', `${this.id}_label`);
   }
 
-  getNode() {
-    return d3.select('svg').selectAll(`#${this.id}`);
+  createSvgNodeSearcher() {
+    this.svg.append('rect').attr('id', `${this.id}`);
+    this.svg.append('rect').attr('id', `${this.id}_search`);
+    this.svg.append('rect').attr('id', `${this.id}_results`);
+  }
+
+  getNode(extension = '') {
+    return d3.select('svg').selectAll(`#${this.id}${extension ? '_' : ''}${extension}`);
   }
 
   setSVG(elem) {

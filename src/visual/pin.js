@@ -1,5 +1,4 @@
 const Component = require('./component.js');
-const Canvas = require('./canvas.js');
 const d3 = require('d3');
 
 // in pins keep track of edges
@@ -73,9 +72,6 @@ class Pin extends Component {
   }
 
   baseRender(d3Node) {
-    // const self = this;
-    // const makeLineString()
-
     /* Magic strings cant be gotten from canvas file. Maybe make new File For enum like things? */
     d3Node
       .on('mouseenter', () => {
@@ -147,7 +143,7 @@ class PinInput extends Pin {
         this.update('value', prevValue.slice(0, -1));
       } else if (event.key === '-' && prevValue.length === 0) {
         this.update('value', prevValue + (d3.event.key));
-      } else if (event.key === '.' && !prevValue.includes('.')) {
+      } else if (event.key === '.' && !prevValue.includes('.') && prevValue.length > 0) {
         this.update('value', prevValue + (d3.event.key));
       }
     }
@@ -174,7 +170,7 @@ class PinInput extends Pin {
       .text(d => d.pin.value);
 
 
-    const bg = d3.select('svg').selectAll(`#${this.id}_border`)
+    const bg = this.getNode('border')
       .data([{ pin: this, offset }])
       .attr('x', d => d.offset.x - 2)
       .attr('y', d => d.offset.y - 1)
