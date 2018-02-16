@@ -35,9 +35,9 @@ class Multiply extends Node {
 }
 
 class Start extends Node {
-  constructor(svg) {
+  constructor(x, y, svg) {
     const next = new Pin.Flow();
-    super('START', 0, 0, svg, [], [next], next);
+    super('START', x, y, svg, [], [next], next);
   }
 
   compile() {

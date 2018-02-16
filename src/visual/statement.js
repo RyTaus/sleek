@@ -2,7 +2,7 @@ const { Start } = require('./../prebuilt-nodes.js');
 
 class Statement {
   constructor(svg, canvas) {
-    this.start = new Start(svg);
+    this.start = new Start(0, 0, svg);
     this.start.canvas = canvas;
     this.nodes = [
       this.start

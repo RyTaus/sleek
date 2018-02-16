@@ -104,8 +104,6 @@ class NodeSearcher extends Component {
         .attr('y', d => ((this.transform.y + 45) + (d.index * 25)))
         .text(d => d.node.name)
         .classed('search-result-label', true);
-
-
     } else {
       this.getNode()
         .attr('width', 0)

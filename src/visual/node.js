@@ -50,13 +50,13 @@ class Node extends Component {
         })
       );
 
-      const bg = d3.select('svg').selectAll(`#${this.id}_label`)
+    d3.select('svg').selectAll(`#${this.id}_label`)
       .data([this])
       .attr('x', d => d.transform.x + 50)
       .attr('y', d => d.transform.y + 10)
       .attr('text-anchor', 'middle')
       .classed('label', true)
-      .text(d => d.name)
+      .text(d => d.name);
 
 
     this.inPins.forEach(pin => pin.render());

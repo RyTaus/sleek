@@ -33,7 +33,7 @@ class Pin extends Component {
         }
         this.connection[0] = pin;
       } else {
-        this.connection.push(pin);
+        this.connection.push(pin); 
       }
       this.update('connection', this.connection);
     }
