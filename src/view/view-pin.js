@@ -47,10 +47,12 @@ class ViewPin extends Component {
         .on('end', () => {
           d3.select('.drawingline').remove();
           if (node.canvas.mouse.infocus && node.canvas.mouse.event === 'dragPin') {
-            console.log('To Connect  ', pin, node.canvas.getUnderMouse().pin);
-            pin.connect(node.canvas.getUnderMouse().pin);
+            const otherPin = node.canvas.getUnderMouse().pin;
+            console.log('To Connect  ', pin, otherPin);
+            pin.connect(otherPin);
             node.canvas.setFocus();
             this.render();
+            otherPin.view.render();
           }
         })
       );
@@ -59,8 +61,6 @@ class ViewPin extends Component {
   render() {
     const { pin } = this;
 
-
-    console.log('PIN:   ', pin);
     if (pin.connections.length > 0 && pin.direction === 'in') {
       d3.selectAll(`#edge${this.id}`).remove();
 
@@ -71,7 +71,7 @@ class ViewPin extends Component {
       this.svg.append('line')
         .attr('id', `edge${this.id}`)
         .classed('line', true)
-        .classed(pin.type, true)
+        .classed(pin.pinType, true)
         .attr('x1', start.x)
         .attr('y1', start.y)
         .attr('x2', end.x)

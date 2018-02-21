@@ -2,10 +2,10 @@ class Node {
   constructor(name, inPins = [], outPins = [], x, y) {
     this.name = name;
     this.inPins = inPins.map(pin => pin.initialize(this, 'in'));
-    this.outPins = outPins.map(pin => pin.initialize(this, 'out'));;
+    this.outPins = outPins.map(pin => pin.initialize(this, 'out'));
 
     this.x = x;
-    this.y  = y;
+    this.y = y;
   }
 
   /**

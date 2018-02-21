@@ -1,5 +1,5 @@
 const { Start } = require('./../prebuilt-nodes.js');
-const ViewNode = require('./view-node.js');
+const ViewNode = require('./../view/view-node.js');
 
 class Statement {
   constructor(svg, canvas) {

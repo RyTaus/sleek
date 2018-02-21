@@ -8,7 +8,7 @@ d3.selection.prototype.moveToFront = function() {
   });
 };
 
-const Canvas = require('./visual/canvas.js');
+const Canvas = require('./view/canvas.js');
 
 const SVG = d3.select('svg');
 
@@ -18,7 +18,7 @@ canvas.render();
 
 d3.select('body').selectAll('button')
   .on('click', () => {
-    const result = canvas.statements[0].compile();
+    const result = canvas.compile();
     // const result = add.compile();
     console.log(result);
     console.log(eval(result));
