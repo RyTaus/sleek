@@ -90,7 +90,6 @@ class NodeSearcher extends Component {
           console.log(this);
           const newNode = new d.node(this.transform.x, this.transform.y, this.svg);
           this.canvas.addNode(0, newNode);
-          newNode.render();
           this.remove();
         });
 

@@ -6,12 +6,10 @@
   "dependencies": {
     "d3": "^4.12.0",
     "electron": "1.7.11",
-    "graphik": "^0.1.0",
-    "jquery": "^3.3.1"
+    "flexboxgrid": "^6.3.1",
+    "graphik": "^0.1.0"
   },
   "devDependencies": {
-    "browserify": "^15.2.0",
-    "browserify-incremental": "^3.1.1",
     "eslint": "^4.13.1",
     "eslint-config-airbnb-base": "^12.1.0",
     "eslint-plugin-import": "^2.8.0",
@@ -19,9 +17,7 @@
   },
   "scripts": {
     "test": "mocha tests",
-    "run": ".\\node_modules\\.bin\\electron .",
-    "build": "browserifyinc .\\src\\drawer.js -o .\\src\\static\\bundle.js",
-    "start": "npm run-script build && npm run-script run"
+    "start": "./node_modules/.bin/electron ."
   },
   "repository": {
     "type": "git",

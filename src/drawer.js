@@ -12,8 +12,6 @@ const Canvas = require('./visual/canvas.js');
 
 const SVG = d3.select('svg');
 
-// const pb = require('./prebuilt-nodes.js');
-
 const canvas = new Canvas(SVG);
 
 canvas.render();
@@ -25,3 +23,8 @@ d3.select('body').selectAll('button')
     console.log(result);
     console.log(eval(result));
   });
+
+const sideBar = d3.select('.sidebar');
+sideBar
+  .append('button')
+  .text('new variable');
