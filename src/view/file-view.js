@@ -3,7 +3,6 @@ const d3 = require('d3');
 const Event = require('./event.js');
 const NodeSearcher = require('./node-searcher.js');
 const ViewNode = require('./view-node.js');
-const { Start } = require('./../prebuilt-nodes.js');
 
 
 class ViewFile {
@@ -30,7 +29,7 @@ class ViewFile {
 
   focus(component) {
     this.focused = component;
-    this.render();
+    // this.render();
   }
 
   /* ************ Events ************ */
@@ -58,7 +57,7 @@ class ViewFile {
 
   /* ************* View ************* */
 
-  initialize() {
+  initializeCanvas() {
     this.svg.call(d3.drag()
       .on('start', () => {
         this.startEvent(this, Event.dragCanvas);
@@ -90,7 +89,6 @@ class ViewFile {
   }
 
   generateNodeSearcher(pin) {
-    // console.log(this.nodeSearcher);
     this.nodeSearcher.seed(pin);
     this.nodeSearcher.remove();
     this.startEvent(this.nodeSearcher, Event.nodeSearch);
@@ -109,6 +107,45 @@ class ViewFile {
     this.setCamera();
     this.nodes.forEach(n => n.render());
     // this.nodeSearcher.render();
+  }
+
+  /* ************* Sidebar ************* */
+
+  initializeSideBar() {
+    this.newVarButton = this.sidebar.append('button')
+      .text('new var')
+      .on('click', () => {
+        this.file.addVariable(this.buttonInput.node().value);
+        this.renderSideBar();
+      });
+    this.buttonInput = this.sidebar.append('input')
+      .attr('type', 'text');
+
+    this.variables = this.sidebar.append('ul');
+    this.variables
+      .data(Object.keys(this.file.scope))
+      .enter()
+      .append('li')
+      .text(d => d);
+  }
+
+  renderSideBar() {
+    console.log(Object.keys(this.file.scope));
+    d3.selectAll('.variable').remove();
+    this.variables.selectAll('.variable')
+      .data(Object.keys(this.file.scope))
+      .enter()
+      .append('li')
+      .classed('variable', true)
+      .text((d) => {
+        console.log(d);
+        return d;
+      });
+  }
+
+  initialize() {
+    this.initializeCanvas();
+    this.initializeSideBar();
   }
 
   render() {

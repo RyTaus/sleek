@@ -18,8 +18,8 @@ class Pin {
 
   connect(pin) {
     if (this.canConnect(pin)) {
-      this.createConnection(pin);
       pin.createConnection(this);
+      return this.createConnection(pin);
     }
     return this;
   }
@@ -31,10 +31,12 @@ class Pin {
 
   createConnection(pin) {
     let poppedConnection = null;
-    if (this.direction === Pin.direction.in || this.type === Pin.type.flow) {
+    if (this.direction === Pin.direction.in || this.pinType === Pin.type.flow) {
       if (this.connections.length > 0) {
+        console.log('removing previous');
         poppedConnection = this.connections[0];
         this.connections[0].removeConnection(this);
+        this.connections = [];
       }
     }
     this.connections.push(pin);

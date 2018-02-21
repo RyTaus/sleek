@@ -42,15 +42,18 @@ class ViewPin extends Component {
         })
         .on('end', () => {
           d3.select('g').select('.drawingline').remove();
-          if (this.viewNode.canvas.currentEvent.event === Event.dragPin
-            && this.viewNode.canvas.hovered().pin !== this.pin) {
-
-            console.log(this.viewNode.canvas.hovered());
+          if (this.viewNode.canvas.currentEvent.event === Event.dragPin && this.viewNode.canvas.hovered().pin !== this.pin) {
             const otherPin = this.viewNode.canvas.hovered().pin;
+            const oldConnection = pin.direction === 'out' ? pin.connections[0] : otherPin.connections[0];
+
             pin.connect(otherPin);
             this.viewNode.canvas.stopEvent();
             this.render();
             otherPin.view.render();
+            if (oldConnection) {
+              oldConnection.view.render();
+            }
+            console.log('*****************************');
           } else {
             this.viewNode.canvas.generateNodeSearcher(this.pin);
           }
@@ -61,9 +64,10 @@ class ViewPin extends Component {
   render() {
     const { pin } = this;
 
-    if (pin.connections.length > 0 && pin.direction === 'in') {
-      d3.selectAll(`#edge${this.id}`).remove();
+    console.log(pin);
 
+    d3.selectAll(`#edge${this.id}`).remove();
+    if (pin.connections.length > 0 && pin.direction === 'in') {
       const start = this.getPosition();
       const end = pin.connections[0].view.getPosition();
 
@@ -151,8 +155,8 @@ class ViewPinInput extends ViewPin {
   }
 
   processInput(d3Event) {
-    console.log(d3Event);
-    this.pin.value = ViewPinInput.update(this.pin.value, d3Event.key)
+    // console.log(d3Event);
+    this.pin.value = ViewPinInput.update(this.pin.value, d3Event.key);
     this.text.text(this.pin.value);
   }
 
@@ -182,7 +186,7 @@ ViewPinInput.update = (string, key) => {
   } else if (key === '.' && !result.includes('.')) {
     return result + key;
   }
-  return result;
+  return result + key;
 };
 
 module.exports = {

@@ -6,6 +6,7 @@ class File {
   }
 
   addNode(node) {
+    node.file = this;
     this.nodes.push(node);
   }
 
@@ -21,6 +22,13 @@ class File {
       result += ';';
     });
     return result;
+  }
+
+  addVariable(name) {
+    if (Object.keys(this.scope).includes(name)) {
+      throw new Error('variable already declared in this scope');
+    }
+    this.scope[name] = {};
   }
 }
 

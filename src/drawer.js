@@ -15,13 +15,14 @@ const FileView = require('./view/file-view.js');
 
 
 const SVG = d3.select('svg');
+const sidebar = d3.select('.right');
 
 const file = new File();
-const canvas = new FileView(file, SVG);
+const canvas = new FileView(file, SVG, sidebar);
 
 canvas.render();
 
-d3.select('body').selectAll('button')
+d3.select('body').selectAll('#compile')
   .on('click', () => {
     const result = canvas.file.compile();
 

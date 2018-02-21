@@ -1,6 +1,27 @@
 const Node = require('./model/node.js');
 const Pin = require('./model/pin.js');
 
+class Set extends Node {
+  constructor(x, y) {
+    super('SET', [new Pin.Flow(), new Pin.Input(), new Pin.Value()], [new Pin.Flow()], x, y);
+    this.inPins[1].setValue('0');
+  }
+
+  compile() {
+    return `${this.inPins[1].compile()} = ${this.inPins[2].compile()}`;
+  }
+}
+
+class Get extends Node {
+  constructor(x, y) {
+    super('GET', [new Pin.Input()], [new Pin.Value()], x, y);
+  }
+
+  compile() {
+    return `${this.inPins[0].compile()}`;
+  }
+}
+
 
 class PrimNumber extends Node {
   constructor(x, y) {
@@ -47,5 +68,5 @@ class Start extends Node {
 
 
 module.exports = {
-  Start, PrimNumber, Add, Multiply
+  Start, Set, Get, PrimNumber, Add, Multiply
 };
