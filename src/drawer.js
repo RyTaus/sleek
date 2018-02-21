@@ -24,7 +24,7 @@ d3.select('body').selectAll('button')
     console.log(eval(result));
   });
 
-const sideBar = d3.select('.sidebar');
-sideBar
-  .append('button')
-  .text('new variable');
+// const sideBar = d3.select('.sidebar');
+// sideBar
+//   .append('button')
+//   .text('new variable');

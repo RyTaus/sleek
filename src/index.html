@@ -3,15 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <title>Visual-JS</title>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
   <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
-  <div class="wrapper">
-    <svg class="canvas" viewBox="0 0 800 600"></svg>
-    <div class="sidebar"></div>
-    <button>compile</button>
+  <div class="wrapper container">
+    <div class="row">
+      <div class="sidebar left col-sm-2">
+        <button>compile</button>
+
+      </div>
+      <svg class="canvas col-sm-8"></svg>
+      <div class="sidebar right col-sm-2">
+        <p> sidebar </p>
+      </div>
+    </div>
   </div>
+
   <script src="./drawer.js"></script>
 </body>
 

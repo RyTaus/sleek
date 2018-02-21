@@ -103,6 +103,7 @@ class Canvas {
         // console.log(curr);
         curr = curr.getNextNode();
       }
+      result += '\n';
       result += curr.compile();
       result += ';';
     });

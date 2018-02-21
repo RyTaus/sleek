@@ -88,9 +88,12 @@ text {
 }
 
 svg {
-  width: 80%;
-  height: 80%;
-  margin: 0;
-  padding: 0;
+  height: 100%;
   border: 3px solid black;
+  background-color: rgb(200, 230, 230);
+}
+
+.container {
+  padding-left: 0;
+  padding-right: 0;
 }
