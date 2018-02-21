@@ -2,8 +2,10 @@ const Component = require('./component.js');
 const d3 = require('d3');
 
 class ViewPin extends Component {
-  constructor(pin, index, svg) {
-    super(svg);
+  constructor(pin, index, viewNode) {
+    super(viewNode.svg);
+    this.isPin = true;
+    this.viewNode = viewNode;
     this.pin = pin;
     pin.view = this;
     this.index = index;
@@ -23,17 +25,16 @@ class ViewPin extends Component {
     this.svgNode
       .classed('pin', true)
       .on('mouseenter', () => {
-        node.canvas.lastElementOver = this;
+        this.viewNode.canvas.lastElementOver = this;
         this.svgNode.classed('hovered', true);
       })
       .on('mouseleave', () => {
-        node.canvas.lastElementOver = null;
+        this.viewNode.canvas.lastElementOver = null;
         this.svgNode.classed('hovered', false);
       })
       .call(d3.drag()
         .on('start', () => {
-          node.canvas.setFocus(pin, 'dragPin');
-          console.log('canvas: ', node.canvas);
+          this.viewNode.canvas.setFocus(pin, 'dragPin');
           d3.select('svg').append('line').classed('drawingline', true);
         })
         .on('drag', () => {
@@ -46,13 +47,15 @@ class ViewPin extends Component {
         })
         .on('end', () => {
           d3.select('.drawingline').remove();
-          if (node.canvas.mouse.infocus && node.canvas.mouse.event === 'dragPin') {
-            const otherPin = node.canvas.getUnderMouse().pin;
+          if (this.viewNode.canvas.mouse.infocus && this.viewNode.canvas.getUnderMouse()) {
+            const otherPin = this.viewNode.canvas.getUnderMouse().pin;
             console.log('To Connect  ', pin, otherPin);
             pin.connect(otherPin);
-            node.canvas.setFocus();
+            this.viewNode.canvas.setFocus();
             this.render();
             otherPin.view.render();
+          } else {
+            this.viewNode.canvas.generateNodeSearcher(this.pin);
           }
         })
       );
@@ -86,10 +89,6 @@ class ViewPinFlow extends ViewPin {
     this.svgNode = this.svg.append('polygon').attr('id', this.id).classed('flow', true);
     this.initialize();
   }
-
-  // initialize() {
-  //   super.initialize();
-  // }
 
   render() {
     super.render();

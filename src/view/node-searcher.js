@@ -1,10 +1,11 @@
-const Component = require('./component.js');
+const d3 = require('d3');
 
+const Component = require('./component.js');
+const Pin = require('./../model/pin.js');
 const pb = require('./../prebuilt-nodes.js');
 
 class NodeSearcher extends Component {
   constructor(canvas) {
-    console.log('making ns');
     super(canvas.svg);
     this.canvas = canvas;
 
@@ -19,13 +20,16 @@ class NodeSearcher extends Component {
     this.createSvgNodeSearcher();
   }
 
+  seed(pin) {
+    this.currentSeed = pin;
+  }
+
   setPosition(mouse) {
     [this.transform.x, this.transform.y] = mouse;
     return this;
   }
 
   remove() {
-    console.log('REMOVE THIS');
     this.svg.selectAll('.search-result-label').remove();
     this.svg.selectAll('.search-result').remove();
     this.active = false;
@@ -35,20 +39,27 @@ class NodeSearcher extends Component {
 
   getPossibleNodes() {
     const objectToArray = (obj) => {
-      return Object.entries(obj).map((o, i) => {
-        const temp = {};
-        temp.node = o[1];
-        temp.index = i;
-        return temp;
+      return Object.entries(obj).map((o) => {
+        return o[1];
       });
     };
-    this.dontlintmebro = true;
-    return objectToArray(pb);
+    let possible = objectToArray(pb);
+    console.log(possible);
+    if (this.currentSeed) {
+      possible = possible.filter((Obj) => {
+        const test = new Obj(this.transform.x, this.transform.y);
+        if (this.currentSeed.direction === 'out') {
+          return test.inPins.some(p => this.currentSeed.canConnect(p));
+        }
+        return test.outPins.some(p => this.currentSeed.canConnect(p));
+      });
+    }
+    return possible;
   }
 
   render() {
     if (this.active) {
-      console.log('rendering');
+      const possible = this.getPossibleNodes();
       this.getNode()
         .data([this])
         .attr('width', d => d.transform.width)
@@ -77,50 +88,68 @@ class NodeSearcher extends Component {
         .moveToFront();
 
       this.svg.selectAll('.search-result')
-        .data(this.getPossibleNodes())
+        .data(possible)
         .enter()
         .append('rect')
         .attr('width', this.transform.width - 20)
         .attr('height', 20)
         .attr('x', this.transform.x + 10)
-        .attr('y', d => ((this.transform.y + 35) + (d.index * 25)))
+        .attr('y', (d, i) => ((this.transform.y + 35) + (i * 25)))
         .classed('search-result', true)
-        .on('click', (d) => {
-          console.log(d);
-          console.log(this);
-          const newNode = new d.node(this.transform.x, this.transform.y, this.svg);
+        .on('mousedown', () => {
+          d3.event.stopPropagation();
+        })
+        .on('mouseup', (d) => {
+          const newNode = new d(this.transform.x, this.transform.y, this.svg);
           this.canvas.addNode(newNode);
+
+          if (this.currentSeed) {
+            let connectable = [];
+            if (this.currentSeed.direction === 'out') {
+              connectable = newNode.inPins.filter(p => this.currentSeed.canConnect(p));
+            } else {
+              connectable = newNode.outPins.filter(p => this.currentSeed.canConnect(p));
+            }
+            if (connectable.length === 1) {
+              connectable[0].connect(this.currentSeed);
+              this.currentSeed.view.render();
+              newNode.view.render();
+            }
+          }
+
+
           this.remove();
+          d3.event.stopPropagation();
         });
 
       this.svg.selectAll('.search-result-label')
-        .data(this.getPossibleNodes())
+        .data(possible)
         .enter()
         .append('text')
         .attr('width', this.transform.width - 20)
         .attr('height', 20)
         .attr('x', this.transform.x + 10)
-        .attr('y', d => ((this.transform.y + 45) + (d.index * 25)))
-        .text(d => d.node.name)
+        .attr('y', (d, i) => ((this.transform.y + 45) + (i * 25)))
+        .text(d => d.name)
         .classed('search-result-label', true);
     } else {
       this.getNode()
         .attr('width', 0)
         .attr('height', 0)
-        .attr('x',0)
-        .attr('y', 0)
+        .attr('x', 0)
+        .attr('y', 0);
 
       this.getNode('search')
         .attr('width', 0)
         .attr('height', 0)
-        .attr('x',0)
-        .attr('y', 0)
+        .attr('x', 0)
+        .attr('y', 0);
 
       this.getNode('results')
         .attr('width', 0)
         .attr('height', 0)
         .attr('x', 0)
-        .attr('y', 0)
+        .attr('y', 0);
     }
     return this;
   }

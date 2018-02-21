@@ -4,15 +4,17 @@ const ViewPin = require('./view-pin.js');
 
 
 class ViewNode extends Component {
-  constructor(node, svg) {
-    super(svg);
+  constructor(node, canvas) {
+    super(canvas.svg);
+    this.canvas = canvas;
     this.node = node;
+    node.view = this;
 
     this.svgNode = this.svg.append('rect').attr('id', `${this.id}`);
     this.label = this.svg.append('text').classed('label', true).attr('id', `${this.id}_label`);
 
-    this.inPins = this.node.inPins.map((p, i) => new ViewPin[p.pinType](p, i, svg));
-    this.outPins = this.node.outPins.map((p, i) => new ViewPin[p.pinType](p, i, svg));
+    this.inPins = this.node.inPins.map((p, i) => new ViewPin[p.pinType](p, i, this));
+    this.outPins = this.node.outPins.map((p, i) => new ViewPin[p.pinType](p, i, this));
 
 
     this.initialize();
@@ -28,8 +30,7 @@ class ViewNode extends Component {
       .classed('node', true)
       .call(d3.drag()
         .on('start', () => {
-          console.log(this.node);
-          // node.canvas.mouse.infocus = this;
+          this.canvas.setFocus(this, 'dragNode');
         })
         .on('drag', () => {
           node.x += d3.event.dx;

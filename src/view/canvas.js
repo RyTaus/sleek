@@ -31,15 +31,11 @@ class Canvas {
     this.svg
       .on('mouseup', () => {
         this.setFocus();
-        this.nodeSearcher.remove();
+        console.log('mouse up');
       })
       .on('contextmenu', () => {
         console.log('right click');
-        this.nodeSearcher.remove();
-
-        this.nodeSearcher.setPosition(d3.mouse(this.svg.node()));
-        this.nodeSearcher.active = true;
-        this.nodeSearcher.render();
+        this.generateNodeSearcher();
       });
     d3.select('body').on('keydown', () => {
       if (this.mouse.event === Canvas.event.editText) {
@@ -49,6 +45,7 @@ class Canvas {
 
     this.svg.call(d3.drag()
       .on('start', () => {
+        this.setFocus(this, Canvas.dragCanvas);
         // console.log(this);
       })
       .on('drag', () => {
@@ -62,14 +59,23 @@ class Canvas {
     );
   }
 
+  generateNodeSearcher(pin) {
+    console.log(this.nodeSearcher);
+    this.nodeSearcher.seed(pin);
+    this.nodeSearcher.remove();
+    this.setFocus(this.nodeSearcher, Canvas.event.nodeSearch);
+    this.nodeSearcher.setPosition(d3.mouse(this.svg.node()));
+    this.nodeSearcher.active = true;
+    this.nodeSearcher.render();
+  }
+
 
   setCamera() {
     this.svg.attr('viewBox', `${this.camera.offset.x} ${this.camera.offset.y} ${this.camera.width} ${this.camera.width * this.camera.ratio}`);
   }
 
   addNode(node) {
-    node.canvas = this;
-    this.nodes.push(new ViewNode(node, this.svg));
+    this.nodes.push(new ViewNode(node, this));
   }
 
   getUnderMouse() {
@@ -77,9 +83,14 @@ class Canvas {
   }
 
   setFocus(component, event) {
+    console.log(event, component);
     if (this.mouse.event === Canvas.event.editText) {
       d3.select('svg').selectAll(`#${this.mouse.infocus.id}_border`)
         .classed('infocus', false);
+    }
+    if (this.mouse.event === Canvas.event.nodeSearch) {
+      this.nodeSearcher.remove();
+      this.nodeSearcher.render();
     }
     this.mouse.infocus = component;
     this.mouse.event = event;
@@ -114,7 +125,9 @@ class Canvas {
 Canvas.event = {
   dragPin: 'dragPin',
   dragNode: 'dragNode',
-  editText: 'editText'
+  dragCanvas: 'dragCanvas',
+  editText: 'editText',
+  nodeSearch: 'nodeSearch'
 };
 
 console.log(Canvas);
