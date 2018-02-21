@@ -1,11 +1,12 @@
 const Component = require('./component.js');
 const d3 = require('d3');
 const ViewPin = require('./view-pin.js');
+const Event = require('./event.js');
 
 
 class ViewNode extends Component {
   constructor(node, canvas) {
-    super(canvas.svg);
+    super(canvas);
     this.canvas = canvas;
     this.node = node;
     node.view = this;
@@ -22,6 +23,7 @@ class ViewNode extends Component {
   }
 
   initialize() {
+    super.initialize();
     const { node } = this;
 
     this.svgNode
@@ -30,7 +32,7 @@ class ViewNode extends Component {
       .classed('node', true)
       .call(d3.drag()
         .on('start', () => {
-          this.canvas.setFocus(this, 'dragNode');
+          this.canvas.startEvent(this, Event.dragNode);
         })
         .on('drag', () => {
           node.x += d3.event.dx;

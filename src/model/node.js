@@ -13,12 +13,9 @@ class Node {
   */
 
   getNextNode() {
-    console.log('CALL TO GET NEXT NODE');
     const next = this.outPins.filter(p => p.isNext)[0];
-    console.log(next);
     if (next) {
       if (next.connections.length) {
-        console.log(next.connections[0].node);
         return next.connections[0].node;
       }
     }

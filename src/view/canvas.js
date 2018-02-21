@@ -5,13 +5,14 @@
   module.exports.
 */
 const d3 = require('d3');
+
 const NodeSearcher = require('./node-searcher.js');
 const ViewNode = require('./view-node.js');
 const { Start } = require('./../prebuilt-nodes.js');
 
 
 class Canvas {
-  constructor(svg) {
+  constructor(file, svg) {
     this.camera = {
       offset: { x: 0, y: 0 },
       width: 600,
@@ -23,6 +24,8 @@ class Canvas {
     };
 
     this.svg = svg;
+    this.sidebar = d3.select('.right');
+
     this.nodes = [];
     this.addNode(new Start(10, 10));
 
@@ -60,7 +63,7 @@ class Canvas {
   }
 
   generateNodeSearcher(pin) {
-    console.log(this.nodeSearcher);
+    // console.log(this.nodeSearcher);
     this.nodeSearcher.seed(pin);
     this.nodeSearcher.remove();
     this.setFocus(this.nodeSearcher, Canvas.event.nodeSearch);
@@ -83,7 +86,7 @@ class Canvas {
   }
 
   setFocus(component, event) {
-    console.log(event, component);
+    // console.log(event, component);
     if (this.mouse.event === Canvas.event.editText) {
       d3.select('svg').selectAll(`#${this.mouse.infocus.id}_border`)
         .classed('infocus', false);
@@ -105,9 +108,6 @@ class Canvas {
 
   compile() {
     let result = '/* compiled code */ \n'
-    console.log(this.nodes);
-    console.log(this.nodes.filter(n => n.name === 'START'));
-    console.log(this.nodes.filter(n => n.name === 'START').sort((a, b) => a.y - b.y));
     this.nodes.map(n => n.node).filter(n => n.name === 'START').sort((a, b) => a.y - b.y).forEach((node) => {
       let curr = node;
       while (curr.getNextNode()) {

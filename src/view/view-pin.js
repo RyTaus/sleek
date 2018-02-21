@@ -1,9 +1,11 @@
 const Component = require('./component.js');
 const d3 = require('d3');
+const Event = require('./event.js');
+
 
 class ViewPin extends Component {
   constructor(pin, index, viewNode) {
-    super(viewNode.svg);
+    super(viewNode.canvas);
     this.isPin = true;
     this.viewNode = viewNode;
     this.pin = pin;
@@ -20,21 +22,14 @@ class ViewPin extends Component {
   }
 
   initialize() {
+    super.initialize();
     const { pin } = this;
     const { node } = pin;
     this.svgNode
       .classed('pin', true)
-      .on('mouseenter', () => {
-        this.viewNode.canvas.lastElementOver = this;
-        this.svgNode.classed('hovered', true);
-      })
-      .on('mouseleave', () => {
-        this.viewNode.canvas.lastElementOver = null;
-        this.svgNode.classed('hovered', false);
-      })
       .call(d3.drag()
         .on('start', () => {
-          this.viewNode.canvas.setFocus(pin, 'dragPin');
+          this.viewNode.canvas.startEvent(pin, Event.dragPin);
           d3.select('svg').append('line').classed('drawingline', true);
         })
         .on('drag', () => {
@@ -47,11 +42,13 @@ class ViewPin extends Component {
         })
         .on('end', () => {
           d3.select('.drawingline').remove();
-          if (this.viewNode.canvas.mouse.infocus && this.viewNode.canvas.getUnderMouse()) {
-            const otherPin = this.viewNode.canvas.getUnderMouse().pin;
-            console.log('To Connect  ', pin, otherPin);
+          if (this.viewNode.canvas.currentEvent.event === Event.dragPin
+            && this.viewNode.canvas.hovered().pin !== this.pin) {
+
+            console.log(this.viewNode.canvas.hovered());
+            const otherPin = this.viewNode.canvas.hovered().pin;
             pin.connect(otherPin);
-            this.viewNode.canvas.setFocus();
+            this.viewNode.canvas.stopEvent();
             this.render();
             otherPin.view.render();
           } else {
@@ -69,7 +66,6 @@ class ViewPin extends Component {
 
       const start = this.getPosition();
       const end = pin.connections[0].view.getPosition();
-      console.log(pin.connections[0]);
 
       this.svg.append('line')
         .attr('id', `edge${this.id}`)
@@ -139,17 +135,25 @@ class ViewPinInput extends ViewPin {
   }
 
   initialize() {
-    super.initialize();
-    const { node } = this.pin;
+    this.svgNode
+      .on('mouseenter', () => {
+        this.fileView.focus(this);
+      });
+
     this.svgNode
       .attr('width', 40)
       .attr('height', 12)
       .on('click', () => {
-        console.log(this);
         this.svgNode.classed('focus', true);
-        node.canvas.setFocus(this, 'editText');
+        this.viewNode.canvas.startEvent(this, 'editText');
         d3.event.stopPropagation();
       });
+  }
+
+  processInput(d3Event) {
+    console.log(d3Event);
+    this.pin.value = ViewPinInput.update(this.pin.value, d3Event.key)
+    this.text.text(this.pin.value);
   }
 
   render() {
@@ -166,29 +170,20 @@ class ViewPinInput extends ViewPin {
       .text(this.pin.value);
   }
 }
-// const self = this;
-// const offset = this.getOffsets(this.node, this.index);
-// const node = this.getNode()
-//   .attr('x', d => d.offset.x)
-//   .attr('y', d => d.offset.y + 10)
-//   .text(d => d.pin.value);
-//
-//
-// const bg = this.getNode('border')
-//   .data([{ pin: this, offset }])
-//   .attr('x', d => d.offset.x - 2)
-//   .attr('y', d => d.offset.y - 1)
-//   .attr('width', 40)
-//   .attr('height', 12)
-//   .classed('inputbg', true)
-//   .attr('id', `${this.id}_border`)
-//   .on('click', () => {
-//     node.classed('focus', true);
-//     self.node.canvas.setFocus(self, 'editText');
-//     // self.node.canvas.setFocus(self, Canvas.event.editText);
-//     d3.event.stopPropagation();
-//     bg.classed('infocus', true);
-//   });
+
+ViewPinInput.update = (string, key) => {
+  const result = string;
+  if (key === 'Backspace') {
+    return result.slice(0, -1);
+  } else if ('0123456789'.includes(key)) {
+    return result + key;
+  } else if (key === '-' && result.length === 0) {
+    return '-';
+  } else if (key === '.' && !result.includes('.')) {
+    return result + key;
+  }
+  return result;
+};
 
 module.exports = {
   pin: ViewPin,

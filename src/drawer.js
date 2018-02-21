@@ -1,4 +1,5 @@
 const d3 = require('d3');
+const uglify = require('uglify-js');
 const Graphik = require('graphik');
 
 console.log(Graphik);
@@ -8,23 +9,24 @@ d3.selection.prototype.moveToFront = function() {
   });
 };
 
+const File = require('./model/file.js')
 const Canvas = require('./view/canvas.js');
+const FileView = require('./view/file-view.js');
+
 
 const SVG = d3.select('svg');
 
-const canvas = new Canvas(SVG);
+const file = new File();
+const canvas = new FileView(file, SVG);
 
 canvas.render();
 
 d3.select('body').selectAll('button')
   .on('click', () => {
-    const result = canvas.compile();
-    // const result = add.compile();
+    const result = canvas.file.compile();
+
     console.log(result);
+    // TODO LOOK INTO JSCompress
+    console.log(uglify.minify(result).code);
     console.log(eval(result));
   });
-
-// const sideBar = d3.select('.sidebar');
-// sideBar
-//   .append('button')
-//   .text('new variable');

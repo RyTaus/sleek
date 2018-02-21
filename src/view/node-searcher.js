@@ -1,12 +1,12 @@
 const d3 = require('d3');
 
 const Component = require('./component.js');
-const Pin = require('./../model/pin.js');
 const pb = require('./../prebuilt-nodes.js');
 
+// Need to update a bit
 class NodeSearcher extends Component {
   constructor(canvas) {
-    super(canvas.svg);
+    super(canvas, false);
     this.canvas = canvas;
 
     this.transform = {
@@ -18,6 +18,7 @@ class NodeSearcher extends Component {
 
     this.active = false;
     this.createSvgNodeSearcher();
+    this.initialize();
   }
 
   seed(pin) {
@@ -37,6 +38,10 @@ class NodeSearcher extends Component {
     return this;
   }
 
+  initialize() {
+    super.initialize();
+  }
+
   getPossibleNodes() {
     const objectToArray = (obj) => {
       return Object.entries(obj).map((o) => {
@@ -44,7 +49,6 @@ class NodeSearcher extends Component {
       });
     };
     let possible = objectToArray(pb);
-    console.log(possible);
     if (this.currentSeed) {
       possible = possible.filter((Obj) => {
         const test = new Obj(this.transform.x, this.transform.y);
@@ -96,6 +100,7 @@ class NodeSearcher extends Component {
         .attr('x', this.transform.x + 10)
         .attr('y', (d, i) => ((this.transform.y + 35) + (i * 25)))
         .classed('search-result', true)
+        .moveToFront()
         .on('mousedown', () => {
           d3.event.stopPropagation();
         })
@@ -126,6 +131,7 @@ class NodeSearcher extends Component {
         .data(possible)
         .enter()
         .append('text')
+        .moveToFront()
         .attr('width', this.transform.width - 20)
         .attr('height', 20)
         .attr('x', this.transform.x + 10)

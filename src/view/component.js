@@ -4,25 +4,21 @@ const d3 = require('d3');
   Component handles animating and updating images view when the model changes.
 */
 class Component {
-  constructor(svg) {
-    this.svg = svg;
+  constructor(fileView, interactable = true) {
+    this.isInteractable = interactable;
+    this.fileView = fileView;
+    this.svg = fileView.svg;
     this.id = `comp_id_${Component.currentID}`;
     Component.currentID += 1;
-    // console.log(this.id, this);
   }
 
-  createSvgNode(className) {
-    this.svgNode = this.svg.append(className).attr('id', this.id);
-  }
-
-  createSvgNodeInput() {
-    this.svgNode = this.svg.append('rect').classed('inputbg', true).attr('id', `${this.id}_border`);
-    this.svg.append('text').attr('id', this.id);
-  }
-
-  createSvgNodeNode() {
-    this.svgNode = this.svg.append('rect').attr('id', `${this.id}`);
-    this.label = this.svg.append('text').classed('label', true).attr('id', `${this.id}_label`);
+  initialize() {
+    if (this.isInteractable) {
+      this.svgNode
+        .on('mouseenter', () => {
+          this.fileView.focus(this);
+        });
+    }
   }
 
   createSvgNodeSearcher() {
