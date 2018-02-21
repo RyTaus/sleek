@@ -59,9 +59,11 @@ class ViewPin extends Component {
   render() {
     const { pin } = this;
 
-    d3.selectAll(`#edge${this.id}`).remove();
 
+    console.log('PIN:   ', pin);
     if (pin.connections.length > 0 && pin.direction === 'in') {
+      d3.selectAll(`#edge${this.id}`).remove();
+
       const start = this.getPosition();
       const end = pin.connections[0].view.getPosition();
       console.log(pin.connections[0]);
@@ -192,6 +194,6 @@ class ViewPinInput extends ViewPin {
 module.exports = {
   pin: ViewPin,
   flow: ViewPinFlow,
-  val: ViewPinVal,
+  value: ViewPinVal,
   input: ViewPinInput
 };

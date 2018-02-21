@@ -30,7 +30,6 @@ class Canvas {
       .on('mouseup', () => {
         this.setFocus();
         this.nodeSearcher.remove();
-        
       })
       .on('contextmenu', () => {
         console.log('right click');
@@ -60,7 +59,6 @@ class Canvas {
       })
     );
   }
-
 
 
   setCamera() {

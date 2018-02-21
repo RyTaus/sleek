@@ -1,4 +1,3 @@
 node_modules
 browserify-cache.json
 src/view
-src/model

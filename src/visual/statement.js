@@ -19,8 +19,9 @@ class Statement {
 
   compile() {
     let curr = this.start;
-    while (curr.getNextPin()) {
-      curr = curr.getNextPin();
+    while (curr.getNextNode()) {
+      // console.log(curr);
+      curr = curr.getNextNode();
     }
     return curr.compile();
   }
