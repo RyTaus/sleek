@@ -22,9 +22,9 @@ class Component {
   }
 
   createSvgNodeSearcher() {
-    this.svgNode = this.svg.append('rect').attr('id', `${this.id}`);
-    this.svg.append('rect').attr('id', `${this.id}_search`);
-    this.svg.append('rect').attr('id', `${this.id}_results`);
+    this.svgNode = this.svg.select('g').append('rect').attr('id', `${this.id}`);
+    this.svg.select('g').append('rect').attr('id', `${this.id}_search`);
+    this.svg.select('g').append('rect').attr('id', `${this.id}_results`);
   }
 
   getNode(extension = '') {

@@ -11,8 +11,8 @@ class ViewNode extends Component {
     this.node = node;
     node.view = this;
 
-    this.svgNode = this.svg.append('rect').attr('id', `${this.id}`);
-    this.label = this.svg.append('text').classed('label', true).attr('id', `${this.id}_label`);
+    this.svgNode = this.svg.select('g').append('rect').attr('id', `${this.id}`);
+    this.label = this.svg.select('g').append('text').classed('label', true).attr('id', `${this.id}_label`);
 
     this.inPins = this.node.inPins.map((p, i) => new ViewPin[p.pinType](p, i, this));
     this.outPins = this.node.outPins.map((p, i) => new ViewPin[p.pinType](p, i, this));

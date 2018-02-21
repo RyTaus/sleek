@@ -23,6 +23,10 @@
   pointer-events: none;
 }
 
+.inputtext {
+  font-size: 10;
+}
+
 line {
   stroke-width: 2;
   stroke: black;
@@ -40,6 +44,7 @@ line {
 
 .inputbg {
   /* fill: grey; */
+  stroke-width: 0.5;
   fill-opacity: 0;
   stroke: rgb(100, 0, 0);
 }

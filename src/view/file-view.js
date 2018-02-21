@@ -63,8 +63,8 @@ class ViewFile {
         this.startEvent(this, Event.dragCanvas);
       })
       .on('drag', () => {
-        this.camera.x = this.camera.x - d3.event.dx;
-        this.camera.y = this.camera.y - d3.event.dy;
+        this.camera.x = this.camera.x + d3.event.dx;
+        this.camera.y = this.camera.y + d3.event.dy;
         this.setCamera();
       })
     ).on('contextmenu', () => {
@@ -76,7 +76,7 @@ class ViewFile {
       if (this.currentEvent.event === Event.editText) {
         this.currentEvent.component.processInput(d3.event);
       }
-    });;
+    });
   }
 
   generateNodeSearcher(pin) {
@@ -84,13 +84,16 @@ class ViewFile {
     this.nodeSearcher.seed(pin);
     this.nodeSearcher.remove();
     this.startEvent(this.nodeSearcher, Event.nodeSearch);
-    this.nodeSearcher.setPosition(d3.mouse(this.svg.node()));
+    const position = d3.mouse(this.svg.node());
+    position[0] -= this.camera.x;
+    position[1] -= this.camera.y;
+    this.nodeSearcher.setPosition(position);
     this.nodeSearcher.active = true;
     this.nodeSearcher.render();
   }
 
   setCamera() {
-    this.svg
+    this.svg.select('g')
       .attr('transform', `translate(${this.camera.x},${this.camera.y})`);
   }
 
@@ -103,7 +106,6 @@ class ViewFile {
   render() {
     this.renderCanvas();
   }
-
 }
 
 

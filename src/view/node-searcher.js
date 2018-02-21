@@ -91,7 +91,7 @@ class NodeSearcher extends Component {
         .classed('search-body', true)
         .moveToFront();
 
-      this.svg.selectAll('.search-result')
+      this.svg.select('g').selectAll('.search-result')
         .data(possible)
         .enter()
         .append('rect')
@@ -127,7 +127,7 @@ class NodeSearcher extends Component {
           d3.event.stopPropagation();
         });
 
-      this.svg.selectAll('.search-result-label')
+      this.svg.select('g').selectAll('.search-result-label')
         .data(possible)
         .enter()
         .append('text')

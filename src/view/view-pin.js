@@ -82,7 +82,7 @@ class ViewPin extends Component {
 class ViewPinFlow extends ViewPin {
   constructor(pin, index, svg) {
     super(pin, index, svg);
-    this.svgNode = this.svg.append('polygon').attr('id', this.id).classed('flow', true);
+    this.svgNode = this.svg.select('g').append('polygon').attr('id', this.id).classed('flow', true);
     this.initialize();
   }
 
@@ -104,7 +104,7 @@ class ViewPinFlow extends ViewPin {
 class ViewPinVal extends ViewPin {
   constructor(pin, index, svg) {
     super(pin, index, svg);
-    this.svgNode = this.svg.append('rect').attr('id', this.id).classed('val', true);
+    this.svgNode = this.svg.select('g').append('rect').attr('id', this.id).classed('val', true);
     this.initialize();
   }
 
@@ -128,8 +128,8 @@ class ViewPinVal extends ViewPin {
 class ViewPinInput extends ViewPin {
   constructor(pin, index, svg) {
     super(pin, index, svg);
-    this.svgNode = this.svg.append('rect').classed('inputbg', true).attr('id', `${this.id}_border`);
-    this.text = this.svg.append('text').attr('id', `${this.id}_text`);
+    this.svgNode = this.svg.select('g').append('rect').classed('inputbg', true).attr('id', `${this.id}_border`);
+    this.text = this.svg.select('g').append('text').classed('inputtext', true).attr('id', `${this.id}_text`);
 
     this.initialize();
   }
