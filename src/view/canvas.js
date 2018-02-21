@@ -5,13 +5,13 @@
   module.exports.
 */
 const d3 = require('d3');
-const Statement = require('./statement.js');
 const NodeSearcher = require('./node-searcher.js');
+const ViewNode = require('./view-node.js');
+const { Start } = require('./../prebuilt-nodes.js');
 
 
 class Canvas {
   constructor(svg) {
-    this.statements = [new Statement(svg, this)];
     this.camera = {
       offset: { x: 0, y: 0 },
       width: 600,
@@ -23,12 +23,15 @@ class Canvas {
     };
 
     this.svg = svg;
+    this.nodes = [];
+    this.addNode(new Start(10, 10));
 
     this.nodeSearcher = new NodeSearcher(this);
 
     this.svg
       .on('mouseup', () => {
         this.setFocus();
+        this.nodeSearcher.remove();
       })
       .on('contextmenu', () => {
         console.log('right click');
@@ -60,13 +63,13 @@ class Canvas {
   }
 
 
-
   setCamera() {
     this.svg.attr('viewBox', `${this.camera.offset.x} ${this.camera.offset.y} ${this.camera.width} ${this.camera.width * this.camera.ratio}`);
   }
 
-  addNode(index, node) {
-    this.statements[index].addNode(node);
+  addNode(node) {
+    node.canvas = this;
+    this.nodes.push(new ViewNode(node, this.svg));
   }
 
   getUnderMouse() {
@@ -85,8 +88,25 @@ class Canvas {
   render() {
     // this.svg.selectAll('*').remove();
     this.setCamera();
-    this.statements.forEach(s => s.render());
+    this.nodes.forEach(n => n.render());
     this.nodeSearcher.render();
+  }
+
+  compile() {
+    let result = '/* compiled code */ \n'
+    console.log(this.nodes);
+    console.log(this.nodes.filter(n => n.name === 'START'));
+    console.log(this.nodes.filter(n => n.name === 'START').sort((a, b) => a.y - b.y));
+    this.nodes.map(n => n.node).filter(n => n.name === 'START').sort((a, b) => a.y - b.y).forEach((node) => {
+      let curr = node;
+      while (curr.getNextNode()) {
+        // console.log(curr);
+        curr = curr.getNextNode();
+      }
+      result += curr.compile();
+      result += ';';
+    });
+    return result;
   }
 }
 
