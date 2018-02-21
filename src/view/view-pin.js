@@ -30,18 +30,18 @@ class ViewPin extends Component {
       .call(d3.drag()
         .on('start', () => {
           this.viewNode.canvas.startEvent(pin, Event.dragPin);
-          d3.select('svg').append('line').classed('drawingline', true);
+          this.svg.select('g').append('line').classed('drawingline', true);
         })
         .on('drag', () => {
           const position = this.getPosition();
           d3.select('.drawingline')
             .attr('x1', position.x)
             .attr('y1', position.y)
-            .attr('x2', d3.mouse(this.svg.node())[0])
-            .attr('y2', d3.mouse(this.svg.node())[1]);
+            .attr('x2', d3.mouse(this.svg.select('g').node())[0])
+            .attr('y2', d3.mouse(this.svg.select('g').node())[1]);
         })
         .on('end', () => {
-          d3.select('.drawingline').remove();
+          d3.select('g').select('.drawingline').remove();
           if (this.viewNode.canvas.currentEvent.event === Event.dragPin
             && this.viewNode.canvas.hovered().pin !== this.pin) {
 
@@ -67,7 +67,7 @@ class ViewPin extends Component {
       const start = this.getPosition();
       const end = pin.connections[0].view.getPosition();
 
-      this.svg.append('line')
+      this.svg.select('g').append('line')
         .attr('id', `edge${this.id}`)
         .classed('line', true)
         .classed(pin.pinType, true)

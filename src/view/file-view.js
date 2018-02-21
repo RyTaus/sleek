@@ -16,7 +16,8 @@ class ViewFile {
     this.nodeSearcher = new NodeSearcher(this);
     this.camera = {
       x: 0,
-      y: 0
+      y: 0,
+      zoom: 1
     };
 
     this.currentEvent = {
@@ -70,8 +71,17 @@ class ViewFile {
     ).on('contextmenu', () => {
       this.generateNodeSearcher();
     }).on('mouseenter', () => {
-      this.focus()
-    })
+      this.focus();
+    }).on('wheel', () => {
+      this.camera.zoom += d3.event.deltaY < 0 ? 0.1 : -0.1;
+      if (this.camera.zoom > 2) {
+        this.camera.zoom = 2;
+      } else if (this.camera.zoom < 0.5) {
+        this.camera.zoom = 0.5;
+      }
+
+      this.setCamera();
+    });
     d3.select('body').on('keydown', () => {
       if (this.currentEvent.event === Event.editText) {
         this.currentEvent.component.processInput(d3.event);
@@ -84,9 +94,7 @@ class ViewFile {
     this.nodeSearcher.seed(pin);
     this.nodeSearcher.remove();
     this.startEvent(this.nodeSearcher, Event.nodeSearch);
-    const position = d3.mouse(this.svg.node());
-    position[0] -= this.camera.x;
-    position[1] -= this.camera.y;
+    const position = d3.mouse(this.svg.select('g').node());
     this.nodeSearcher.setPosition(position);
     this.nodeSearcher.active = true;
     this.nodeSearcher.render();
@@ -94,7 +102,7 @@ class ViewFile {
 
   setCamera() {
     this.svg.select('g')
-      .attr('transform', `translate(${this.camera.x},${this.camera.y})`);
+      .attr('transform', `scale(${this.camera.zoom}) translate(${this.camera.x},${this.camera.y})`);
   }
 
   renderCanvas() {
