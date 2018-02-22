@@ -2,6 +2,7 @@ const Component = require('./component.js');
 const d3 = require('d3');
 const ViewPin = require('./view-pin.js');
 const Event = require('./event.js');
+const sizes = require('./size.js');
 
 
 class ViewNode extends Component {
@@ -25,10 +26,10 @@ class ViewNode extends Component {
   initialize() {
     super.initialize();
     const { node } = this;
-
+    console.log(sizes.node.heightPerPin);
     this.svgNode
-      .attr('width', 100)
-      .attr('height', 20 + (Math.max(node.inPins.length, node.outPins.length) * 15))
+      .attr('width', sizes.node.width)
+      .attr('height', sizes.node.labelHeight + (Math.max(node.inPins.length, node.outPins.length) * sizes.node.heightPerPin))
       .classed('node', true)
       .call(d3.drag()
         .on('start', () => {
@@ -60,7 +61,7 @@ class ViewNode extends Component {
 
 
     this.label
-      .attr('x', node.x + 50)
+      .attr('x', node.x + (sizes.node.width / 2))
       .attr('y', node.y + 10);
 
 

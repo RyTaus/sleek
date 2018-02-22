@@ -1,6 +1,7 @@
 const Component = require('./component.js');
 const d3 = require('d3');
 const Event = require('./event.js');
+const sizes = require('./size.js');
 
 
 class ViewPin extends Component {
@@ -16,15 +17,14 @@ class ViewPin extends Component {
 
   getPosition() {
     return {
-      x: this.pin.node.x + (this.pin.direction === 'in' ? 10 : 100 - 20),
-      y: this.pin.node.y + 15 + (15 * this.index)
+      x: this.pin.node.x + (this.pin.direction === 'in' ? 10 : sizes.node.width - sizes.pin.border - sizes.pin.width),
+      y: this.pin.node.y + (sizes.node.heightPerPin * (this.index + 1))
     };
   }
 
   initialize() {
     super.initialize();
     const { pin } = this;
-    const { node } = pin;
     this.svgNode
       .classed('pin', true)
       .call(d3.drag()
@@ -42,7 +42,7 @@ class ViewPin extends Component {
         })
         .on('end', () => {
           d3.select('g').select('.drawingline').remove();
-          if (this.viewNode.canvas.currentEvent.event === Event.dragPin && this.viewNode.canvas.hovered().pin !== this.pin) {
+          if (this.viewNode.canvas.currentEvent.event === Event.dragPin && this.viewNode.canvas.hovered().pin) {
             const otherPin = this.viewNode.canvas.hovered().pin;
             const oldConnection = pin.direction === 'out' ? pin.connections[0] : otherPin.connections[0];
 
@@ -53,7 +53,6 @@ class ViewPin extends Component {
             if (oldConnection) {
               oldConnection.view.render();
             }
-            console.log('*****************************');
           } else {
             this.viewNode.canvas.generateNodeSearcher(this.pin);
           }
@@ -63,8 +62,6 @@ class ViewPin extends Component {
 
   render() {
     const { pin } = this;
-
-    console.log(pin);
 
     d3.selectAll(`#edge${this.id}`).remove();
     if (pin.connections.length > 0 && pin.direction === 'in') {
@@ -97,7 +94,7 @@ class ViewPinFlow extends ViewPin {
       const pair = (x, y) => `${position.x + x},${position.y + y}`;
 
       const start = pair(0, 0);
-      return `${start} ${pair(10, 5)} ${pair(0, 10)} ${start}`;
+      return `${start} ${pair(sizes.pin.width, sizes.pin.width / 2)} ${pair(0, sizes.pin.width)} ${start}`;
     };
 
     this.svgNode
@@ -115,8 +112,8 @@ class ViewPinVal extends ViewPin {
   initialize() {
     super.initialize();
     this.svgNode
-      .attr('width', 10)
-      .attr('height', 10);
+      .attr('width', sizes.pin.width)
+      .attr('height', sizes.pin.width);
   }
 
 
@@ -145,8 +142,8 @@ class ViewPinInput extends ViewPin {
       });
 
     this.svgNode
-      .attr('width', 40)
-      .attr('height', 12)
+      .attr('width', sizes.pin.width * 4)
+      .attr('height', sizes.pin.width + 2)
       .on('click', () => {
         this.svgNode.classed('focus', true);
         this.viewNode.canvas.startEvent(this, 'editText');

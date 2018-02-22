@@ -1,6 +1,7 @@
 const d3 = require('d3');
 const uglify = require('uglify-js');
 const Graphik = require('graphik');
+const fs = require('fs');
 
 console.log(Graphik);
 d3.selection.prototype.moveToFront = function() {
@@ -21,7 +22,7 @@ const file = new File();
 const canvas = new FileView(file, SVG, sidebar);
 
 canvas.render();
-
+console.log(fs);
 d3.select('body').selectAll('#compile')
   .on('click', () => {
     const result = canvas.file.compile();
