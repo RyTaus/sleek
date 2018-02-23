@@ -4,6 +4,7 @@
   "description": "visual scripting service for js",
   "main": "src/index.js",
   "dependencies": {
+    "circular-json": "^0.5.1",
     "d3": "^4.12.0",
     "electron": "1.7.11",
     "flexboxgrid": "^6.3.1",

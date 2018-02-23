@@ -20,7 +20,7 @@ class ViewNode extends Component {
 
 
     this.initialize();
-    this.render();
+    // this.render();
   }
 
   initialize() {
@@ -31,6 +31,9 @@ class ViewNode extends Component {
       .attr('width', sizes.node.width)
       .attr('height', sizes.node.labelHeight + (Math.max(node.inPins.length, node.outPins.length) * sizes.node.heightPerPin))
       .classed('node', true)
+      .on('mouseout', () => {
+        this.canvas.focus();
+      })
       .call(d3.drag()
         .on('start', () => {
           this.canvas.startEvent(this, Event.dragNode);

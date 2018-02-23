@@ -12,7 +12,6 @@ class ViewPin extends Component {
     this.pin = pin;
     pin.view = this;
     this.index = index;
-    // this.connections = [];
   }
 
   getPosition() {
@@ -42,16 +41,20 @@ class ViewPin extends Component {
         })
         .on('end', () => {
           d3.select('g').select('.drawingline').remove();
-          if (this.viewNode.canvas.currentEvent.event === Event.dragPin && this.viewNode.canvas.hovered().pin) {
-            const otherPin = this.viewNode.canvas.hovered().pin;
-            const oldConnection = pin.direction === 'out' ? pin.connections[0] : otherPin.connections[0];
+          if (this.viewNode.canvas.currentEvent.event === Event.dragPin && this.viewNode.canvas.hovered()) {
+            if (this.viewNode.canvas.hovered().pin) {
+              const otherPin = this.viewNode.canvas.hovered().pin;
+              const oldConnection = pin.direction === 'out' ? pin.connections[0] : otherPin.connections[0];
 
-            pin.connect(otherPin);
-            this.viewNode.canvas.stopEvent();
-            this.render();
-            otherPin.view.render();
-            if (oldConnection) {
-              oldConnection.view.render();
+              pin.connect(otherPin);
+              this.viewNode.canvas.stopEvent();
+              this.render();
+              otherPin.view.render();
+              if (oldConnection) {
+                oldConnection.view.render();
+              }
+            } else {
+              this.viewNode.canvas.generateNodeSearcher(this.pin);
             }
           } else {
             this.viewNode.canvas.generateNodeSearcher(this.pin);

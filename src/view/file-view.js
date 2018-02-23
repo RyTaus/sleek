@@ -28,7 +28,15 @@ class ViewFile {
   }
 
   focus(component) {
+    console.log(this.focused);
+    if (this.focused) {
+      this.focused.svgNode.classed('hovered', false);
+    }
     this.focused = component;
+    if (this.focused) {
+      this.focused.svgNode.classed('hovered', true);
+    }
+
     // this.render();
   }
 
@@ -63,8 +71,8 @@ class ViewFile {
         this.startEvent(this, Event.dragCanvas);
       })
       .on('drag', () => {
-        this.camera.x = this.camera.x + d3.event.dx;
-        this.camera.y = this.camera.y + d3.event.dy;
+        this.camera.x = this.camera.x + (d3.event.dx / this.camera.zoom);
+        this.camera.y = this.camera.y + (d3.event.dy / this.camera.zoom);
         this.setCamera();
       })
     ).on('contextmenu', () => {
@@ -86,14 +94,20 @@ class ViewFile {
         this.currentEvent.component.processInput(d3.event);
       }
     });
+    this.nodes.forEach(n => n.initialize())
+
+    // this.nodes.forEach(n => {
+    //   n.inPins = n.node.inPins.map((p, i) => new ViewPin[p.pinType](p, i, n));
+    //   n.outPins = n.node.outPins.map((p, i) => new ViewPin[p.pinType](p, i, n));
+    // })
   }
 
   generateNodeSearcher(pin) {
     this.nodeSearcher.seed(pin);
     this.nodeSearcher.remove();
     this.startEvent(this.nodeSearcher, Event.nodeSearch);
-    const position = d3.mouse(this.svg.select('g').node());
-    this.nodeSearcher.setPosition(position);
+    const position = d3.mouse(this.svg.node());
+    this.nodeSearcher.setPosition(position, d3.mouse(this.svg.select('g').node()));
     this.nodeSearcher.active = true;
     this.nodeSearcher.render();
   }
@@ -141,6 +155,13 @@ class ViewFile {
         console.log(d);
         return d;
       });
+  }
+
+  load(file) {
+    this.svg.select('g').selectAll('*').remove();
+    this.file = file;
+    this.nodes = file.nodes.map(n => new ViewNode(n, this));
+    this.render();
   }
 
   initialize() {

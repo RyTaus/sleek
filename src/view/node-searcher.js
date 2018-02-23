@@ -16,6 +16,11 @@ class NodeSearcher extends Component {
       height: 150
     };
 
+    this.spawn = {
+      x: 0,
+      y: 0
+    };
+
     this.active = false;
     this.createSvgNodeSearcher();
     this.initialize();
@@ -25,8 +30,9 @@ class NodeSearcher extends Component {
     this.currentSeed = pin;
   }
 
-  setPosition(mouse) {
+  setPosition(mouse, spawnPoint) {
     [this.transform.x, this.transform.y] = mouse;
+    [this.spawn.x, this.spawn.y] = spawnPoint;
     return this;
   }
 
@@ -91,7 +97,7 @@ class NodeSearcher extends Component {
         .classed('search-body', true)
         .moveToFront();
 
-      this.svg.select('g').selectAll('.search-result')
+      this.svg.selectAll('.search-result')
         .data(possible)
         .enter()
         .append('rect')
@@ -105,8 +111,10 @@ class NodeSearcher extends Component {
           d3.event.stopPropagation();
         })
         .on('mouseup', (d) => {
-          const newNode = new d(this.transform.x, this.transform.y, this.svg);
+          const newNode = new d(this.spawn.x, this.spawn.y, this.svg);
           this.canvas.addNode(newNode);
+          newNode.view.render();
+
 
           if (this.currentSeed) {
             let connectable = [];
@@ -127,7 +135,7 @@ class NodeSearcher extends Component {
           d3.event.stopPropagation();
         });
 
-      this.svg.select('g').selectAll('.search-result-label')
+      this.svg.selectAll('.search-result-label')
         .data(possible)
         .enter()
         .append('text')

@@ -42,6 +42,17 @@ class Pin {
     this.connections.push(pin);
     return poppedConnection;
   }
+
+  save() {
+    if (this.connections[0]) {
+      console.log(this.connections[0]);
+      return {
+        pinType: this.connections[0].pinType,
+        id: this.connections[0].id
+      };
+    }
+    return null;
+  }
 }
 
 class Flow extends Pin {
@@ -60,7 +71,7 @@ class Flow extends Pin {
 
 class Value extends Pin {
   constructor() {
-    super(Pin.type.value)
+    super(Pin.type.value);
   }
 
   compile() {
@@ -88,9 +99,14 @@ class Input extends Pin {
   compile() {
     return this.value;
   }
+
+  save() {
+    return {
+      pinType: this.pinType,
+      value: this.value
+    };
+  }
 }
-
-
 
 
 Pin.direction = Object.freeze({

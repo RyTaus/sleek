@@ -21,6 +21,22 @@ class Node {
     }
     return null;
   }
+
+  /* Some nodes will have specific save functions... ie gets and sets? */
+  save() {
+    const node = {
+      name: this.constructor.name,
+      x: Math.floor(this.x),
+      y: Math.floor(this.y),
+      inPins: []
+    };
+
+    this.inPins.forEach((p) => {
+      node.inPins.push(p.save());
+    });
+
+    return node;
+  }
 }
 
 module.exports = Node;
