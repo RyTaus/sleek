@@ -59,7 +59,7 @@ This section provides the detailed schedule for the visual-js project.
 
 ![gantt](gantt.png)
 
-### 4.4.2 Resouce Table
+### 4.4.2 Resource Table
 
 Task | Resource
- *   |   Ryan
+ '*'   |   Ryan
