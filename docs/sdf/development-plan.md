@@ -62,4 +62,5 @@ This section provides the detailed schedule for the visual-js project.
 ### 4.4.2 Resource Table
 
 Task | Resource
- '*'   |   Ryan
+
+ '*' |   Ryan
