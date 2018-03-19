@@ -53,4 +53,13 @@ Test/QA: Test and QA handle the writing of test cases based on the description o
 
 ## 4.4 Schedule
 
-This section provides the detailed schedule for the visual-js project
+This section provides the detailed schedule for the visual-js project.
+
+### 4.4.1 Gantt Chart
+
+![gantt](gantt.png)
+
+### 4.4.2 Resouce Table
+
+Task | Resource
+ *   |   Ryan
