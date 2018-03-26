@@ -33,6 +33,46 @@ class PrimNumber extends Node {
   }
 }
 
+class StringLiteral extends Node {
+  constructor(x, y) {
+    super('String', [new Pin.Input()], [new Pin.Value()], x, y);
+    this.inPins[0].setValue('');
+  }
+  compile() {
+    return `"(${this.inPins[0].compile()})"`;
+  }
+}
+
+class PrimObject extends Node {
+  constructor(x, y) {
+    super('PrimObject', [new Pin.Input(), new Pin.Input()], [new Pin.Value()], x, y);
+    this.inPins[0].setValue('');
+    this.inPins[1].setValue('');
+  }
+  compile() {
+    return `{ ${this.inPins[0].compile()}: ${this.inPins[1].compile()} }`;
+  }
+}
+
+class AccessLiteral extends Node {
+  constructor(x, y) {
+    super('PrimObject', [new Pin.Value(), new Pin.Input()], [new Pin.Value()], x, y);
+    this.inPins[1].setValue('');
+  }
+  compile() {
+    return `${this.inPins[0].compile()}.${this.inPins[1].compile()}`;
+  }
+}
+
+class AccessExpression extends Node {
+  constructor(x, y) {
+    super('PrimObject', [new Pin.Input(), new Pin.Input()], [new Pin.Value()], x, y);
+  }
+  compile() {
+    return `${this.inPins[0].compile()}[${this.inPins[1].compile()}]`;
+  }
+}
+
 class Add extends Node {
   constructor(x, y) {
     const next = new Pin.Flow();
@@ -66,7 +106,6 @@ class Start extends Node {
   }
 }
 
-
 module.exports = {
-  Start, Set, Get, PrimNumber, Add, Multiply
+  Start, Set, Get, PrimNumber, PrimObject, Add, Multiply, StringLiteral, AccessLiteral, AccessExpression
 };

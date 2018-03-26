@@ -28,7 +28,6 @@ class ViewFile {
   }
 
   focus(component) {
-    console.log(this.focused);
     if (this.focused) {
       this.focused.svgNode.classed('hovered', false);
     }
@@ -94,7 +93,7 @@ class ViewFile {
         this.currentEvent.component.processInput(d3.event);
       }
     });
-    this.nodes.forEach(n => n.initialize())
+    this.nodes.forEach(n => n.initialize());
 
     // this.nodes.forEach(n => {
     //   n.inPins = n.node.inPins.map((p, i) => new ViewPin[p.pinType](p, i, n));

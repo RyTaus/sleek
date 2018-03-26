@@ -1,7 +1,5 @@
 const fs = require('fs');
 const JSON = require('circular-json');
-const Node = require('./node.js');
-const Pin = require('./pin.js');
 const nodes = require('./../prebuilt-nodes.js');
 
 class File {
@@ -40,11 +38,11 @@ class File {
     // Assign IDs
     this.nodes.forEach((n, i) => {
       n.id = `${i}`;
-      n.inPins.forEach((p, i) => {
-        p.id = `${n.id}_in_${i}`
+      n.inPins.forEach((p, j) => {
+        p.id = `${n.id}_in_${j}`;
       });
-      n.outPins.forEach((p, i) => {
-        p.id = `${n.id}_out_${i}`
+      n.outPins.forEach((p, j) => {
+        p.id = `${n.id}_out_${j}`;
       });
     });
 
@@ -53,17 +51,13 @@ class File {
   }
 
   load(data, view) {
-    console.log(data);
     this.nodes = [];
     data.nodes.forEach((n) => {
       this.nodes.push(new nodes[n.name](n.x, n.y));
     });
     data.nodes.forEach((n, nIndex) => {
       n.inPins.forEach((p, pIndex) => {
-        console.log(p);
-        if (p === null) {
-          return;
-        } else if (p.pinType !== 'input') {
+        if (p.pinType !== 'input') {
           const vals = p.id.split('_');
           this.nodes[nIndex].inPins[pIndex].connect(this.nodes[vals[0]].outPins[vals[2]]);
         } else {
@@ -73,7 +67,6 @@ class File {
     });
     this.scope = data.scope;
     this.name = data.name;
-    console.log(this);
     view.load(this);
   }
 
@@ -84,5 +77,6 @@ class File {
     this.scope[name] = {};
   }
 }
+
 
 module.exports = File;
