@@ -143,7 +143,6 @@ class ViewFile {
   }
 
   renderSideBar() {
-    console.log(Object.keys(this.file.scope));
     d3.selectAll('.variable').remove();
     this.variables.selectAll('.variable')
       .data(Object.keys(this.file.scope))
@@ -165,7 +164,7 @@ class ViewFile {
 
   initialize() {
     this.initializeCanvas();
-    this.initializeSideBar();
+    // this.initializeSideBar();
   }
 
   render() {

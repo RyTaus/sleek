@@ -29,7 +29,7 @@ d3.select('body').selectAll('#compile')
 
     console.log(result);
     // TODO LOOK INTO JSCompress
-    console.log(uglify.minify(result).code);
+    // console.log(uglify.minify(result).code);
     console.log(eval(result));
   });
 
