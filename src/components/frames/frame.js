@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import ReactSVG from 'react-svg';
 import TextInput from './../common/text-input';
 import DropDownInput from './../common/dropdown-input';
 
 import Pin from './../pin';
-
 
 
 import Node from './../node';
@@ -18,8 +16,8 @@ class Frame extends Component {
       nodes: [],
     };
     this.eventHandler = new EventHandler();
-    this.addNode(<Node x="20" />);
-    this.addNode(<Node x="20" y="17" inPins={[<Pin />]}/>);
+    this.addNode(<Node x="220" y="200" inPins={{ val: (new Pin.ValuePin({})) }} />);
+    this.addNode(<Node x="20" y="17" inPins={{ val: new Pin.ValuePin({}), testing: new Pin.DropDownPin({}) }} outPins={{ next: (new Pin.ValuePin({})) }} />);
   }
 
   addNode(node) {
@@ -31,12 +29,9 @@ class Frame extends Component {
 
   render() {
     return (
-      <div onMouseMove={this.eventHandler.onMouseMove} onMouseEnter={() => { console.log(this.svg); }}>
+      <div>
         <svg width={400} height={400} viewBox="0 0 400 400" ref={(ref) => { this.svg = ref; }}>
           {this.state.nodes.map(node => node)}
-          <TextInput x={200} y={100} isValid={s => !s.includes('t')} />
-          <DropDownInput x={200} y={300} options={['i', 'am', 'coolest']} />
-
         </svg>
       </div>
     );

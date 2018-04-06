@@ -22,10 +22,8 @@ class TextInput extends Component {
 
   render() {
     return (
-      <foreignObject x={this.state.x} y={this.state.y} width="10" height="150">
-        <div xmlns="http://www.w3.org/1999/xhtml">
-          <input type="text" value={this.state.value} onChange={this.onChange} />
-        </div>
+      <foreignObject x={this.state.x} y={this.state.y} width="10" height="10">
+        <input type="text" value={this.state.value} onChange={this.onChange} size="10" />
       </foreignObject>
     );
   }

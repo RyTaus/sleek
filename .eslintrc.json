@@ -1,6 +1,7 @@
 {
     "extends": "airbnb",
     "rules": {
+      "react/sort-comp": [0],
       "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
     }
 }
