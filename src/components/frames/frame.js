@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import TextInput from './../common/text-input';
-import DropDownInput from './../common/dropdown-input';
 
 import Pin from './../pin';
-
-
 import Node from './../node';
 import EventHandler from './../event-handler';
 
@@ -16,13 +12,14 @@ class Frame extends Component {
       nodes: [],
     };
     this.eventHandler = new EventHandler();
-    this.addNode(<Node x="220" y="200" inPins={{ val: (new Pin.ValuePin({})) }} />);
-    this.addNode(<Node x="20" y="17" inPins={{ val: new Pin.ValuePin({}), testing: new Pin.DropDownPin({}) }} outPins={{ next: (new Pin.ValuePin({})) }} />);
+    this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={220} y={100} inPins={{ val: (new Pin.ValuePin({})) }} />);
+    this.addNode(<Node name="node #2"eventHandler={this.eventHandler} x={20} y={100} inPins={{ val: new Pin.ValuePin({}), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'] }) }} outPins={{ next: (new Pin.ValuePin({})) }} />);
   }
 
   addNode(node) {
+    this.state.nodes.push(node);
     this.setState({
-      nodes: this.state.nodes.push(node),
+      nodes: this.state.nodes,
     });
   }
 
@@ -31,7 +28,7 @@ class Frame extends Component {
     return (
       <div>
         <svg width={400} height={400} viewBox="0 0 400 400" ref={(ref) => { this.svg = ref; }}>
-          {this.state.nodes.map(node => node)}
+          {this.state.nodes}
         </svg>
       </div>
     );

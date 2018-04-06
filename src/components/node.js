@@ -20,6 +20,7 @@ class Node extends Component {
     };
     this.inPins = this.props.inPins;
     this.outPins = this.props.outPins;
+    this.eventHandler = props.eventHandler;
 
     this.init();
 
@@ -30,6 +31,11 @@ class Node extends Component {
 
   getNextNode() {
     return this.outPins.next;
+  }
+
+  setEventHandler(handler) {
+    this.eventHandler = handler;
+    return this;
   }
 
   init() {
@@ -46,7 +52,7 @@ class Node extends Component {
   handleMouseDown(evt) {
     this.coords = {
       x: evt.pageX,
-      y: evt.pageY
+      y: evt.pageY,
     };
     document.addEventListener('mousemove', this.handleMouseMove);
   }
@@ -72,10 +78,11 @@ class Node extends Component {
     };
   }
 
-  render() {
+  render(key) {
     return (
       <g
         transform={`translate(${this.state.x},${this.state.y})`}
+        key={key}
       >
         <rect
           className="node"
@@ -84,8 +91,17 @@ class Node extends Component {
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
         />
-        {Object.keys(this.inPins).map(key => this.inPins[key].render())}
-        {Object.keys(this.outPins).map(key => this.outPins[key].render())}
+        <text
+          y={Size.Pin.width}
+          x={Size.Node.width / 2}
+          width={Size.Node.width}
+
+          textAnchor="middle"
+        >
+          {this.props.name}
+        </text>
+        {Object.keys(this.inPins).map((key, i) => this.inPins[key].render(i))}
+        {Object.keys(this.outPins).map((key, i) => this.outPins[key].render(i))}
       </g>
     );
   }
@@ -94,7 +110,7 @@ class Node extends Component {
 Node.defaultProps = {
   x: 0,
   y: 100,
-  // name: 'dd',
+  name: 'dd',
   inPins: {},
   outPins: {},
 };
@@ -102,7 +118,7 @@ Node.defaultProps = {
 Node.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
-  // name: PropTypes.string,
+  name: PropTypes.string,
   inPins: PropTypes.objectOf(PropTypes.instanceOf(Pin)),
   outPins: PropTypes.objectOf(PropTypes.instanceOf(Pin)),
 };

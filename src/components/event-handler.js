@@ -2,6 +2,8 @@ import Node from './node';
 
 const EVENT = {
   DRAG_NODE: 'drag-node',
+  DRAG_PIN: 'drag-pin',
+  NONE: 'none',
 };
 
 class EventHandler {
@@ -21,6 +23,21 @@ class EventHandler {
     }
   }
 
+  onPinDown(evt, component) {
+    console.log('pin down');
+    this.state = EVENT.DRAG_PIN;
+    this.inFocus = component;
+  }
+
+  onPinUp(evt, component) {
+    console.log('pin up');
+    if (this.state === EVENT.DRAG_PIN) {
+      this.inFocus.createConnection(component);
+    }
+    this.inFocus = null;
+    this.state = EVENT.NONE;
+  }
+
   onMouseMove(evt, component) {
     console.log('moving...');
     if (this.state === EVENT.DRAG_NODE) {
@@ -31,8 +48,8 @@ class EventHandler {
   }
 
   onMouseUp(evt, component) {
-    if (this.state === EVENT.DRAG_NODE) {
-      this.state = null;
+    if (this.state === EVENT.DRAG_NODE || this.state === EVENT.DRAG_PIN) {
+      this.state = EVENT.NONE;
       console.log('stop moving');
     }
   }

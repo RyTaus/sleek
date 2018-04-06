@@ -24,4 +24,5 @@ svg text {
   -ms-user-select: none;
   user-select: none;
   font-size: 10pt;
+  pointer-events: none;
 }

@@ -6,15 +6,14 @@ class File extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      frames: [new Frame({ nodes: [] })],
+      frames: [new Frame({ key: 0, nodes: [] })],
     };
   }
 
   render() {
     return (
       <div>
-        {this.state.frames.map(frame => frame.render())}
-
+        {this.state.frames[0].render()}
       </div>
     );
   }
