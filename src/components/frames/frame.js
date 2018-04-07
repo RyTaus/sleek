@@ -12,8 +12,8 @@ class Frame extends Component {
       nodes: [],
     };
     this.eventHandler = new EventHandler();
-    this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={220} y={100} inPins={{ temp: (new Pin.ValuePin({})) }} />);
-    this.addNode(<Node name="node #2"eventHandler={this.eventHandler} x={20} y={100} inPins={{ val: new Pin.ValuePin({}), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'] }) }} outPins={{ next: (new Pin.ValuePin({})) }} />);
+    this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={220} y={100} inPins={{ temp: (new Pin.ValuePin({ type: 'test' })) }} />);
+    this.addNode(<Node name="node #2"eventHandler={this.eventHandler} x={20} y={100} inPins={{ val: new Pin.ValuePin({ type: 'test' }), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'] }) }} outPins={{ next: (new Pin.ValuePin({})) }} />);
   }
 
   addNode(node) {

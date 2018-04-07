@@ -24,6 +24,7 @@ class Pin extends Component {
 
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.onContextMenu = this.onContextMenu.bind(this);
   }
 
   init(node, direction, name, key) {
@@ -38,17 +39,23 @@ class Pin extends Component {
   canConnect(pin) {
     return (
       // this.pinType === pin.pinType &&
-      this.direction !== pin.direction &&
-      !this.state.connections.includes(pin) &&
-      this.type.equals(pin.type)
+      this.direction !== pin.direction
+      && !this.state.connections.includes(pin)
+      // && this.type.equals(pin.type)
     );
   }
 
   removeConnection(pin) {
     const { connections } = this.state;
+    const other = connections[connections.indexOf(pin)];
+    other.setState({
+      connections: other.state.connections.splice(other.state.connections.indexOf(this), 1),
+    });
     this.setState({
       connections: connections.splice(connections.indexOf(pin), 1),
     });
+    this.node.forceUpdate();
+    other.node.forceUpdate();
     return this;
   }
 
@@ -78,12 +85,19 @@ class Pin extends Component {
     this.eventHandler.onPinDown(evt, this);
   }
 
+  onContextMenu(evt) {
+    evt.preventDefault();
+    while (this.state.connections.length) {
+      this.removeConnection(this.state.connections[0]);
+    }
+  }
+
   // Since they are offset by a g they need nodes x
   renderConnections() {
     const { x, y } = this.getPosition();
-    // if (this.direction === Direction.in) {
-    //   return null;
-    // }
+    if (this.direction === Direction.in) {
+      return null;
+    }
     return (
       this.state.connections.map((pin) =>  {
         const other = pin.getPosition();
@@ -128,6 +142,7 @@ class ValuePin extends Pin {
           height={Size.Pin.width}
           onMouseDown={this.onMouseDown}
           onMouseUp={this.onMouseUp}
+          onContextMenu={this.onContextMenu}
         />
         <text
           x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}

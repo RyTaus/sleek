@@ -32,8 +32,10 @@ class EventHandler {
   onPinUp(evt, component) {
     console.log('pin up');
     if (this.state === EVENT.DRAG_PIN) {
-      this.inFocus.createConnection(component);
-      component.createConnection(this.inFocus);
+      if (this.inFocus.canConnect(component)) {
+        this.inFocus.createConnection(component);
+        component.createConnection(this.inFocus);
+      }
     }
     this.inFocus = null;
     this.state = EVENT.NONE;
