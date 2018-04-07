@@ -1,6 +1,6 @@
 export default {
   Node: {
-    width: 200,
+    width: 250,
     perPin: 25,
     topLabel: 30,
   },

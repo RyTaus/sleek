@@ -55,20 +55,18 @@ class Pin extends Component {
   createConnection(pin) {
     const { connections } = this.state;
     connections.push(pin);
-    // if (this.refs.myRef) {
-    //   this.setState({
-    //     connections,
-    //   });
-    // }
-    this.forceUpdate();
+    this.setState({
+      connections,
+    });
+    this.node.forceUpdate();
     return this;
   }
 
   /*  RENDER LOGIC */
   getPosition() {
     return {
-      x: this.direction === Direction.in ? Size.Pin.border : Size.Node.width - Size.Pin.width - Size.Pin.border,
-      y: Size.Node.topLabel + (Size.Pin.perPin * this.props.key),
+      x: this.node.state.x + (this.direction === Direction.in ? Size.Pin.border : Size.Node.width - Size.Pin.width - Size.Pin.border),
+      y: this.node.state.y + Size.Node.topLabel + (Size.Pin.perPin * this.props.key),
     };
   }
 
@@ -80,20 +78,24 @@ class Pin extends Component {
     this.eventHandler.onPinDown(evt, this);
   }
 
+  // Since they are offset by a g they need nodes x
   renderConnections() {
     const { x, y } = this.getPosition();
+    // if (this.direction === Direction.in) {
+    //   return null;
+    // }
     return (
-      this.state.connections.map((pin) => {
+      this.state.connections.map((pin) =>  {
         const other = pin.getPosition();
-        console.log(<line x1={x} y1={y} x2={other.x} y2={other.y} />);
-        return <line x1={x} y1={y} x2={other.x} y2={other.y} />;
+        const offset = (Size.Pin.width / 2);
+        console.log(pin.props.name);
+        return <line x1={x + offset} y1={y + offset} x2={other.x + offset} y2={other.y + offset} strokeWidth="2" stroke="black" />;
       })
     );
   }
 
   render(key) {
     const { x, y } = this.getPosition();
-    console.log('rendering pin...');
     return (
       <g key={key}>
         <rect
@@ -119,7 +121,7 @@ class ValuePin extends Pin {
     return (
       <g>
         <rect
-          className="pin"
+          className={`pin ${this.state.connections.length ? 'connected' : ''}`}
           x={x}
           y={y}
           width={Size.Pin.width}
@@ -133,6 +135,7 @@ class ValuePin extends Pin {
         >
           {this.props.name}
         </text>
+        {this.renderConnections()}
       </g>
     );
   }

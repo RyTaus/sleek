@@ -68,6 +68,16 @@ class Node extends Component {
       x: this.state.x - xDiff,
       y: this.state.y - yDiff
     });
+
+    Object.keys(this.inPins).forEach((pin) => {
+      console.log(this.inPins[pin].state.connections);
+      this.inPins[pin].state.connections.forEach(connection => connection.node.forceUpdate());
+    })
+
+    Object.keys(this.outPins).forEach((pin) => {
+      console.log(this.outPins[pin].state.connections);
+      this.outPins[pin].state.connections.forEach(connection => connection.node.forceUpdate());
+    })
   }
 
   handleMouseUp(evt) {
@@ -81,27 +91,30 @@ class Node extends Component {
   render(key) {
     return (
       <g
-        transform={`translate(${this.state.x},${this.state.y})`}
         key={key}
       >
         <rect
           className="node"
+          x={this.state.x}
+          y={this.state.y}
           width={Size.Node.width}
           height={Size.Node.topLabel + (Math.max(Object.keys(this.inPins).length, Object.keys(this.outPins).length) * Size.Pin.perPin)}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
+          zIndex={100}
         />
         <text
-          y={Size.Pin.width}
-          x={Size.Node.width / 2}
+          y={this.state.y + Size.Pin.width}
+          x={this.state.x + (Size.Node.width / 2)}
           width={Size.Node.width}
 
           textAnchor="middle"
+          zIndex={3}
         >
           {this.props.name}
         </text>
-        {Object.keys(this.inPins).map((key, i) => this.inPins[key].render(i))}
-        {Object.keys(this.outPins).map((key, i) => this.outPins[key].render(i))}
+        {Object.keys(this.inPins).map((k, i) => this.inPins[k].render(i))}
+        {Object.keys(this.outPins).map((k, i) => this.outPins[k].render(i))}
       </g>
     );
   }

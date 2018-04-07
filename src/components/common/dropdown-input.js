@@ -22,7 +22,7 @@ class DropDownInput extends Component {
 
   render() {
     return (
-      <foreignObject x={this.state.x} y={this.state.y} width="10" height="150">
+      <foreignObject x={this.props.x} y={this.props.y} width="10" height="150">
         <select name={this.props.name} onChange={this.onChange} value={this.state.value}>
           {this.state.options.map(o => (
             <option name={o}> {o} </option>
