@@ -18,6 +18,7 @@ class Node extends Component {
       x: 0,
       y: 0,
     };
+    this.className = 'node';
     this.inPins = this.props.inPins;
     this.outPins = this.props.outPins;
     this.eventHandler = props.eventHandler;
@@ -66,27 +67,22 @@ class Node extends Component {
 
     this.setState({
       x: this.state.x - xDiff,
-      y: this.state.y - yDiff
+      y: this.state.y - yDiff,
     });
 
     Object.keys(this.inPins).forEach((pin) => {
-      console.log(this.inPins[pin].state.connections);
       this.inPins[pin].state.connections.forEach(connection => connection.node.forceUpdate());
-    })
-
-    Object.keys(this.outPins).forEach((pin) => {
-      console.log(this.outPins[pin].state.connections);
-      this.outPins[pin].state.connections.forEach(connection => connection.node.forceUpdate());
-    })
+    });
   }
 
-  handleMouseUp(evt) {
+  handleMouseUp() {
     document.removeEventListener('mousemove', this.handleMouseMove);
     this.coords = {
       x: 0,
-      y: 0
+      y: 0,
     };
   }
+
 
   render(key) {
     return (
@@ -94,13 +90,14 @@ class Node extends Component {
         key={key}
       >
         <rect
-          className="node"
+          className={this.className}
           x={this.state.x}
           y={this.state.y}
           width={Size.Node.width}
           height={Size.Node.topLabel + (Math.max(Object.keys(this.inPins).length, Object.keys(this.outPins).length) * Size.Pin.perPin)}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
+          onDoubleClick={this.handleDoubleClick}
           zIndex={100}
         />
         <text
@@ -117,6 +114,18 @@ class Node extends Component {
         {Object.keys(this.outPins).map((k, i) => this.outPins[k].render(i))}
       </g>
     );
+  }
+}
+
+class BlackBoxNode extends Node {
+  constructor(props) {
+    super(props);
+    this.type = 'bb';
+    this.className = 'node bb-node';
+  }
+
+  handleDoubleClick(evt) {
+    console.log('bb node clicked');
   }
 }
 
@@ -137,4 +146,5 @@ Node.propTypes = {
 };
 
 
+export { Node, BlackBoxNode };
 export default Node;

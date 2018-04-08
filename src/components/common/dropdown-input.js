@@ -5,8 +5,6 @@ class DropDownInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      x: props.x,
-      y: props.y,
       options: props.options,
     };
 
@@ -14,10 +12,10 @@ class DropDownInput extends Component {
   }
 
   onChange(evt) {
-    console.log(evt.target.value);
     this.setState({
       value: evt.target.value,
     });
+    this.props.onChange(evt.target.value);
   }
 
   render() {
@@ -25,7 +23,7 @@ class DropDownInput extends Component {
       <foreignObject x={this.props.x} y={this.props.y} width="10" height="150">
         <select name={this.props.name} onChange={this.onChange} value={this.state.value}>
           {this.state.options.map(o => (
-            <option name={o}> {o} </option>
+            <option name={o}> {this.props.optionToDisplay(o)} </option>
           ))}
         </select>
       </foreignObject>
@@ -36,8 +34,10 @@ class DropDownInput extends Component {
 DropDownInput.defaultProps = {
   x: 0,
   y: 0,
-  name: 'dd',
+  name: 'default',
   options: [],
+  onChange: () => {},
+  optionToDisplay: option => option,
 };
 
 DropDownInput.propTypes = {
@@ -45,6 +45,8 @@ DropDownInput.propTypes = {
   y: PropTypes.number,
   name: PropTypes.string,
   options: PropTypes.arrayOf(PropTypes.number),
+  onChange: PropTypes.func,
+  optionToDisplay: PropTypes.func,
 };
 
 export default DropDownInput;

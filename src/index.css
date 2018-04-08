@@ -5,21 +5,41 @@ body {
 }
 
 svg {
-  background-color: rgb(300, 300, 300);
+  background-color: rgb(220, 220, 220);
+  shape-rendering: geometricPrecision;
 }
 
 input {
   border: 1px solid rgb(169, 169, 169);
 }
 
+rect {
+}
+
 .node {
   stroke: black;
   fill: rgb(200, 200, 200);
+  rx: 10;
+  ry: 5;
+}
+
+.bb-node {
+  stroke-width: 2;
 }
 
 .pin {
   stroke: black;
   fill: rgb(200, 200, 200);
+  rx: 4;
+  ry: 2;
+}
+
+.flow {
+  stroke-linejoin: round;
+}
+
+.flow-line {
+  stroke: white;
 }
 
 .connected {
@@ -27,6 +47,15 @@ input {
 }
 
 svg text {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  font-size: 10pt;
+  pointer-events: none;
+}
+
+svg line {
   -webkit-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;

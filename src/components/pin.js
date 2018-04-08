@@ -17,10 +17,6 @@ class Pin extends Component {
     this.type = props.type;
     this.direction = props.direction;
 
-    this.maxConnections = this.direction === Direction.in ? 1 : Infinity;
-    if (this.pinType === PinType.flow) {
-      this.maxConnections = this.direction === Direction.in ? Infinity : 1;
-    }
 
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
@@ -33,13 +29,22 @@ class Pin extends Component {
     this.eventHandler = node.eventHandler;
     this.props.name = name;
     this.props.key = key;
+
+    this.maxConnections = this.direction === Direction.in ? 1 : Infinity;
+    if (this.pinType === PinType.flow) {
+      this.maxConnections = this.direction === Direction.in ? Infinity : 1;
+    }
+
     return this;
   }
 
   canConnect(pin) {
+
     return (
-      // this.pinType === pin.pinType &&
-      this.direction !== pin.direction
+      this.pinType === pin.pinType
+      && this.state.connections.length < this.maxConnections
+      && pin.state.connections.length < pin.maxConnections
+      && this.direction !== pin.direction
       && !this.state.connections.includes(pin)
       // && this.type.equals(pin.type)
     );
@@ -72,7 +77,9 @@ class Pin extends Component {
   /*  RENDER LOGIC */
   getPosition() {
     return {
-      x: this.node.state.x + (this.direction === Direction.in ? Size.Pin.border : Size.Node.width - Size.Pin.width - Size.Pin.border),
+      x: this.node.state.x + (this.direction === Direction.in ?
+        Size.Pin.border :
+        Size.Node.width - Size.Pin.width - Size.Pin.border),
       y: this.node.state.y + Size.Node.topLabel + (Size.Pin.perPin * this.props.key),
     };
   }
@@ -99,11 +106,18 @@ class Pin extends Component {
       return null;
     }
     return (
-      this.state.connections.map((pin) =>  {
+      this.state.connections.map((pin) => {
         const other = pin.getPosition();
         const offset = (Size.Pin.width / 2);
-        console.log(pin.props.name);
-        return <line x1={x + offset} y1={y + offset} x2={other.x + offset} y2={other.y + offset} strokeWidth="2" stroke="black" />;
+        return (<line
+          className={`${this.pinType}-line`}
+          x1={x + offset}
+          y1={y + offset}
+          x2={other.x + offset}
+          y2={other.y + offset}
+          strokeWidth="2"
+          stroke="black"
+        />);
       })
     );
   }
@@ -127,6 +141,7 @@ class Pin extends Component {
 class ValuePin extends Pin {
   constructor(props) {
     super(props);
+    this.pinType = 'value';
   }
 
   render() {
@@ -156,10 +171,47 @@ class ValuePin extends Pin {
   }
 }
 
+class FlowPin extends Pin {
+  constructor(props) {
+    super(props);
+    this.pinType = 'flow';
+  }
+
+  render() {
+    const { x, y } = this.getPosition();
+    return (
+      <g>
+        <polygon
+          className={`pin flow ${this.state.connections.length ? 'connected' : ''}`}
+          points={`${x},${y} ${x + Size.Pin.width},${y + (Size.Pin.width / 2)} ${x},${y + Size.Pin.width}`}
+          onMouseDown={this.onMouseDown}
+          onMouseUp={this.onMouseUp}
+          onContextMenu={this.onContextMenu}
+        />
+        <text
+          x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
+          y={y + (Size.Pin.width / 2)}
+        >
+          {this.props.name}
+        </text>
+        {this.renderConnections()}
+      </g>
+    );
+  }
+}
+
 // options
 class DropDownPin extends Pin {
   constructor(props) {
     super(props);
+    this.value = null;
+    this.pinType = 'drop-down';
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(newValue) {
+    this.value = newValue;
+    console.log(newValue);
   }
 
   render() {
@@ -173,6 +225,7 @@ class DropDownPin extends Pin {
           y={y}
           options={this.props.options}
           height={10}
+          onChange={this.onChange}
         />
         <text
           x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 1.5)}
@@ -199,4 +252,4 @@ Pin.propTypes = {
 };
 
 
-export default { Pin, ValuePin, DropDownPin };
+export default { Pin, ValuePin, DropDownPin, FlowPin };
