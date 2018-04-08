@@ -73,6 +73,7 @@ class Node extends Component {
     Object.keys(this.inPins).forEach((pin) => {
       this.inPins[pin].state.connections.forEach(connection => connection.node.forceUpdate());
     });
+    evt.preventDefault();
   }
 
   handleMouseUp() {
@@ -100,7 +101,16 @@ class Node extends Component {
           onDoubleClick={this.handleDoubleClick}
           zIndex={100}
         />
+        <rect
+          className="node node-label-bg"
+          x={this.state.x + 1}
+          y={this.state.y + 0.5}
+          width={Size.Node.width - 2}
+          height={Size.Node.topLabel - 7}
+          zIndex={100}
+        />
         <text
+          className="node-label"
           y={this.state.y + Size.Pin.width}
           x={this.state.x + (Size.Node.width / 2)}
           width={Size.Node.width}

@@ -33,7 +33,7 @@ class Frame extends Component {
       <div>
         <div style={{ height: `${this.state.heightRatio}%` }}>
           <Sidebar frame={this} height={`${this.state.heightRatio}%`} width={`${100 - this.state.widthRatio}%`} />
-          <svg preserveAspectRatio="none" width={`${this.state.widthRatio}%`} height={`500` } style={{ width: `${this.state.widthRatio}%`, height: `${this.state.heightRatio}%` }} ref={(ref) => { this.svg = ref; }}>
+          <svg stroke-linecap="round" preserveAspectRatio="none" width={`${this.state.widthRatio}%`} height={`500` } style={{ width: `${this.state.widthRatio}%`, height: `${this.state.heightRatio}%` }} ref={(ref) => { this.svg = ref; }}>
             {this.state.nodes}
           </svg>
         </div>

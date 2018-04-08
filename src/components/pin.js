@@ -115,7 +115,7 @@ class Pin extends Component {
           y1={y + offset}
           x2={other.x + offset}
           y2={other.y + offset}
-          strokeWidth="2"
+          strokeWidth="5"
           stroke="black"
         />);
       })
