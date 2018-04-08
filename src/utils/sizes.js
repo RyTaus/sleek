@@ -5,7 +5,7 @@ export default {
     topLabel: 30,
   },
   Pin: {
-    width: 15,
+    width: 20,
     perPin: 25,
     border: 5,
   },

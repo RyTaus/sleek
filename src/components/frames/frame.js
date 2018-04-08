@@ -3,13 +3,16 @@ import React, { Component } from 'react';
 import Pin from './../pin';
 import { Node, BlackBoxNode } from './../node';
 import EventHandler from './../event-handler';
-
+import Sidebar from './sidebar';
+import Console from './console';
 
 class Frame extends Component {
   constructor(props) {
     super(props);
     this.state = {
       nodes: [],
+      widthRatio: 80,
+      heightRatio: 75,
     };
     this.eventHandler = new EventHandler();
     this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={220} y={100} inPins={{ next: (new Pin.FlowPin({})), temp: (new Pin.ValuePin({ type: 'test' })) }} />);
@@ -28,9 +31,13 @@ class Frame extends Component {
   render() {
     return (
       <div>
-        <svg width={500} height={500} viewBox="0 0 500 500" ref={(ref) => { this.svg = ref; }}>
-          {this.state.nodes}
-        </svg>
+        <div style={{ height: `${this.state.heightRatio}%` }}>
+          <Sidebar frame={this} height={`${this.state.heightRatio}%`} width={`${100 - this.state.widthRatio}%`} />
+          <svg preserveAspectRatio="none" width={`${this.state.widthRatio}%`} height={`500` } style={{ width: `${this.state.widthRatio}%`, height: `${this.state.heightRatio}%` }} ref={(ref) => { this.svg = ref; }}>
+            {this.state.nodes}
+          </svg>
+        </div>
+        <Console height={`${100 - this.state.heightRatio - 5}%`} />
       </div>
     );
   }
