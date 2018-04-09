@@ -19,6 +19,8 @@ class Frame extends Component {
       panX: 0,
       panY: -30,
     };
+
+
     this.eventHandler = new EventHandler(this);
 
     this.handleMouseUp = this.handleMouseUp.bind(this);
@@ -77,8 +79,10 @@ class Frame extends Component {
 
   handleScroll(evt) {
     // console.log(evt);
+    const minZoom = 0.2;
+    const maxZoom = 3;
     this.setState({
-      zoom: this.state.zoom + (evt.deltaY > 0 ? 0.05 : -0.05)
+      zoom: [minZoom, this.state.zoom + (evt.deltaY > 0 ? 0.05 : -0.05), maxZoom].sort()[1],
     })
   }
 
