@@ -19,6 +19,7 @@ class Frame extends Component {
       zoom: 1,
       panX: 0,
       panY: -30,
+      searcherActive: false,
     };
 
 
@@ -28,14 +29,16 @@ class Frame extends Component {
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleScroll = this.handleScroll.bind(this);
+    this.handleContextMenu = this.handleContextMenu.bind(this);
+    this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
 
     this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={420} y={100}
       inPins={{ next: (new Pin.FlowPin({})), temp: (new Pin.ValuePin({ type: new Type.NumLit() })) }} />);
     this.addNode(<Node name="node #2" eventHandler={this.eventHandler} x={160} y={100}
-      inPins={{ val: new Pin.ValuePin({ type: new Type.NumLit() }), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'] }) }}
+      inPins={{ val: new Pin.ValuePin({ type: new Type.NumLit() }), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'], type: new Type.NumLit() }) }}
       outPins={{ next: (new Pin.FlowPin({})) }} />);
     this.addNode(<BlackBoxNode name="this is node 3" eventHandler={this.eventHandler} x={120} y={200}
-      inPins={{ val: new Pin.ValuePin({ type: new Type.StringLit() }), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'] }) }}
+      inPins={{ val: new Pin.ValuePin({ type: new Type.StringLit() }), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'], type: new Type.NumLit() }) }}
       outPins={{ next: (new Pin.ValuePin({ type: new Type.NumLit() })) }} />);
   }
 
@@ -48,17 +51,23 @@ class Frame extends Component {
 
   handleMouseDown(evt) {
     if (evt.button === 0 && evt.target.className.baseVal === 'canvas') {
-      console.log(evt.target.className.baseVal);
       this.coords = {
         x: evt.pageX,
         y: evt.pageY,
       };
       document.addEventListener('mousemove', this.handleMouseMove);
-    } else if (evt.button === 2) {
-      console.log('rmb');
-      evt.preventDefault();
-      evt.stopPropagation();
     }
+  }
+
+  handleContextMenu(evt) {
+    this.setState({
+      searcherActive: !this.state.searcherActive,
+      searcherX: evt.pageX - 200, // for now
+      searcherY: evt.pageY,
+    });
+    console.log(evt.pageX, evt.pageY);
+    evt.preventDefault();
+    evt.stopPropagation();
   }
 
   handleMouseMove(evt) {
@@ -68,7 +77,6 @@ class Frame extends Component {
     this.coords.x = evt.pageX;
     this.coords.y = evt.pageY;
 
-    // this.state.panX = this.state.panX;
     this.setState({
       panX: this.state.panX - xDiff,
       panY: this.state.panY - yDiff,
@@ -83,12 +91,19 @@ class Frame extends Component {
   }
 
   handleScroll(evt) {
-    // console.log(evt);
     const minZoom = 0.2;
     const maxZoom = 3;
     this.setState({
       zoom: [minZoom, this.state.zoom + (evt.deltaY > 0 ? 0.05 : -0.05), maxZoom].sort()[1],
-    })
+    });
+  }
+
+  handleNodeSearcherSelect(node) {
+    // this.addNode(node);
+    this.setState({
+      searcherActive: false,
+    });
+    console.log(this);
   }
 
   render() {
@@ -98,18 +113,18 @@ class Frame extends Component {
           <Sidebar frame={this} height={`${this.state.heightRatio}%`} width={`${100 - this.state.widthRatio}%`} />
           <svg
             className="canvas"
-            onContextMenu={this.handleMouseDown}
+            onContextMenu={this.handleContextMenu}
             onMouseDown={this.handleMouseDown}
             onMouseUp={this.handleMouseUp}
             onWheel={this.handleScroll}
             strokeLinecap="round"
-            preserveAspectRatio="none"
             width={`${this.state.widthRatio}%`}
-            height={`600`}>
+            height="600"
+          >
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
               {this.state.nodes}
             </g>
-            <NodeSearcher />
+            <NodeSearcher active={this.state.searcherActive} x={this.state.searcherX} y={this.state.searcherY} handleChange={this.handleNodeSearcherSelect} />
           </svg>
         </div>
       </div>

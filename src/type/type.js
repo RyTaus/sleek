@@ -42,6 +42,18 @@ class List extends Type {
   }
 }
 
+class Map extends Type {
+  constructor(structName, inType, outType) {
+    super('Map', 'yellow');
+    this.inType = inType;
+    this.outType = outType;
+  }
+
+  toString() {
+    return `Map<${this.inType.toString()} : ${this.outType.toString()}}>`;
+  }
+}
+
 class Struct extends Type {
   constructor(structName, propDict) {
     super(structName, 'orange');
@@ -58,9 +70,14 @@ class Struct extends Type {
 }
 
 class Func extends Type {
-  constructor(returnType) {
+  constructor(inputTypeDict, returnType) {
     super('Function', 'purple');
     this.returnType = returnType;
+    this.inputTypeDict = inputTypeDict;
+  }
+
+  getInputType(name) {
+    return this.inputTypeDict[name];
   }
 
   toString() {
@@ -69,5 +86,5 @@ class Func extends Type {
 }
 
 module.exports = {
-  Type, StringLit, NumLit, BoolLit, List, Struct, Func,
+  Type, StringLit, NumLit, BoolLit, List, Struct, Func, Map
 };

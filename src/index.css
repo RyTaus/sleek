@@ -19,6 +19,10 @@ input {
 rect {
 }
 
+.target {
+  pointer-events: painted;
+}
+
 .node {
   stroke: black;
   stroke-width: 2;

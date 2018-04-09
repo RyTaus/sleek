@@ -67,6 +67,7 @@ class EventHandler {
 
   onPinUp(evt, component) {
     if (this.state === EVENT.DRAG_PIN) {
+      console.log('up');
       try {
         if (this.inFocus.canConnect(component)) {
           this.inFocus.createConnection(component);

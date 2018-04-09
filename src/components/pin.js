@@ -41,8 +41,9 @@ class Pin extends Component {
 
   canConnect(pin) {
     if (
-      this.pinType === pin.pinType
-      && this.state.connections.length < this.maxConnections
+      // this.pinType === pin.pinType
+      // &&
+      this.state.connections.length < this.maxConnections
       && pin.state.connections.length < pin.maxConnections
       && this.direction !== pin.direction
       && !this.state.connections.includes(pin)
@@ -91,6 +92,7 @@ class Pin extends Component {
   }
 
   onMouseUp(evt) {
+    console.log('mus');
     this.eventHandler.onPinUp(evt, this);
   }
 
@@ -100,9 +102,11 @@ class Pin extends Component {
 
   onContextMenu(evt) {
     evt.preventDefault();
+    evt.stopPropagation();
     while (this.state.connections.length) {
       this.removeConnection(this.state.connections[0]);
     }
+
   }
 
   // Since they are offset by a g they need nodes x
@@ -221,11 +225,41 @@ class DropDownPin extends Pin {
     this.value = newValue;
   }
 
+  // createConnection(pin) {
+  //   super.createConnection(pin);
+  // }
+
   render() {
     const { x, y } = this.getPosition();
 
+    if (this.state.connections.length) {
+      return (
+        <g>
+          <rect
+            className={`pin ${this.state.connections.length ? 'connected' : ''}`}
+            x={x}
+            y={y}
+            style={{ stroke: this.props.type.color }}
+            width={Size.Pin.width}
+            height={Size.Pin.width}
+            onMouseDown={this.onMouseDown}
+            onMouseUp={this.onMouseUp}
+            onContextMenu={this.onContextMenu}
+          />
+          <text
+            x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
+            y={y + (Size.Pin.width / 2)}
+          >
+            {this.props.name}
+          </text>
+          {this.renderConnections()}
+        </g>
+      );
+    }
+
     return (
       <g>
+
         <DropDownInput
           className="pin"
           x={x}
@@ -233,6 +267,15 @@ class DropDownPin extends Pin {
           options={this.props.options}
           height={10}
           onChange={this.onChange}
+        />
+        <rect
+          className="target"
+          x={x}
+          y={y}
+          width={Size.Pin.width}
+          height={Size.Pin.width}
+          onMouseUp={this.onMouseUp}
+          opacity="0"
         />
         <text
           x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 1.5)}

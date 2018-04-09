@@ -106,7 +106,7 @@ class Node extends Component {
         <rect
           className={`node ${this.className}-label-bg`}
           x={this.state.x + 1}
-          y={this.state.y + 0.5}
+          y={this.state.y + 1}
           width={Size.Node.width - 2}
           height={Size.Node.topLabel - 7}
           zIndex={100}
