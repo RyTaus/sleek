@@ -49,6 +49,8 @@ class Pin extends Component {
       && this.type.equals(pin.type)
     ) {
       return true;
+    } else if (this === pin) {
+      return false;
     }
 
     throw 'cannot connect';
@@ -217,7 +219,6 @@ class DropDownPin extends Pin {
 
   onChange(newValue) {
     this.value = newValue;
-    console.log(newValue);
   }
 
   render() {

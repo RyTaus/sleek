@@ -35,15 +35,14 @@ class EventHandler {
       this.coords.x = evt.pageX;
       this.coords.y = evt.pageY;
 
-      // console.log(xDiff, yDiff);
       this.frame.setState({
         panX: this.frame.state.panX - xDiff,
         panY: this.frame.state.panY - yDiff,
       });
-      console.log(this.frame.state);
+      evt.preventDefault();
+      evt.stopPropagation();
     }
-    evt.preventDefault();
-    evt.stopPropagation();
+
   }
 
   onMouseUp(evt) {
@@ -56,12 +55,10 @@ class EventHandler {
     if (component instanceof Node) {
       this.state = EVENT.DRAG_NODE;
       this.inFocus = component;
-      console.log('mousedown node');
     }
   }
 
   onPinDown(evt, component) {
-    console.log('pin down');
     this.state = EVENT.DRAG_PIN;
     this.inFocus = component;
     evt.preventDefault();
@@ -69,7 +66,6 @@ class EventHandler {
   }
 
   onPinUp(evt, component) {
-    console.log('pin up');
     if (this.state === EVENT.DRAG_PIN) {
       try {
         if (this.inFocus.canConnect(component)) {

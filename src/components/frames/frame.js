@@ -4,6 +4,7 @@ import Pin from './../pin';
 import { Node, BlackBoxNode } from './../node';
 import EventHandler from './../event-handler';
 import Sidebar from './sidebar';
+import NodeSearcher from './../node-searcher';
 
 import Type from './../../type/type';
 
@@ -46,12 +47,18 @@ class Frame extends Component {
   }
 
   handleMouseDown(evt) {
-    this.coords = {
-      x: evt.pageX,
-      y: evt.pageY,
-    };
-    console.log(this.coords);
-    document.addEventListener('mousemove', this.handleMouseMove);
+    if (evt.button === 0 && evt.target.className.baseVal === 'canvas') {
+      console.log(evt.target.className.baseVal);
+      this.coords = {
+        x: evt.pageX,
+        y: evt.pageY,
+      };
+      document.addEventListener('mousemove', this.handleMouseMove);
+    } else if (evt.button === 2) {
+      console.log('rmb');
+      evt.preventDefault();
+      evt.stopPropagation();
+    }
   }
 
   handleMouseMove(evt) {
@@ -60,7 +67,6 @@ class Frame extends Component {
 
     this.coords.x = evt.pageX;
     this.coords.y = evt.pageY;
-    console.log(xDiff, yDiff);
 
     // this.state.panX = this.state.panX;
     this.setState({
@@ -73,7 +79,6 @@ class Frame extends Component {
   }
 
   handleMouseUp() {
-    console.log(this.state);
     document.removeEventListener('mousemove', this.handleMouseMove);
   }
 
@@ -92,6 +97,8 @@ class Frame extends Component {
         <div style={{ height: `${this.state.heightRatio}%` }}>
           <Sidebar frame={this} height={`${this.state.heightRatio}%`} width={`${100 - this.state.widthRatio}%`} />
           <svg
+            className="canvas"
+            onContextMenu={this.handleMouseDown}
             onMouseDown={this.handleMouseDown}
             onMouseUp={this.handleMouseUp}
             onWheel={this.handleScroll}
@@ -102,6 +109,7 @@ class Frame extends Component {
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
               {this.state.nodes}
             </g>
+            <NodeSearcher />
           </svg>
         </div>
       </div>

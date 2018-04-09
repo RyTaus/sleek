@@ -68,8 +68,8 @@ class Node extends Component {
     this.coords.y = evt.pageY;
 
     this.setState({
-      x: this.state.x - xDiff,
-      y: this.state.y - yDiff,
+      x: this.state.x - (xDiff * (1 / this.eventHandler.frame.state.zoom)),
+      y: this.state.y - (yDiff * (1 / this.eventHandler.frame.state.zoom)),
     });
 
     Object.keys(this.inPins).forEach((pin) => {

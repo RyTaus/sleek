@@ -23,8 +23,8 @@ rect {
   stroke: black;
   stroke-width: 2;
   fill: rgb(200, 200, 200);
-  rx: 10;
-  ry: 5;
+  /* rx: 10; */
+  /* ry: 5; */
 }
 
 .node-label-bg {

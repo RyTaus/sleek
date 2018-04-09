@@ -5,8 +5,12 @@ export default {
     topLabel: 35,
   },
   Pin: {
-    width: 20,
+    width: 17,
     perPin: 25,
     border: 5,
   },
+  NodeSearcher: {
+    width: 300,
+    height: 400,
+  }
 };
