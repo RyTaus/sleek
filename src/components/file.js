@@ -13,7 +13,7 @@ class File extends Component {
   render() {
     return (
       <div>
-        {this.state.frames[0].render()}
+        <Frame nodes={[]} />
       </div>
     );
   }

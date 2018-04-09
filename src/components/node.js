@@ -56,6 +56,8 @@ class Node extends Component {
       y: evt.pageY,
     };
     document.addEventListener('mousemove', this.handleMouseMove);
+    evt.preventDefault();
+    evt.stopPropagation()
   }
 
   handleMouseMove(evt) {
@@ -102,7 +104,7 @@ class Node extends Component {
           zIndex={100}
         />
         <rect
-          className="node node-label-bg"
+          className={`node ${this.className}-label-bg`}
           x={this.state.x + 1}
           y={this.state.y + 0.5}
           width={Size.Node.width - 2}
@@ -151,8 +153,8 @@ Node.propTypes = {
   x: PropTypes.number,
   y: PropTypes.number,
   name: PropTypes.string,
-  inPins: PropTypes.objectOf(PropTypes.instanceOf(Pin)),
-  outPins: PropTypes.objectOf(PropTypes.instanceOf(Pin)),
+  inPins: PropTypes.objectOf(PropTypes.instanceOf(Pin.Pin)),
+  outPins: PropTypes.objectOf(PropTypes.instanceOf(Pin.Pin)),
 };
 
 

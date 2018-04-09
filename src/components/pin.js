@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Direction from './../utils/direction';
 import PinType from './../utils/pin-type';
 import Size from './../utils/sizes';
+import Type from './../type/type';
 
 import DropDownInput from './common/dropdown-input';
 
@@ -14,7 +15,7 @@ class Pin extends Component {
       connections: props.connections || [],
     };
     this.pinType = props.pinType;
-    this.type = props.type;
+    this.type = props.type || new Type.Type('nil');
     this.direction = props.direction;
 
 
@@ -39,15 +40,18 @@ class Pin extends Component {
   }
 
   canConnect(pin) {
-
-    return (
+    if (
       this.pinType === pin.pinType
       && this.state.connections.length < this.maxConnections
       && pin.state.connections.length < pin.maxConnections
       && this.direction !== pin.direction
       && !this.state.connections.includes(pin)
-      // && this.type.equals(pin.type)
-    );
+      && this.type.equals(pin.type)
+    ) {
+      return true;
+    }
+
+    throw 'cannot connect';
   }
 
   removeConnection(pin) {
@@ -115,8 +119,8 @@ class Pin extends Component {
           y1={y + offset}
           x2={other.x + offset}
           y2={other.y + offset}
-          strokeWidth="5"
-          stroke="black"
+          strokeWidth="4"
+          stroke={this.type.color}
         />);
       })
     );
@@ -153,6 +157,7 @@ class ValuePin extends Pin {
           className={`pin ${this.state.connections.length ? 'connected' : ''}`}
           x={x}
           y={y}
+          style={{ stroke: this.props.type.color }}
           width={Size.Pin.width}
           height={Size.Pin.width}
           onMouseDown={this.onMouseDown}
@@ -175,6 +180,7 @@ class FlowPin extends Pin {
   constructor(props) {
     super(props);
     this.pinType = 'flow';
+    this.type = new Type.Type('flow');
   }
 
   render() {
@@ -243,13 +249,18 @@ Pin.defaultProps = {
   key: 0,
   name: 'pin',
   connections: [],
+  type: new Type.Type('null'),
 };
 
 Pin.propTypes = {
   key: PropTypes.number,
   name: PropTypes.string,
   connections: PropTypes.arrayOf(PropTypes.number),
+  type: PropTypes.instanceOf(Type.Type),
 };
+
+ValuePin.defaultProps = Pin.defaultProps;
+ValuePin.propTypes = Pin.propTypes;
 
 
 export default { Pin, ValuePin, DropDownPin, FlowPin };

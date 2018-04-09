@@ -34,6 +34,13 @@ rect {
 
 }
 
+.bb-node-label-bg {
+  stroke: none;
+  fill: rgb(120, 120, 150);
+  pointer-events: none;
+
+}
+
 .bb-node {
   stroke-width: 2;
 }
@@ -48,6 +55,7 @@ rect {
 
 .flow {
   stroke-linejoin: round;
+  stroke: white;
 }
 
 .flow-line {
