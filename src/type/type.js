@@ -1,7 +1,20 @@
+/**
+ * Each Type should have the corresponding input type to use.
+ * boolean: checkbox
+ * number: number
+ * string: string
+ * map: sidebar
+ */
+
 class Type {
   constructor(name, color = 'black') {
     this.name = name;
     this.color = color;
+    this.properties = [];
+  }
+
+  addProperty(prop) {
+    this.properties.push(prop);
   }
 
   equals(other) {
@@ -23,6 +36,7 @@ class NumLit extends Type {
   constructor() {
     super('Number', 'green');
   }
+
 }
 
 class BoolLit extends Type {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 import Node from './node';
-import Pin from './node';
+import Pin from './pin';
 
 import Size from './../utils/sizes';
 
@@ -31,7 +31,7 @@ class NodeSearcher extends Component {
   }
 
   makePin(name, data) {
-    return new Pin.ValuePin({ name: Object.keys(data)[0], type: data[Object.keys(data)[0]], connections: [] });
+    return new Pin.ValuePin({ name: name, type: data[Object.keys(data)[0]], connections: [] });
   }
 
   handleChange(evt) {

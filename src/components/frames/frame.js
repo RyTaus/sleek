@@ -124,7 +124,12 @@ class Frame extends Component {
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
               {this.state.nodes}
             </g>
-            <NodeSearcher active={this.state.searcherActive} x={this.state.searcherX} y={this.state.searcherY} handleChange={this.handleNodeSearcherSelect} />
+            <NodeSearcher
+              active={this.state.searcherActive}
+              x={this.state.searcherX}
+              y={this.state.searcherY}
+              handleChange={this.handleNodeSearcherSelect}
+            />
           </svg>
         </div>
       </div>

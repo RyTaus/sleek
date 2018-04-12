@@ -225,10 +225,6 @@ class DropDownPin extends Pin {
     this.value = newValue;
   }
 
-  // createConnection(pin) {
-  //   super.createConnection(pin);
-  // }
-
   render() {
     const { x, y } = this.getPosition();
 
