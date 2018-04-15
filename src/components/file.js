@@ -15,12 +15,6 @@ class File extends Component {
     return (
       <div>
         <Frame />
-        <button onClick={() => {
-          this.setState({
-            active: (this.state.active + 1) % this.state.frames.length,
-          });
-          this.forceUpdate();
-        }}> swap </button>
       </div>
     );
   }

@@ -88,6 +88,7 @@ class Node extends Component {
 
 
   render(key) {
+    console.log(this.props);
     return (
       <g
         key={key}

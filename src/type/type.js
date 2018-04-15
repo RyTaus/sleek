@@ -5,8 +5,18 @@
  * string: string
  * map: sidebar
  */
+export const FLOW = 'Flow';
+export const NUMBER = 'Number';
+export const STRING = 'String';
+export const BOOLEAN = 'Boolean';
+export const LIST = 'List';
+export const MAP = 'Map';
+export const STRUCT = 'Struct';
+export const FUNC = 'Func';
+export const ANY = '*';
 
-class Type {
+
+export class Type {
   constructor(name, color = 'black') {
     this.name = name;
     this.color = color;
@@ -18,7 +28,7 @@ class Type {
   }
 
   equals(other) {
-    return this.name === other.name;
+    return this.toString() === other.toString();
   }
 
   toString() {
@@ -26,28 +36,33 @@ class Type {
   }
 }
 
-class StringLit extends Type {
+export class Flow extends Type {
   constructor() {
-    super('String', 'blue');
+    super(FLOW, 'white');
   }
 }
 
-class NumLit extends Type {
+export class StringLit extends Type {
   constructor() {
-    super('Number', 'green');
-  }
-
-}
-
-class BoolLit extends Type {
-  constructor() {
-    super('Boolean', 'red');
+    super(STRING, 'blue');
   }
 }
 
-class List extends Type {
+export class NumLit extends Type {
+  constructor() {
+    super(NUMBER, 'green');
+  }
+}
+
+export class BoolLit extends Type {
+  constructor() {
+    super(BOOLEAN, 'red');
+  }
+}
+
+export class List extends Type {
   constructor(elementType) {
-    super('List', elementType.color);
+    super(LIST, elementType.color);
     this.elementType = elementType;
   }
 
@@ -56,9 +71,9 @@ class List extends Type {
   }
 }
 
-class Map extends Type {
+export class Map extends Type {
   constructor(structName, inType, outType) {
-    super('Map', 'yellow');
+    super(MAP, 'yellow');
     this.inType = inType;
     this.outType = outType;
   }
@@ -68,7 +83,7 @@ class Map extends Type {
   }
 }
 
-class Struct extends Type {
+export class Struct extends Type {
   constructor(structName, propDict) {
     super(structName, 'orange');
     this.props = propDict;
@@ -83,9 +98,9 @@ class Struct extends Type {
   }
 }
 
-class Func extends Type {
+export class Func extends Type {
   constructor(inputTypeDict, returnType) {
-    super('Function', 'purple');
+    super(FUNC, 'purple');
     this.returnType = returnType;
     this.inputTypeDict = inputTypeDict;
   }
@@ -99,6 +114,21 @@ class Func extends Type {
   }
 }
 
-module.exports = {
-  Type, StringLit, NumLit, BoolLit, List, Struct, Func, Map
+export const nameToType = (data) => {
+  const mapped = {
+    FLOW: Flow,
+    NUMBER: NumLit,
+    STRING: StringLit,
+    BOOLEAN: BoolLit,
+    // LIST: List,s
+  };
+  console.log('DATA:  ', data.toUpperCase());
+  console.log(mapped);
+  console.log();
+  if (data.toUpperCase() in mapped) {
+    return new mapped[data.toUpperCase()]();
+  }
 };
+// module.exports = {
+//   Type, Flow, StringLit, NumLit, BoolLit, List, Struct, Func, Map,
+// };

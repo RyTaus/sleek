@@ -6,7 +6,10 @@ import EventHandler from './../event-handler';
 import Sidebar from './sidebar';
 import NodeSearcher from './../node-searcher';
 
-import Type from './../../type/type';
+import { NumLit, BoolLit, StringLit, Flow } from './../../type/type';
+
+import parseNode from './../../nodes/parser'
+import nodes from './../../nodes/number'
 
 
 class Frame extends Component {
@@ -33,13 +36,17 @@ class Frame extends Component {
     this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
 
     this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={420} y={100}
-      inPins={{ next: (new Pin.FlowPin({})), temp: (new Pin.ValuePin({ type: new Type.NumLit() })) }} />);
+      inPins={{ next: (new Pin({ type: new Flow() })), temp: (new Pin({ type: new NumLit() })) }} />);
     this.addNode(<Node name="node #2" eventHandler={this.eventHandler} x={160} y={100}
-      inPins={{ val: new Pin.ValuePin({ type: new Type.NumLit() }), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'], type: new Type.NumLit() }) }}
-      outPins={{ next: (new Pin.FlowPin({})) }} />);
+      inPins={{ val: new Pin({ type: new NumLit() }), testing: new Pin({ options: ['a', 'b', 'c'], type: new NumLit() }) }}
+      outPins={{ next: (new Pin({ type: new Flow() })) }} />);
     this.addNode(<BlackBoxNode name="this is node 3" eventHandler={this.eventHandler} x={120} y={200}
-      inPins={{ val: new Pin.ValuePin({ type: new Type.StringLit() }), testing: new Pin.DropDownPin({ options: ['a', 'b', 'c'], type: new Type.NumLit() }) }}
-      outPins={{ next: (new Pin.ValuePin({ type: new Type.NumLit() })) }} />);
+      inPins={{ val: new Pin({ type: new StringLit() }), testing: new Pin({ options: ['a', 'b', 'c'], type: new NumLit() }) }}
+      outPins={{ next: (new Pin({ type: new NumLit() })) }} />);
+
+    const parsed = parseNode('add', nodes.add);
+    this.addNode(<Node name={parsed.name} eventHandler={this.eventHandler} x={0} y={0}
+      inPins={parsed.inPins} outPins={parsed.outPins} />)
   }
 
   addNode(node) {
