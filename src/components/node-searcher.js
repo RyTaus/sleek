@@ -16,6 +16,7 @@ class NodeSearcher extends Component {
     super(props);
     this.state = {
       active: true,
+      seed: null,
     }
     this.name = 'node-searcher';
     this.getOptions = this.getOptions.bind(this);
@@ -25,7 +26,8 @@ class NodeSearcher extends Component {
   }
   // LUL i just put it in a class and parse it out... NOBODY LOOK BELOW ON AN EMPTY STOMACH
   getOptionGroup(name, data) {
-    // console.log(data);
+    console.log(nodes);
+    console.log(name, data);
     return (
       <optgroup label={name} >
         {Object.keys(data).map((key) => {
@@ -36,7 +38,10 @@ class NodeSearcher extends Component {
   }
 
   getOptions() {
-    return Object.keys(nodes).map(key => this.getOptionGroup(key, nodes[key]));
+    if (this.props.seed === null || this.props.seed.props.pin.type.name.toLowerCase() === 'flow') {
+      return Object.keys(nodes).map(key => this.getOptionGroup(key, nodes[key]));
+    }
+    return this.getOptionGroup(this.props.seed.props.pin.type.name.toLowerCase(), nodes[this.props.seed.props.pin.type.name.toLowerCase()]);
   }
 
   handleClick() {
@@ -46,20 +51,17 @@ class NodeSearcher extends Component {
     console.log('clicked');
   }
 
-  makePin(name, data) {
-    return new Pin.ValuePin({ name: name, type: data[Object.keys(data)[0]], connections: [] });
-  }
-
   handleChange(evt) {
     const data = evt.target.options[evt.target.selectedIndex];
     console.log(JSON.parse(data.className));
     console.log(data);
     const parsed = parseNode(data.value, JSON.parse(data.className));
     const node = new NodeModel(parsed.name, this.props.x, this.props.y, parsed.inPins, parsed.outPins, parsed.compile)
-    this.props.handleChange(node)
+    this.props.handleChange(node);
   }
 
   render() {
+    console.log(this.props.seed);
     if (!this.props.active || !this.state.active) {
       return null;
     }

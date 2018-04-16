@@ -7,7 +7,6 @@ class Header extends Component {
   }
 
   render() {
-    console.log(this.props);
     return (
       <div>
         <ul>

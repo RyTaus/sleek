@@ -50,6 +50,20 @@ class EventHandler {
     }
   }
 
+  seedContextMenu(evt) {
+    console.log('seeding...');
+    console.log(this.inFocus);
+    this.frame.setState({
+      searcherActive: true,
+      searcherX: evt.pageX - 200, // for now
+      searcherY: evt.pageY,
+      searcherSeed: this.inFocus.props.pin.type.name.toLowerCase(),
+    });
+    console.log(evt.pageX, evt.pageY);
+    evt.preventDefault();
+    evt.stopPropagation();
+  }
+
   renderLine() {
     if (this.state === EVENT.DRAG_PIN) {
       const offset = (Size.Pin.width / 2);
@@ -68,8 +82,8 @@ class EventHandler {
   }
 
   onMouseUp(evt) {
-    if (evt.button === 2) { // rmb
-      this.state = null;
+    if (this.state === EVENT.DRAG_PIN) {
+      this.seedContextMenu(evt);
     }
   }
 

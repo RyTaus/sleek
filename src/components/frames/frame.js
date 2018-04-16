@@ -26,6 +26,7 @@ class Frame extends Component {
       panX: 0,
       panY: -30,
       searcherActive: false,
+      searcherSeed: null,
     };
     window.frame = this;
 
@@ -38,18 +39,6 @@ class Frame extends Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
-
-    const parsed = parseNode('add', nodes.add);
-    this.addNode(new NodeModel(parsed.name, 40, 100, parsed.inPins, parsed.outPins, parsed.compile))
-    const parsed1 = parseNode('add', nodes.add);
-    window.NODE = new NodeModel(parsed1.name, 240, 300, parsed1.inPins, parsed1.outPins, parsed1.compile);
-    this.addNode(window.NODE)
-    const parsed2 = parseNode('if', nodes2.if);
-    this.addNode(new NodeModel(parsed2.name, 240, 500, parsed2.inPins, parsed2.outPins, parsed2.compile))
-
-    const parsed3 = parseNode('>', nodes.greaterThan);
-    this.addNode(new NodeModel(parsed3.name, 240, 100, parsed3.inPins, parsed3.outPins, parsed3.compile))
-    console.log(this.state.nodes);
   }
 
   addNode(node) {
@@ -75,11 +64,13 @@ class Frame extends Component {
       searcherActive: !this.state.searcherActive,
       searcherX: evt.pageX - 200, // for now
       searcherY: evt.pageY,
+      searcherSeed: null,
     });
     console.log(evt.pageX, evt.pageY);
     evt.preventDefault();
     evt.stopPropagation();
   }
+
 
   handleMouseMove(evt) {
     const xDiff = this.coords.x - evt.pageX;
@@ -97,11 +88,24 @@ class Frame extends Component {
     evt.preventDefault();
   }
 
-  handleMouseUp() {
+  handleMouseUp(evt) {
+    if (this.eventHandler.state === 'drag-pin') {
+      console.log('seeding...');
+      console.log(this.inFocus);
+      this.setState({
+        searcherActive: true,
+        searcherX: evt.pageX - 200, // for now
+        searcherY: evt.pageY,
+        searcherSeed: this.eventHandler.inFocus,
+      });
+    }
+    console.log(evt.pageX, evt.pageY);
+    evt.preventDefault();
+    evt.stopPropagation();
     this.eventHandler.state = null;
     document.removeEventListener('mousemove', this.handleMouseMove);
     this.forceUpdate();
-
+    console.log(this.state.searcherSeed);
   }
 
   handleScroll(evt) {
@@ -114,6 +118,21 @@ class Frame extends Component {
 
   handleNodeSearcherSelect(node) {
     this.addNode(node);
+    if (this.state.searcherSeed) {
+      const a = node.inPins[Object.keys(node.inPins)[0]];
+      const b = this.state.searcherSeed.props.pin;
+      console.log(this.state.searcherSeed);
+      try {
+        if (a.canConnect(b)) {
+          a.createConnection(b);
+          b.createConnection(a);
+        }
+        window.frame.forceUpdate();
+      } catch (err) {
+        console.log('couldnt connect', a, b);
+        window.Console.log(err);
+      }
+    }
     this.setState({
       searcherActive: false,
     });
@@ -161,6 +180,7 @@ class Frame extends Component {
             </g>
             <NodeSearcher
               active={this.state.searcherActive}
+              seed={this.state.searcherSeed}
               x={this.state.searcherX}
               y={this.state.searcherY}
               handleChange={this.handleNodeSearcherSelect}
