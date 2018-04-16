@@ -6,7 +6,7 @@ import NodeModel from './../../models/node';
 import { Node } from './../node';
 import EventHandler from './../event-handler';
 import Sidebar from './sidebar';
-import NodeSearcher from './../node-searcher';
+import NodeSearcher from './../node-searcher/index';
 
 // import { NumLit, BoolLit, StringLit, Flow } from './../../type/type';
 

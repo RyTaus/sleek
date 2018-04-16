@@ -26,6 +26,15 @@ export default class Node {
     return str;
   }
 
+  remove() {
+    Object.keys(this.inPins).forEach((key) => {
+      this.inPins[key].removeAllConnections();
+    });
+    Object.keys(this.outPins).forEach((key) => {
+      this.outPins[key].removeAllConnections();
+    });
+  }
+
   getNextNode() {
     return this.outPins.next;
   }

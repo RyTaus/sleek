@@ -72,7 +72,7 @@ class NodeSearcher extends Component {
       <foreignObject x={this.props.x} y={this.props.y - 20} >
         <select autofocus="true" className="custom-select" size={1} style={{ width: Size.NodeSearcher.width }} name={this.name} onChange={this.handleChange} onClick={(evt) => { evt.preventDefault(); evt.stopPropagation(); }}>
           <option />
-          {this.getOptions()}
+            {this.getOptions()}
         </select>
 
       </foreignObject>

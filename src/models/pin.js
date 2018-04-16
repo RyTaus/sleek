@@ -89,6 +89,16 @@ export default class Pin {
     return this;
   }
 
+  removeAllConnections() {
+    while (this.connections.length > 0) {
+      const pin = this.connections[0];
+      pin.connections = pin.connections.filter(p => p !== this);
+      this.connections = this.connections.filter(p => p !== pin);
+    }
+
+    return this;
+  }
+
   createConnection(pin) {
     this.connections.push(pin);
     return this;

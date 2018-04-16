@@ -1,0 +1,48 @@
+.items-container {
+  overflow-y: hidden;
+  height: 80%;
+  margin-left: 10px;
+  margin-right: 10px;
+  border: 1px solid black;
+  left: 0;
+  margin-left: 0;
+  margin-right: -8;
+
+}
+
+.items-container-inner {
+  position: relative;
+  overflow-y: hidden;
+  
+}
+
+.item {
+  color: red;
+  border: 1px solid blue;
+  margin: 4px;
+}
+
+.container {
+  height: 300px;
+  width: 300px;
+  border: 1px solid black;
+}
+
+#search {
+  width: 100%;
+}
+
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+.items-container {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+}
+.items-container::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar { width: 0 !important }

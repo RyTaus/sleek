@@ -11,6 +11,7 @@ class Node extends Component {
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
+    this.handleContextMenu = this.handleContextMenu.bind(this);
   }
 
   handleMouseDown(evt) {
@@ -46,6 +47,15 @@ class Node extends Component {
     };
   }
 
+  handleContextMenu(evt) {
+    window.frame.setState({
+      nodeModels: window.frame.state.nodeModels.filter(nm => nm !== this.props.node),
+    });
+    this.props.node.remove();
+    evt.preventDefault();
+    evt.stopPropagation()
+  }
+
   render() {
     const { node } = this.props;
     const { x, y } = node;
@@ -62,6 +72,7 @@ class Node extends Component {
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onDoubleClick={this.handleDoubleClick}
+          onContextMenu={this.handleContextMenu}
         />
         <rect
           className="node node-label-bg"
