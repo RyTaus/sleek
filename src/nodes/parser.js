@@ -10,14 +10,15 @@ const parsePin = (name, data) => {
 };
 
 const parseNode = (name, data) => {
-  let inPins = {};
+  const inPins = {};
   Object.keys(data.in).forEach(key => inPins[key] = parsePin(key, data.in[key]));
-  let outPins = {};
+  const outPins = {};
   Object.keys(data.out).forEach(key => outPins[key] = parsePin(key, data.out[key]));
   return {
     inPins,
     outPins,
     name,
+    compile: data.compile,
   };
 };
 

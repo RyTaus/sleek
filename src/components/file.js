@@ -13,9 +13,7 @@ class File extends Component {
 
   render() {
     return (
-      <div>
-        <Frame />
-      </div>
+      <Frame />
     );
   }
 }

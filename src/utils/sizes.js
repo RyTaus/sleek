@@ -7,10 +7,10 @@ export default {
   Pin: {
     width: 17,
     perPin: 25,
-    border: 5,
+    border: 8,
   },
   NodeSearcher: {
     width: 300,
     height: 400,
-  }
+  },
 };

@@ -23,12 +23,21 @@ rect {
   pointer-events: painted;
 }
 
+.checkbox {
+  box-shadow: 0px 0px 0px 1px rgba(255,0,0,1);
+}
+
 .node {
   stroke: black;
   stroke-width: 2;
   fill: rgb(200, 200, 200);
   /* rx: 10; */
   /* ry: 5; */
+}
+
+.node-label {
+  text-transform: capitalize;
+
 }
 
 .node-label-bg {
@@ -51,10 +60,10 @@ rect {
 
 .pin {
   stroke: black;
-  stroke-width: 1.5;
+  stroke-width: 2.5;
+  border-width: 2px;
   fill: rgb(200, 200, 200);
-  rx: 4;
-  ry: 2;
+
 }
 
 .flow {

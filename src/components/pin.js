@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import Direction from './../utils/direction';
 import PinType from './../utils/pin-type';
 import Size from './../utils/sizes';
-import { Type, Flow } from './../type/type';
-
-import DropDownInput from './common/dropdown-input';
+import { Type } from './../type/type';
 
 
 class Pin extends Component {
@@ -13,15 +11,18 @@ class Pin extends Component {
     super(props);
     this.state = {
       connections: props.connections || [],
+      value: '',
     };
     // this.pinType = props.pinType;
     this.type = props.type || new Type('nil');
+    this.value = '';
     this.direction = props.direction;
-
 
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onContextMenu = this.onContextMenu.bind(this);
+    this.onChange = this.onChange.bind(this);
+    this.compile = this.compile.bind(this);
   }
 
   init(node, direction, name, key) {
@@ -37,6 +38,10 @@ class Pin extends Component {
     }
 
     return this;
+  }
+
+  isConnected() {
+    return this.state.connections.length !== 0;
   }
 
   canConnect(pin) {
@@ -81,6 +86,14 @@ class Pin extends Component {
     return this;
   }
 
+  compile() {
+    console.log(this);
+    if (this.isConnected()) {
+      return this.state.connections[0].node.compile();
+    }
+    return this.value;
+  }
+
   /*  RENDER LOGIC */
   getPosition() {
     return {
@@ -94,6 +107,14 @@ class Pin extends Component {
   onMouseUp(evt) {
     console.log('mus');
     this.eventHandler.onPinUp(evt, this);
+  }
+
+  onChange(evt) {
+    this.value = evt.target.value;
+    this.state.value = evt.target.value;
+    this.node.forceUpdate();
+    // console.log(this.value);
+    return true;
   }
 
   onMouseDown(evt) {
@@ -135,32 +156,71 @@ class Pin extends Component {
     const { x, y } = this.getPosition();
 
     return (
-      <g>
-        <polygon
-          className={`pin flow ${this.state.connections.length ? 'connected' : ''}`}
-          points={`${x},${y} ${x + Size.Pin.width},${y + (Size.Pin.width / 2)} ${x},${y + Size.Pin.width}`}
-          onMouseDown={this.onMouseDown}
-          onMouseUp={this.onMouseUp}
-          onContextMenu={this.onContextMenu}
-        />
-        <text
-          x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
-          y={y + (Size.Pin.width / 2)}
-        >
-          {this.props.name}
-        </text>
-        {this.renderConnections()}
-      </g>
-    )
+      <polygon
+        className={`pin flow ${this.state.connections.length ? 'connected' : ''}`}
+        points={`${x},${y} ${x + Size.Pin.width},${y + (Size.Pin.width / 2)} ${x},${y + Size.Pin.width}`}
+        onMouseDown={this.onMouseDown}
+        onMouseUp={this.onMouseUp}
+        onContextMenu={this.onContextMenu}
+      />
+    );
   }
 
   renderPin() {
+    if (this.type.name === 'Flow') {
+      return this.renderFlow();
+    }
+    return this.renderValue();
+  }
 
+  renderLabel() {
+    const { x, y } = this.getPosition();
+    return (
+      <text
+        x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
+        y={y + (Size.Pin.width * 0.75)}
+      >
+        {this.props.name}
+      </text>
+    );
+  }
+
+  renderInput() {
+    const { x, y } = this.getPosition();
+    if (this.type.name === 'Number' || this.type.name === 'String') {
+      return (
+        <foreignObject x={x} y={y} >
+          <input
+            className="pin"
+            type="text"
+            onMouseUp={this.onMouseUp}
+            onChange={this.onChange}
+            size="1"
+            style={{ 'border-color': this.type.color }}
+          />
+        </foreignObject>
+      );
+    } else if (this.type.name === 'Boolean') {
+      return (
+        <foreignObject x={x} y={y} >
+          <input
+            className="pin checkbox"
+            type="checkbox"
+            onMouseUp={this.onMouseUp}
+            onChange={((evt) => {this.value = evt.target.checked; console.log(this);}).bind(this)}
+            style={{ margin: 0, zoom: 1.8, outline: this.type.color }}
+
+          />
+        </foreignObject>
+      );
+    }
   }
 
   renderValue(key) {
+    if (!this.isConnected() && this.direction === Direction.in) {
+      return this.renderInput();
+    }
     const { x, y } = this.getPosition();
-    console.log(this.props.type);
     return (
       <g>
         <rect
@@ -174,161 +234,20 @@ class Pin extends Component {
           onMouseUp={this.onMouseUp}
           onContextMenu={this.onContextMenu}
         />
-        <text
-          x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
-          y={y + (Size.Pin.width / 2)}
-        >
-          {this.props.name}
-        </text>
-        {this.renderConnections()}
       </g>
     );
   }
 
   render() {
-    if (this.type.name === 'Flow') {
-      return this.renderFlow();
-    }
-    return this.renderValue();
+    return (
+      <g>
+        {this.renderPin()}
+        {this.renderLabel()}
+        {this.renderConnections()}
+      </g>
+    );
   }
 }
-
-// class ValuePin extends Pin {
-//   constructor(props) {
-//     super(props);
-//     this.pinType = 'value';
-//   }
-//
-//   render() {
-//     const { x, y } = this.getPosition();
-//
-//     return (
-//       <g>
-//         <rect
-//           className={`pin ${this.state.connections.length ? 'connected' : ''}`}
-//           x={x}
-//           y={y}
-//           style={{ stroke: this.props.type.color }}
-//           width={Size.Pin.width}
-//           height={Size.Pin.width}
-//           onMouseDown={this.onMouseDown}
-//           onMouseUp={this.onMouseUp}
-//           onContextMenu={this.onContextMenu}
-//         />
-//         <text
-//           x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
-//           y={y + (Size.Pin.width / 2)}
-//         >
-//           {this.props.name}
-//         </text>
-//         {this.renderConnections()}
-//       </g>
-//     );
-//   }
-// }
-//
-// class FlowPin extends Pin {
-//   constructor(props) {
-//     super(props);
-//     this.pinType = 'flow';
-//     this.type = new Flow();
-//   }
-//
-//   render() {
-//     const { x, y } = this.getPosition();
-//     return (
-//       <g>
-//         <polygon
-//           className={`pin flow ${this.state.connections.length ? 'connected' : ''}`}
-//           points={`${x},${y} ${x + Size.Pin.width},${y + (Size.Pin.width / 2)} ${x},${y + Size.Pin.width}`}
-//           onMouseDown={this.onMouseDown}
-//           onMouseUp={this.onMouseUp}
-//           onContextMenu={this.onContextMenu}
-//         />
-//         <text
-//           x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
-//           y={y + (Size.Pin.width / 2)}
-//         >
-//           {this.props.name}
-//         </text>
-//         {this.renderConnections()}
-//       </g>
-//     );
-//   }
-// }
-//
-// // options
-// class DropDownPin extends Pin {
-//   constructor(props) {
-//     super(props);
-//     this.value = null;
-//     this.pinType = 'drop-down';
-//     this.onChange = this.onChange.bind(this);
-//   }
-//
-//   onChange(newValue) {
-//     this.value = newValue;
-//   }
-//
-//   render() {
-//     const { x, y } = this.getPosition();
-//
-//     if (this.state.connections.length) {
-//       return (
-//         <g>
-//           <rect
-//             className={`pin ${this.state.connections.length ? 'connected' : ''}`}
-//             x={x}
-//             y={y}
-//             style={{ stroke: this.props.type.color }}
-//             width={Size.Pin.width}
-//             height={Size.Pin.width}
-//             onMouseDown={this.onMouseDown}
-//             onMouseUp={this.onMouseUp}
-//             onContextMenu={this.onContextMenu}
-//           />
-//           <text
-//             x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
-//             y={y + (Size.Pin.width / 2)}
-//           >
-//             {this.props.name}
-//           </text>
-//           {this.renderConnections()}
-//         </g>
-//       );
-//     }
-//
-//     return (
-//       <g>
-//
-//         <DropDownInput
-//           className="pin"
-//           x={x}
-//           y={y}
-//           options={this.props.options}
-//           height={10}
-//           onChange={this.onChange}
-//         />
-//         <rect
-//           className="target"
-//           x={x}
-//           y={y}
-//           width={Size.Pin.width}
-//           height={Size.Pin.width}
-//           onMouseUp={this.onMouseUp}
-//           opacity="0"
-//         />
-//         <text
-//           x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 1.5)}
-//           y={y + (Size.Pin.width / 2)}
-//         >
-//           {this.props.name}
-//         </text>
-//       </g>
-//     );
-//   }
-// }
-
 
 Pin.defaultProps = {
   key: 0,
@@ -343,9 +262,5 @@ Pin.propTypes = {
   connections: PropTypes.arrayOf(PropTypes.number),
   type: PropTypes.instanceOf(Type),
 };
-
-// ValuePin.defaultProps = Pin.defaultProps;
-// ValuePin.propTypes = Pin.propTypes;
-
 
 export default Pin;

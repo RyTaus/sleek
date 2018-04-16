@@ -30,6 +30,17 @@ class Node extends Component {
     this.handleMouseDown = this.handleMouseDown.bind(this);
   }
 
+  // compile() {
+  //   let str = this.props.compile;
+  //   Object.keys(this.inPins).forEach((key, i) => {
+  //     str = str.replace(new RegExp(`{i${i}}`, 'g'), this.inPins[key].compile());
+  //   });
+  //   Object.keys(this.outPins).forEach((key, i) => {
+  //     str = str.replace(new RegExp(`{o${i}}`, 'g'), this.outPins[key].compile());
+  //   });
+  //   return str;
+  // }
+
   getNextNode() {
     return this.outPins.next;
   }
@@ -72,6 +83,7 @@ class Node extends Component {
       y: this.state.y - (yDiff * (1 / this.eventHandler.frame.state.zoom)),
     });
 
+    this.eventHandler.frame.forceUpdate();
     Object.keys(this.inPins).forEach((pin) => {
       this.inPins[pin].state.connections.forEach(connection => connection.node.forceUpdate());
     });
@@ -102,7 +114,6 @@ class Node extends Component {
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onDoubleClick={this.handleDoubleClick}
-          zIndex={100}
         />
         <rect
           className={`node ${this.className}-label-bg`}

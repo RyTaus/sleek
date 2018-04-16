@@ -1,10 +1,3 @@
-/**
- * Each Type should have the corresponding input type to use.
- * boolean: checkbox
- * number: number
- * string: string
- * map: sidebar
- */
 export const FLOW = 'Flow';
 export const NUMBER = 'Number';
 export const STRING = 'String';
@@ -115,19 +108,18 @@ export class Func extends Type {
 }
 
 export const nameToType = (data) => {
+  const d = data.toUpperCase();
   const mapped = {
     FLOW: Flow,
     NUMBER: NumLit,
     STRING: StringLit,
     BOOLEAN: BoolLit,
-    // LIST: List,s
   };
-  console.log('DATA:  ', data.toUpperCase());
-  console.log(mapped);
-  console.log();
-  if (data.toUpperCase() in mapped) {
-    return new mapped[data.toUpperCase()]();
+
+  if (d in mapped) {
+    return new mapped[d]();
   }
+  return null;
 };
 // module.exports = {
 //   Type, Flow, StringLit, NumLit, BoolLit, List, Struct, Func, Map,

@@ -35,18 +35,20 @@ class Frame extends Component {
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
 
-    this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={420} y={100}
-      inPins={{ next: (new Pin({ type: new Flow() })), temp: (new Pin({ type: new NumLit() })) }} />);
-    this.addNode(<Node name="node #2" eventHandler={this.eventHandler} x={160} y={100}
-      inPins={{ val: new Pin({ type: new NumLit() }), testing: new Pin({ options: ['a', 'b', 'c'], type: new NumLit() }) }}
-      outPins={{ next: (new Pin({ type: new Flow() })) }} />);
-    this.addNode(<BlackBoxNode name="this is node 3" eventHandler={this.eventHandler} x={120} y={200}
-      inPins={{ val: new Pin({ type: new StringLit() }), testing: new Pin({ options: ['a', 'b', 'c'], type: new NumLit() }) }}
-      outPins={{ next: (new Pin({ type: new NumLit() })) }} />);
+    // this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={420} y={100}
+    //   inPins={{ next: (new Pin({ type: new Flow() })), temp: (new Pin({ type: new NumLit() })) }} />);
+    // this.addNode(<Node name="node #2" eventHandler={this.eventHandler} x={160} y={100}
+    //   inPins={{ val: new Pin({ type: new BoolLit() }), testing: new Pin({ options: ['a', 'b', 'c'], type: new NumLit() }) }}
+    //   outPins={{ next: (new Pin({ type: new Flow() })) }} />);
+    // this.addNode(<BlackBoxNode name="this is node 3" eventHandler={this.eventHandler} x={120} y={200}
+    //   inPins={{ val: new Pin({ type: new StringLit() }), testing: new Pin({ options: ['a', 'b', 'c'], type: new NumLit() }) }}
+    //   outPins={{ next: (new Pin({ type: new NumLit() })), bool: (new Pin({ type: new BoolLit() })) }} />);
 
     const parsed = parseNode('add', nodes.add);
-    this.addNode(<Node name={parsed.name} eventHandler={this.eventHandler} x={0} y={0}
-      inPins={parsed.inPins} outPins={parsed.outPins} />)
+    // this.addNode(<Node name={parsed.name} eventHandler={this.eventHandler} x={0} y={0}
+    //   inPins={parsed.inPins} outPins={parsed.outPins} compile={parsed.compile}/>)
+    this.addNode(new Node({ ...parsed, x: 70, y: 70, eventHandler: this.eventHandler }))
+    console.log(this.state.nodes);
   }
 
   addNode(node) {
@@ -57,6 +59,7 @@ class Frame extends Component {
   }
 
   handleMouseDown(evt) {
+    this.forceUpdate();
     if (evt.button === 0 && evt.target.className.baseVal === 'canvas') {
       this.coords = {
         x: evt.pageX,
@@ -129,7 +132,7 @@ class Frame extends Component {
             height="600"
           >
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
-              {this.state.nodes}
+              {this.state.nodes.map(node => node.render())}
             </g>
             <NodeSearcher
               active={this.state.searcherActive}
