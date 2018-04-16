@@ -17,6 +17,8 @@ input {
 }
 
 rect {
+  rx: 5;
+  ry: 5;
 }
 
 .target {
@@ -30,7 +32,7 @@ rect {
 .node {
   stroke: black;
   stroke-width: 2;
-  fill: rgb(200, 200, 200);
+  fill: rgb(200, 200, 200, 0.6);
   /* rx: 10; */
   /* ry: 5; */
 }
@@ -42,7 +44,7 @@ rect {
 
 .node-label-bg {
   stroke: none;
-  fill: rgb(170, 170, 200);
+  fill: rgb(170, 170, 200, .6);
   pointer-events: none;
 
 }
@@ -76,7 +78,7 @@ rect {
 }
 
 .connected {
-  fill: rgb(250, 250, 250);
+  fill: rgb(250, 250, 250, .7);
 }
 
 .console {

@@ -1,22 +1,25 @@
 import React, { Component } from 'react';
 
-import Pin from './../pin';
-import { Node, BlackBoxNode } from './../node';
+import Pin from './../../models/pin';
+import NodeModel from './../../models/node';
+// import Pin from './../pin';
+import { Node } from './../node';
 import EventHandler from './../event-handler';
 import Sidebar from './sidebar';
 import NodeSearcher from './../node-searcher';
 
-import { NumLit, BoolLit, StringLit, Flow } from './../../type/type';
+// import { NumLit, BoolLit, StringLit, Flow } from './../../type/type';
 
-import parseNode from './../../nodes/parser'
-import nodes from './../../nodes/number'
+import parseNode from './../../nodes/parser';
+import nodes from './../../nodes/number';
+import nodes2 from './../../nodes/statements';
 
 
 class Frame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodes: [],
+      nodeModels: [],
       widthRatio: 80,
       heightRatio: 75,
       zoom: 1,
@@ -24,9 +27,10 @@ class Frame extends Component {
       panY: -30,
       searcherActive: false,
     };
-
+    window.frame = this;
 
     this.eventHandler = new EventHandler(this);
+    window.eventHandler = this.eventHandler;
 
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -35,24 +39,21 @@ class Frame extends Component {
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
 
-    // this.addNode(<Node name="node 1" eventHandler={this.eventHandler} x={420} y={100}
-    //   inPins={{ next: (new Pin({ type: new Flow() })), temp: (new Pin({ type: new NumLit() })) }} />);
-    // this.addNode(<Node name="node #2" eventHandler={this.eventHandler} x={160} y={100}
-    //   inPins={{ val: new Pin({ type: new BoolLit() }), testing: new Pin({ options: ['a', 'b', 'c'], type: new NumLit() }) }}
-    //   outPins={{ next: (new Pin({ type: new Flow() })) }} />);
-    // this.addNode(<BlackBoxNode name="this is node 3" eventHandler={this.eventHandler} x={120} y={200}
-    //   inPins={{ val: new Pin({ type: new StringLit() }), testing: new Pin({ options: ['a', 'b', 'c'], type: new NumLit() }) }}
-    //   outPins={{ next: (new Pin({ type: new NumLit() })), bool: (new Pin({ type: new BoolLit() })) }} />);
-
     const parsed = parseNode('add', nodes.add);
-    // this.addNode(<Node name={parsed.name} eventHandler={this.eventHandler} x={0} y={0}
-    //   inPins={parsed.inPins} outPins={parsed.outPins} compile={parsed.compile}/>)
-    this.addNode(new Node({ ...parsed, x: 70, y: 70, eventHandler: this.eventHandler }))
+    this.addNode(new NodeModel(parsed.name, 40, 100, parsed.inPins, parsed.outPins, parsed.compile))
+    const parsed1 = parseNode('add', nodes.add);
+    window.NODE = new NodeModel(parsed1.name, 240, 300, parsed1.inPins, parsed1.outPins, parsed1.compile);
+    this.addNode(window.NODE)
+    const parsed2 = parseNode('if', nodes2.if);
+    this.addNode(new NodeModel(parsed2.name, 240, 500, parsed2.inPins, parsed2.outPins, parsed2.compile))
+
+    const parsed3 = parseNode('>', nodes.greaterThan);
+    this.addNode(new NodeModel(parsed3.name, 40, 100, parsed3.inPins, parsed3.outPins, parsed3.compile))
     console.log(this.state.nodes);
   }
 
   addNode(node) {
-    this.state.nodes.push(node);
+    this.state.nodeModels.push(node);
     this.setState({
       nodes: this.state.nodes,
     });
@@ -117,6 +118,10 @@ class Frame extends Component {
   }
 
   render() {
+    console.log(this.state.nodeModels);
+    const pins = [];
+    this.state.nodeModels.forEach(node => pins.push(...Object.keys(node.inPins).map(key => node.inPins[key])));
+    console.log(pins);
     return (
       <div>
         <div style={{ height: `${this.state.heightRatio}%` }}>
@@ -132,7 +137,8 @@ class Frame extends Component {
             height="600"
           >
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
-              {this.state.nodes.map(node => node.render())}
+              {pins.map(pin => pin.renderConnections())}
+              {this.state.nodeModels.map(node => (<Node node={node} />))}
             </g>
             <NodeSearcher
               active={this.state.searcherActive}

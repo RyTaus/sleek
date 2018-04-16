@@ -42,7 +42,6 @@ class EventHandler {
       evt.preventDefault();
       evt.stopPropagation();
     }
-
   }
 
   onMouseUp(evt) {
@@ -68,11 +67,14 @@ class EventHandler {
   onPinUp(evt, component) {
     if (this.state === EVENT.DRAG_PIN) {
       console.log('up');
+      const a = this.inFocus.props.pin;
+      const b = component.props.pin;
       try {
-        if (this.inFocus.canConnect(component)) {
-          this.inFocus.createConnection(component);
-          component.createConnection(this.inFocus);
+        if (a.canConnect(b)) {
+          a.createConnection(b);
+          b.createConnection(a);
         }
+        window.frame.forceUpdate();
       } catch (err) {
         window.Console.log(err);
       }

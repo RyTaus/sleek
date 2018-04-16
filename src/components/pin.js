@@ -9,134 +9,64 @@ import { Type } from './../type/type';
 class Pin extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      connections: props.connections || [],
-      value: '',
-    };
-    // this.pinType = props.pinType;
-    this.type = props.type || new Type('nil');
-    this.value = '';
-    this.direction = props.direction;
 
     this.onMouseUp = this.onMouseUp.bind(this);
     this.onMouseDown = this.onMouseDown.bind(this);
     this.onContextMenu = this.onContextMenu.bind(this);
     this.onChange = this.onChange.bind(this);
-    this.compile = this.compile.bind(this);
-  }
-
-  init(node, direction, name, key) {
-    this.direction = direction;
-    this.node = node;
-    this.eventHandler = node.eventHandler;
-    this.props.name = name;
-    this.props.key = key;
-
-    this.maxConnections = this.direction === Direction.in ? 1 : Infinity;
-    if (this.pinType === PinType.flow) {
-      this.maxConnections = this.direction === Direction.in ? Infinity : 1;
-    }
-
-    return this;
-  }
-
-  isConnected() {
-    return this.state.connections.length !== 0;
-  }
-
-  canConnect(pin) {
-    if (
-      // this.pinType === pin.pinType
-      // &&
-      this.state.connections.length < this.maxConnections
-      && pin.state.connections.length < pin.maxConnections
-      && this.direction !== pin.direction
-      && !this.state.connections.includes(pin)
-      && this.type.equals(pin.type)
-    ) {
-      return true;
-    } else if (this === pin) {
-      return false;
-    }
-
-    throw 'cannot connect';
-  }
-
-  removeConnection(pin) {
-    const { connections } = this.state;
-    const other = connections[connections.indexOf(pin)];
-    other.setState({
-      connections: other.state.connections.splice(other.state.connections.indexOf(this), 1),
-    });
-    this.setState({
-      connections: connections.splice(connections.indexOf(pin), 1),
-    });
-    this.node.forceUpdate();
-    other.node.forceUpdate();
-    return this;
-  }
-
-  createConnection(pin) {
-    const { connections } = this.state;
-    connections.push(pin);
-    this.setState({
-      connections,
-    });
-    this.node.forceUpdate();
-    return this;
-  }
-
-  compile() {
-    console.log(this);
-    if (this.isConnected()) {
-      return this.state.connections[0].node.compile();
-    }
-    return this.value;
   }
 
   /*  RENDER LOGIC */
   getPosition() {
     return {
-      x: this.node.state.x + (this.direction === Direction.in ?
+      x: this.props.x + (this.props.pin.direction === Direction.in ?
         Size.Pin.border :
         Size.Node.width - Size.Pin.width - Size.Pin.border),
-      y: this.node.state.y + Size.Node.topLabel + (Size.Pin.perPin * this.props.key),
+      y: this.props.y + Size.Node.topLabel + (Size.Pin.perPin * this.props.index),
     };
   }
 
   onMouseUp(evt) {
-    console.log('mus');
-    this.eventHandler.onPinUp(evt, this);
+    window.eventHandler.onPinUp(evt, this);
   }
 
   onChange(evt) {
-    this.value = evt.target.value;
-    this.state.value = evt.target.value;
-    this.node.forceUpdate();
-    // console.log(this.value);
+    if (this.props.pin.type.name === 'Number') {
+      if (/^-?\d*\.?\d*$/.test(evt.target.value)) {
+        this.props.pin.value = evt.target.value;
+      }
+    } else {
+      this.props.pin.value = evt.target.value;
+    }
+    window.frame.forceUpdate();
     return true;
   }
 
   onMouseDown(evt) {
-    this.eventHandler.onPinDown(evt, this);
+    window.eventHandler.onPinDown(evt, this);
   }
 
   onContextMenu(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    while (this.state.connections.length) {
-      this.removeConnection(this.state.connections[0]);
+    const { pin } = this.props;
+    console.log(pin);
+    // pin.removeConnection(0);
+
+    while (pin.isConnected()) {
+      pin.removeConnection(pin.connections[0]);
     }
   }
 
   // Since they are offset by a g they need nodes x
   renderConnections() {
     const { x, y } = this.getPosition();
-    if (this.direction === Direction.in) {
+    const { pin: pinModel } = this.props;
+    if (pinModel.direction === Direction.in) {
       return null;
     }
     return (
-      this.state.connections.map((pin) => {
+      pinModel.connections.map((pin) => {
         const other = pin.getPosition();
         const offset = (Size.Pin.width / 2);
         return (<line
@@ -146,7 +76,7 @@ class Pin extends Component {
           x2={other.x + offset}
           y2={other.y + offset}
           strokeWidth="4"
-          stroke={this.type.color}
+          stroke={pin.type.color}
         />);
       })
     );
@@ -154,10 +84,11 @@ class Pin extends Component {
 
   renderFlow() {
     const { x, y } = this.getPosition();
+    const { pin } = this.props;
 
     return (
       <polygon
-        className={`pin flow ${this.state.connections.length ? 'connected' : ''}`}
+        className={`pin flow ${pin.isConnected() ? 'connected' : ''}`}
         points={`${x},${y} ${x + Size.Pin.width},${y + (Size.Pin.width / 2)} ${x},${y + Size.Pin.width}`}
         onMouseDown={this.onMouseDown}
         onMouseUp={this.onMouseUp}
@@ -167,7 +98,7 @@ class Pin extends Component {
   }
 
   renderPin() {
-    if (this.type.name === 'Flow') {
+    if (this.props.pin.type.name === 'Flow') {
       return this.renderFlow();
     }
     return this.renderValue();
@@ -177,17 +108,19 @@ class Pin extends Component {
     const { x, y } = this.getPosition();
     return (
       <text
-        x={x + (this.direction === Direction.in ? Size.Pin.width * 2.5 : -Size.Pin.width * 2.5)}
+        x={x + (this.props.pin.direction === Direction.in ? Size.Pin.width * 3 : -Size.Pin.width * 2.5)}
         y={y + (Size.Pin.width * 0.75)}
       >
-        {this.props.name}
+        {this.props.pin.name}
       </text>
     );
   }
 
   renderInput() {
     const { x, y } = this.getPosition();
-    if (this.type.name === 'Number' || this.type.name === 'String') {
+    const { pin } = this.props;
+
+    if (pin.type.name === 'Number' || pin.type.name === 'String') {
       return (
         <foreignObject x={x} y={y} >
           <input
@@ -196,38 +129,40 @@ class Pin extends Component {
             onMouseUp={this.onMouseUp}
             onChange={this.onChange}
             size="1"
-            style={{ 'border-color': this.type.color }}
+            style={{ 'border-color': pin.type.color }}
+            value={pin.value}
           />
         </foreignObject>
       );
-    } else if (this.type.name === 'Boolean') {
+    } else if (pin.type.name === 'Boolean') {
       return (
         <foreignObject x={x} y={y} >
           <input
             className="pin checkbox"
             type="checkbox"
             onMouseUp={this.onMouseUp}
-            onChange={((evt) => {this.value = evt.target.checked; console.log(this);}).bind(this)}
-            style={{ margin: 0, zoom: 1.8, outline: this.type.color }}
-
+            onChange={((evt) => {pin.value = evt.target.checked; window.frame.forceUpdate();}).bind(this)}
+            style={{ margin: 0, zoom: 1.8, outline: pin.type.color }}
+            checked={pin.value}
           />
         </foreignObject>
       );
     }
   }
 
-  renderValue(key) {
-    if (!this.isConnected() && this.direction === Direction.in) {
+  renderValue() {
+    const { pin } = this.props;
+    if (!pin.isConnected() && pin.direction === Direction.in) {
       return this.renderInput();
     }
     const { x, y } = this.getPosition();
     return (
       <g>
         <rect
-          className={`pin ${this.state.connections.length ? 'connected' : ''}`}
+          className={`pin ${pin.connections.length ? 'connected' : ''}`}
           x={x}
           y={y}
-          style={{ stroke: this.props.type.color }}
+          style={{ stroke: pin.type.color }}
           width={Size.Pin.width}
           height={Size.Pin.width}
           onMouseDown={this.onMouseDown}
@@ -243,9 +178,16 @@ class Pin extends Component {
       <g>
         {this.renderPin()}
         {this.renderLabel()}
-        {this.renderConnections()}
       </g>
     );
+
+    // return (
+    //   <g>
+    //     {this.renderPin()}
+    //     {this.renderLabel()}
+    //     {this.renderConnections()}
+    //   </g>
+    // );
   }
 }
 

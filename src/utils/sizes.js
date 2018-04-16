@@ -1,8 +1,9 @@
 export default {
   Node: {
-    width: 250,
+    width: 200,
     perPin: 25,
     topLabel: 35,
+    botMargin: 3,
   },
   Pin: {
     width: 17,

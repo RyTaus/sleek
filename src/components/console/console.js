@@ -17,7 +17,7 @@ class Console extends Component {
   render() {
     return (
       <div className="console" style={{ height: this.props.height }}>
-        {this.state.output.map((str, i) => (<div> {str} </div>))}
+        {this.state.output.map((str, i) => (<div> {JSON.stringify(str)} </div>))}
       </div>
     );
   }

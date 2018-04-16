@@ -1,64 +1,16 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 
 import Pin from './pin';
-import Direction from './../utils/direction';
 import Size from './../utils/sizes';
 
 
 class Node extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      x: this.props.x,
-      y: this.props.y,
-    };
-
-    this.coords = {
-      x: 0,
-      y: 0,
-    };
-    this.className = 'node';
-    this.inPins = this.props.inPins;
-    this.outPins = this.props.outPins;
-    this.eventHandler = props.eventHandler;
-
-    this.init();
 
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
-  }
-
-  // compile() {
-  //   let str = this.props.compile;
-  //   Object.keys(this.inPins).forEach((key, i) => {
-  //     str = str.replace(new RegExp(`{i${i}}`, 'g'), this.inPins[key].compile());
-  //   });
-  //   Object.keys(this.outPins).forEach((key, i) => {
-  //     str = str.replace(new RegExp(`{o${i}}`, 'g'), this.outPins[key].compile());
-  //   });
-  //   return str;
-  // }
-
-  getNextNode() {
-    return this.outPins.next;
-  }
-
-  setEventHandler(handler) {
-    this.eventHandler = handler;
-    return this;
-  }
-
-  init() {
-    Object.keys(this.inPins).forEach((key, i) => {
-      const pin = this.inPins[key];
-      pin.init(this, Direction.in, key, i);
-    });
-    Object.keys(this.outPins).forEach((key, i) => {
-      const pin = this.outPins[key];
-      pin.init(this, Direction.out, key, i);
-    });
   }
 
   handleMouseDown(evt) {
@@ -78,15 +30,10 @@ class Node extends Component {
     this.coords.x = evt.pageX;
     this.coords.y = evt.pageY;
 
-    this.setState({
-      x: this.state.x - (xDiff * (1 / this.eventHandler.frame.state.zoom)),
-      y: this.state.y - (yDiff * (1 / this.eventHandler.frame.state.zoom)),
-    });
+    this.props.node.x -= xDiff * (1 / window.frame.state.zoom);
+    this.props.node.y -= yDiff * (1 / window.frame.state.zoom);
+    window.frame.forceUpdate();
 
-    this.eventHandler.frame.forceUpdate();
-    Object.keys(this.inPins).forEach((pin) => {
-      this.inPins[pin].state.connections.forEach(connection => connection.node.forceUpdate());
-    });
     evt.preventDefault();
   }
 
@@ -98,44 +45,39 @@ class Node extends Component {
     };
   }
 
-
-  render(key) {
-    console.log(this.props);
+  render() {
+    const { node } = this.props;
+    const { x, y } = node;
     return (
-      <g
-        key={key}
-      >
+      <g>
         <rect
-          className={this.className}
-          x={this.state.x}
-          y={this.state.y}
+          className="node"
+          x={x}
+          y={y}
           width={Size.Node.width}
-          height={Size.Node.topLabel + (Math.max(Object.keys(this.inPins).length, Object.keys(this.outPins).length) * Size.Pin.perPin)}
+          height={Size.Node.topLabel + Size.Node.botMargin + (Math.max(Object.keys(node.inPins).length, Object.keys(node.outPins).length) * Size.Pin.perPin)}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onDoubleClick={this.handleDoubleClick}
         />
         <rect
-          className={`node ${this.className}-label-bg`}
-          x={this.state.x + 1}
-          y={this.state.y + 1}
+          className="node node-label-bg"
+          x={x + 1}
+          y={y + 1}
           width={Size.Node.width - 2}
           height={Size.Node.topLabel - 7}
-          zIndex={100}
         />
         <text
           className="node-label"
-          y={this.state.y + Size.Pin.width}
-          x={this.state.x + (Size.Node.width / 2)}
+          y={y + Size.Pin.width}
+          x={x + (Size.Node.width / 2)}
           width={Size.Node.width}
-
           textAnchor="middle"
-          zIndex={3}
         >
-          {this.props.name}
+          {node.name}
         </text>
-        {Object.keys(this.inPins).map((k, i) => this.inPins[k].render(i))}
-        {Object.keys(this.outPins).map((k, i) => this.outPins[k].render(i))}
+        {Object.keys(node.inPins).map((pin, i) => (<Pin pin={node.inPins[pin]} x={x} y={y} index={i} />))}
+        {Object.keys(node.outPins).map((pin, i) => (<Pin pin={node.outPins[pin]} x={x} y={y} index={i} />))}
       </g>
     );
   }
@@ -153,21 +95,6 @@ class BlackBoxNode extends Node {
   }
 }
 
-Node.defaultProps = {
-  x: 0,
-  y: 100,
-  name: 'dd',
-  inPins: {},
-  outPins: {},
-};
-
-Node.propTypes = {
-  x: PropTypes.number,
-  y: PropTypes.number,
-  name: PropTypes.string,
-  inPins: PropTypes.objectOf(PropTypes.instanceOf(Pin.Pin)),
-  outPins: PropTypes.objectOf(PropTypes.instanceOf(Pin.Pin)),
-};
 
 
 export { Node, BlackBoxNode };

@@ -2,8 +2,8 @@
 export default {
   add: {
     in: {
-      addend1: 'Number',
-      addend2: 'Number',
+      a: 'Number',
+      b: 'Number',
     },
     out: {
       sum: 'Number',
@@ -12,12 +12,22 @@ export default {
   },
   multiply: {
     in: {
-      addend1: 'Number',
-      addend2: 'Number',
+      a: 'Number',
+      b: 'Number',
     },
     out: {
       sum: 'Number',
     },
     compile: '({i0} * {i1})',
+  },
+  greaterThan: {
+    in: {
+      a: 'Number',
+      b: 'Number',
+    },
+    out: {
+      res: 'boolean',
+    },
+    compile: '({i0} > {i1})',
   },
 };
