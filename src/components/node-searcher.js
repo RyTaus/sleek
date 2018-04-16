@@ -1,11 +1,15 @@
 import React, { Component } from 'react';
 
 import Node from './node';
+import NodeModel from './../models/node';
 import Pin from './pin';
 
 import Size from './../utils/sizes';
 
-import nodes from './../nodes/number';
+import nodes from './../nodes/index';
+import parseNode from './../nodes/parser';
+
+console.log(nodes);
 
 class NodeSearcher extends Component {
   constructor(props) {
@@ -17,10 +21,22 @@ class NodeSearcher extends Component {
     this.getOptions = this.getOptions.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.getOptionGroup = this.getOptionGroup.bind(this);
+  }
+  // LUL i just put it in a class and parse it out... NOBODY LOOK BELOW ON AN EMPTY STOMACH
+  getOptionGroup(name, data) {
+    // console.log(data);
+    return (
+      <optgroup label={name} >
+        {Object.keys(data).map((key) => {
+          return (<option className={JSON.stringify(data[key])} > {key} </option>);
+        })}
+      </optgroup>
+    );
   }
 
   getOptions() {
-    return Object.keys(nodes);
+    return Object.keys(nodes).map(key => this.getOptionGroup(key, nodes[key]));
   }
 
   handleClick() {
@@ -35,10 +51,12 @@ class NodeSearcher extends Component {
   }
 
   handleChange(evt) {
-    const data = evt.target.value;
-
-    // const node = new Node.Node({ x: this.props.x, y: this.props.y, name: evt.target.value, inPins: Object.keys(data.in).map(pin => )})
-    this.props.handleChange(this.getOptions()[evt.target.value])
+    const data = evt.target.options[evt.target.selectedIndex];
+    console.log(JSON.parse(data.className));
+    console.log(data);
+    const parsed = parseNode(data.value, JSON.parse(data.className));
+    const node = new NodeModel(parsed.name, this.props.x, this.props.y, parsed.inPins, parsed.outPins, parsed.compile)
+    this.props.handleChange(node)
   }
 
   render() {
@@ -49,10 +67,8 @@ class NodeSearcher extends Component {
     return (
       <foreignObject x={this.props.x} y={this.props.y} >
         <select style={{ width: Size.NodeSearcher.width }} name={this.name} onChange={this.handleChange} onClick={(evt) => { evt.preventDefault(); evt.stopPropagation(); }}>
-          {this.getOptions().map(o => (
-            <option name={o} onClick={this.handleClick}> {o} </option>
-          ))}
-      </select>
+          {this.getOptions()}
+        </select>
 
       </foreignObject>
     );

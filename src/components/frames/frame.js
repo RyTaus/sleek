@@ -48,7 +48,7 @@ class Frame extends Component {
     this.addNode(new NodeModel(parsed2.name, 240, 500, parsed2.inPins, parsed2.outPins, parsed2.compile))
 
     const parsed3 = parseNode('>', nodes.greaterThan);
-    this.addNode(new NodeModel(parsed3.name, 40, 100, parsed3.inPins, parsed3.outPins, parsed3.compile))
+    this.addNode(new NodeModel(parsed3.name, 240, 100, parsed3.inPins, parsed3.outPins, parsed3.compile))
     console.log(this.state.nodes);
   }
 
@@ -101,7 +101,7 @@ class Frame extends Component {
     this.eventHandler.state = null;
     document.removeEventListener('mousemove', this.handleMouseMove);
     this.forceUpdate();
-    
+
   }
 
   handleScroll(evt) {
@@ -113,7 +113,7 @@ class Frame extends Component {
   }
 
   handleNodeSearcherSelect(node) {
-    // this.addNode(node);
+    this.addNode(node);
     this.setState({
       searcherActive: false,
     });
