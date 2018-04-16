@@ -97,6 +97,20 @@ class Pin extends Component {
     );
   }
 
+  renderLine() {
+    const offset = (Size.Pin.width / 2);
+    const { x, y } = this.getPosition();
+    return (<line
+      className="line"
+      x1={x + offset}
+      y1={y + offset}
+      x2={window.eventHandler.x + offset}
+      y2={window.eventHandler.y + offset}
+      strokeWidth="4"
+      stroke={this.props.pin.type.color}
+    />);
+  }
+
   renderPin() {
     if (this.props.pin.type.name === 'Flow') {
       return this.renderFlow();
@@ -180,14 +194,6 @@ class Pin extends Component {
         {this.renderLabel()}
       </g>
     );
-
-    // return (
-    //   <g>
-    //     {this.renderPin()}
-    //     {this.renderLabel()}
-    //     {this.renderConnections()}
-    //   </g>
-    // );
   }
 }
 

@@ -21,6 +21,10 @@ rect {
   ry: 5;
 }
 
+.grid {
+  pointer-events: none;
+}
+
 .target {
   pointer-events: painted;
 }

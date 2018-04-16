@@ -98,7 +98,10 @@ class Frame extends Component {
   }
 
   handleMouseUp() {
+    this.eventHandler.state = null;
     document.removeEventListener('mousemove', this.handleMouseMove);
+    this.forceUpdate();
+    
   }
 
   handleScroll(evt) {
@@ -117,11 +120,23 @@ class Frame extends Component {
     console.log(this);
   }
 
+  /* GRID:
+    <defs>
+      <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
+        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>
+      </pattern>
+      <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+        <rect width="800" height="800" fill="url(#smallGrid)" />
+        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
+      </pattern>
+    </defs>
+
+    <rect x="-400" y="-400" className="grid" width="1000%" height="1000%" fill="url(#grid)" />
+  */
+
   render() {
-    console.log(this.state.nodeModels);
     const pins = [];
     this.state.nodeModels.forEach(node => pins.push(...Object.keys(node.inPins).map(key => node.inPins[key])));
-    console.log(pins);
     return (
       <div>
         <div style={{ height: `${this.state.heightRatio}%` }}>
@@ -131,14 +146,18 @@ class Frame extends Component {
             onContextMenu={this.handleContextMenu}
             onMouseDown={this.handleMouseDown}
             onMouseUp={this.handleMouseUp}
+            onMouseMove={this.eventHandler.onMouseMove}
             onWheel={this.handleScroll}
             strokeLinecap="round"
             width={`${this.state.widthRatio}%`}
             height="600"
           >
+
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
+
               {pins.map(pin => pin.renderConnections())}
               {this.state.nodeModels.map(node => (<Node node={node} />))}
+              {this.eventHandler.renderLine()}
             </g>
             <NodeSearcher
               active={this.state.searcherActive}

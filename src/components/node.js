@@ -22,6 +22,7 @@ class Node extends Component {
     evt.preventDefault();
     evt.stopPropagation()
   }
+  // Move to back of list so that it is on top!
 
   handleMouseMove(evt) {
     const xDiff = this.coords.x - evt.pageX;
@@ -48,6 +49,8 @@ class Node extends Component {
   render() {
     const { node } = this.props;
     const { x, y } = node;
+    // const x = Math.round(node.x / 10) * 10;
+    // const y = Math.round(node.y / 10) * 10;
     return (
       <g>
         <rect
@@ -69,7 +72,7 @@ class Node extends Component {
         />
         <text
           className="node-label"
-          y={y + Size.Pin.width}
+          y={y + Size.Pin.width + 4}
           x={x + (Size.Node.width / 2)}
           width={Size.Node.width}
           textAnchor="middle"

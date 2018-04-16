@@ -1,4 +1,6 @@
 import Node from './node';
+import Size from './../utils/sizes';
+import React from 'react';
 
 const EVENT = {
   DRAG_NODE: 'drag-node',
@@ -28,6 +30,7 @@ class EventHandler {
   }
 
   onMouseMove(evt) {
+    console.log('move..');
     if (this.state === EVENT.PAN) {
       const xDiff = this.coords.x - evt.pageX;
       const yDiff = this.coords.y - evt.pageY;
@@ -41,7 +44,30 @@ class EventHandler {
       });
       evt.preventDefault();
       evt.stopPropagation();
+      console.log('ok', window.innerWidth);
+    } else if (this.state === EVENT.DRAG_PIN) {
+      console.log('ok', (window.innerWidth * ((100 - this.frame.state.widthRatio) / 100)));
+      this.coords.x = ((evt.pageX) - (window.innerWidth * ((100 - this.frame.state.widthRatio) / 100))) / this.frame.state.zoom; // TODO make relative to sidebar width
+      this.coords.y = (evt.pageY / this.frame.state.zoom) + 10;
+      window.frame.forceUpdate();
     }
+  }
+
+  renderLine() {
+    if (this.state === EVENT.DRAG_PIN) {
+      const offset = (Size.Pin.width / 2);
+      const { x, y } = this.inFocus.getPosition();
+      return (<line
+        className="line"
+        x1={x + offset}
+        y1={y + offset}
+        x2={this.coords.x}
+        y2={this.coords.y}
+        strokeWidth="4"
+        stroke={this.inFocus.props.pin.type.color}
+      />);
+    }
+    return null;
   }
 
   onMouseUp(evt) {
@@ -59,6 +85,7 @@ class EventHandler {
 
   onPinDown(evt, component) {
     this.state = EVENT.DRAG_PIN;
+    this.coords = component.getPosition();
     this.inFocus = component;
     evt.preventDefault();
     evt.stopPropagation();

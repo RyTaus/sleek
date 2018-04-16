@@ -96,9 +96,9 @@ export default class Pin {
 
   compile() {
     if (this.isConnected()) {
-      console.log('----------');
-      console.log(this.node);
-      console.log(this.connections[0].node);
+      // console.log('----------');
+      // console.log(this.node);
+      // console.log(this.connections[0].node);
       return this.connections[0].node.compile();
     }
     return this.value;
