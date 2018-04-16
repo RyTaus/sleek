@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import { Button } from 'react-bootstrap';
+
 class Header extends Component {
   constructor(props) {
     super(props);

@@ -152,7 +152,7 @@ class Pin extends Component {
       return (
         <foreignObject x={x} y={y} >
           <input
-            className="pin checkbox"
+            className="pin checkbox check-input"
             type="checkbox"
             onMouseUp={this.onMouseUp}
             onChange={((evt) => {pin.value = evt.target.checked; window.frame.forceUpdate();}).bind(this)}
