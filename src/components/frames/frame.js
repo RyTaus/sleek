@@ -1,18 +1,9 @@
 import React, { Component } from 'react';
 
-import Pin from './../../models/pin';
-import NodeModel from './../../models/node';
-// import Pin from './../pin';
 import { Node } from './../node';
-import EventHandler from './../event-handler';
+import EventHandler from './../event-handler/index';
 import Sidebar from './sidebar';
 import NodeSearcher from './../node-searcher/index';
-
-// import { NumLit, BoolLit, StringLit, Flow } from './../../type/type';
-
-import parseNode from './../../nodes/parser';
-import nodes from './../../nodes/number';
-import nodes2 from './../../nodes/statements';
 
 
 class Frame extends Component {
@@ -60,16 +51,12 @@ class Frame extends Component {
   }
 
   handleContextMenu(evt) {
-    // if (!this.state.searcherActive) {
-    //   return;
-    // }
     this.setState({
       searcherActive: !this.state.searcherActive,
-      searcherX: evt.pageX, // for now
+      searcherX: evt.pageX,
       searcherY: evt.pageY,
       searcherSeed: null,
     });
-    console.log(evt.pageX, evt.pageY);
     evt.preventDefault();
     evt.stopPropagation();
   }
@@ -93,22 +80,18 @@ class Frame extends Component {
 
   handleMouseUp(evt) {
     if (this.eventHandler.state === 'drag-pin') {
-      console.log('seeding...');
-      console.log(this.inFocus);
       this.setState({
         searcherActive: true,
-        searcherX: evt.pageX - 200, // for now
+        searcherX: evt.pageX, // for now
         searcherY: evt.pageY,
         searcherSeed: this.eventHandler.inFocus,
       });
     }
-    console.log(evt.pageX, evt.pageY);
     evt.preventDefault();
     evt.stopPropagation();
     this.eventHandler.state = null;
     document.removeEventListener('mousemove', this.handleMouseMove);
     this.forceUpdate();
-    console.log(this.state.searcherSeed);
   }
 
   handleScroll(evt) {
@@ -140,29 +123,15 @@ class Frame extends Component {
     this.setState({
       searcherActive: false,
     });
-    console.log(this);
   }
-
-  /* GRID:
-    <defs>
-      <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
-        <path d="M 10 0 L 0 0 0 10" fill="none" stroke="gray" stroke-width="0.5"/>
-      </pattern>
-      <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-        <rect width="800" height="800" fill="url(#smallGrid)" />
-        <path d="M 100 0 L 0 0 0 100" fill="none" stroke="gray" stroke-width="1"/>
-      </pattern>
-    </defs>
-
-    <rect x="-400" y="-400" className="grid" width="1000%" height="1000%" fill="url(#grid)" />
-  */
 
   render() {
     const pins = [];
-    this.state.nodeModels.forEach(node => pins.push(...Object.keys(node.inPins).map(key => node.inPins[key])));
+    this.state.nodeModels
+      .forEach(node => pins.push(...Object.keys(node.inPins).map(key => node.inPins[key])));
     return (
       <div>
-        <div style={{ height: `${this.state.heightRatio}%` }}>
+        <div style={{ height: `${this.state.heightRatio}%`, overflow: 'hidden' }}>
           <svg
             className="canvas"
             onContextMenu={this.handleContextMenu}

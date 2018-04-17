@@ -1,20 +1,13 @@
 import React from 'react';
 
-import Node from './node';
-import Size from './../utils/sizes';
+import Size from './../../utils/sizes';
 
-const EVENT = {
-  DRAG_NODE: 'drag-node',
-  DRAG_PIN: 'drag-pin',
-  PAN: 'pan',
-  NONE: 'none',
-};
+import EVENT from './type';
 
 class EventHandler {
   constructor(frame) {
     this.state = null;
     this.frame = frame;
-    // this.onMouseDown = this.onMouseDown.bind(this);
     this.onMouseMove = this.onMouseMove.bind(this);
     this.onCanvasContextMenu = this.onCanvasContextMenu.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
@@ -57,11 +50,10 @@ class EventHandler {
   seedContextMenu(evt) {
     this.frame.setState({
       searcherActive: true,
-      searcherX: evt.pageX - 200, // for now
+      searcherX: evt.pageX, // for now
       searcherY: evt.pageY,
       searcherSeed: this.inFocus.props.pin.type.name.toLowerCase(),
     });
-    console.log(evt.pageX, evt.pageY);
     evt.preventDefault();
     evt.stopPropagation();
   }
@@ -89,12 +81,6 @@ class EventHandler {
     }
   }
 
-  onMouseDown(evt, component) {
-    if (component instanceof Node) {
-      this.state = EVENT.DRAG_NODE;
-      this.inFocus = component;
-    }
-  }
 
   onPinDown(evt, component) {
     this.state = EVENT.DRAG_PIN;
