@@ -62,7 +62,7 @@ class Frame extends Component {
   handleContextMenu(evt) {
     this.setState({
       searcherActive: !this.state.searcherActive,
-      searcherX: evt.pageX - 200, // for now
+      searcherX: evt.pageX, // for now
       searcherY: evt.pageY,
       searcherSeed: null,
     });
@@ -121,7 +121,6 @@ class Frame extends Component {
     if (this.state.searcherSeed) {
       const a = node.inPins[Object.keys(node.inPins)[0]];
       const b = this.state.searcherSeed.props.pin;
-      console.log(this.state.searcherSeed);
       try {
         if (a.canConnect(b)) {
           a.createConnection(b);
@@ -129,7 +128,6 @@ class Frame extends Component {
         }
         window.frame.forceUpdate();
       } catch (err) {
-        console.log('couldnt connect', a, b);
         window.Console.log(err);
       }
     }
@@ -178,14 +176,14 @@ class Frame extends Component {
               {this.state.nodeModels.map(node => (<Node node={node} />))}
               {this.eventHandler.renderLine()}
             </g>
-            <NodeSearcher
-              active={this.state.searcherActive}
-              seed={this.state.searcherSeed}
-              x={this.state.searcherX}
-              y={this.state.searcherY}
-              handleChange={this.handleNodeSearcherSelect}
-            />
           </svg>
+          <NodeSearcher
+            active={this.state.searcherActive}
+            seed={this.state.searcherSeed}
+            x={this.state.searcherX}
+            y={this.state.searcherY}
+            handleChange={this.handleNodeSearcherSelect}
+          />
         </div>
       </div>
     );

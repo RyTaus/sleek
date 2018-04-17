@@ -9,6 +9,7 @@ import parseNode from './../../nodes/parser';
 
 import SearchBar from './search-bar';
 import Item from './item';
+import ItemGroup from './item-group';
 
 import './style.css';
 
@@ -17,7 +18,6 @@ class NodeSearcher extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      scroll: 0,
       active: true,
       seed: null,
       searchString: '',
@@ -28,13 +28,16 @@ class NodeSearcher extends Component {
     this.handleScroll = this.handleScroll.bind(this);
   }
 
+  remove() {
+    this.setState({
+      active: false,
+      searchString: '',
+    });
+  }
+
   getOptionGroup(name, data) {
     const x = this.name;
-    return (
-      Object.keys(data).filter(key => key.includes(this.state.searchString)).map((key) => {
-        return (<Item handleClick={this.handleClick} data={data[key]} name={key} />);
-      })
-    );
+    return (<ItemGroup handleClick={this.handleClick} data={data} name={name} searcher={this}/>);
   }
 
   getOptions() {
@@ -65,14 +68,12 @@ class NodeSearcher extends Component {
       return null;
     }
     return (
-      <foreignObject x={this.props.x} y={this.props.y - 20} >
-        <div className="container" onWheel={this.handleScroll}>
-          <SearchBar handleChange={this.handleSearch} value={this.state.searchString} />
-          <div className="items-container">
-              {this.getOptions()}
-          </div>
+      <div className="node-searcher container" onWheel={this.handleScroll} style={{ left: this.props.x, top: this.props.y}}>
+        <SearchBar handleChange={this.handleSearch} value={this.state.searchString} />
+        <div className="items-container">
+            {this.getOptions()}
         </div>
-      </foreignObject>
+      </div>
     );
   }
 }

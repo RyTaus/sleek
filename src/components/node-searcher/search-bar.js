@@ -15,18 +15,17 @@ export default class SearchBar extends Component {
     this.props.handleChange(evt);
   }
 
-  filter(data) {
-    const toReturn = {};
-    return Object.keys(data).forEach((key) => {
-      if (key.includes(key)) {
-        toReturn[key] = data[key];
-      }
-    })
-  }
-
   render() {
     return (
-      <input type="search" id="search" size="30" onChange={this.handleChange} value={this.props.value} placeholder="Search..." autoFocus />
+      <input
+        type="search"
+        id="search"
+        size="30"
+        onChange={this.handleChange}
+        value={this.props.value}
+        placeholder="Search..."
+        autoFocus
+      />
     );
   }
 }
