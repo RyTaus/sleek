@@ -10,7 +10,7 @@ class Frame extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      nodeModels: [],
+      script: props.script,
       widthRatio: 80,
       heightRatio: 75,
       zoom: 1,
@@ -33,9 +33,9 @@ class Frame extends Component {
   }
 
   addNode(node) {
-    this.state.nodeModels.push(node);
+    this.state.script.addNode(node);
     this.setState({
-      nodes: this.state.nodes,
+      script: this.state.script,
     });
   }
 
@@ -127,7 +127,7 @@ class Frame extends Component {
 
   render() {
     const pins = [];
-    this.state.nodeModels
+    this.state.script.nodes
       .forEach(node => pins.push(...Object.keys(node.inPins).map(key => node.inPins[key])));
     return (
       <div>
@@ -147,7 +147,7 @@ class Frame extends Component {
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
 
               {pins.map(pin => pin.renderConnections())}
-              {this.state.nodeModels.map(node => (<Node node={node} />))}
+              {this.state.script.nodes.map(node => (<Node node={node} />))}
               {this.eventHandler.renderLine()}
             </g>
           </svg>

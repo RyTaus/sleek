@@ -24,7 +24,7 @@ class Node extends Component {
     evt.preventDefault();
     evt.stopPropagation()
   }
-  
+
   // Move to back of list so that it is on top!
   handleMouseMove(evt) {
     const xDiff = this.coords.x - evt.pageX;
@@ -42,10 +42,12 @@ class Node extends Component {
   }
 
   handleContextMenu(evt) {
+    // MOVE THIS INTO EVENT-HANDLER. THESE SHOULD JUST CALL ITS... NEED FOR MULTIPLE FILES
+    window.frame.state.script.removeNode(this.props.node);
     window.frame.setState({
-      nodeModels: window.frame.state.nodeModels.filter(nm => nm !== this.props.node),
+      script: window.frame.state.script,
     });
-    this.props.node.remove();
+    // this.props.node.remove();
     window.eventHandler.state = null;
     evt.preventDefault();
     evt.stopPropagation()

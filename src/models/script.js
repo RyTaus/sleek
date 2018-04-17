@@ -1,12 +1,13 @@
 import Variable from './variable';
 
 export default class Script {
-  constructor(name, daddy, type) {
+  constructor(name, parent, type) {
     this.name = name;
     this.nodes = [];
     this.variables = {}; // variable = { type, isConstant }
-    this.parent = daddy;
+    this.parent = parent;
     this.type = type;
+    this.imports = []; // List of scripts
   }
 
   /**
@@ -43,7 +44,7 @@ export default class Script {
    */
 
   addNode(node) {
-    this.state.nodeModels.push(node);
+    this.nodes.push(node);
   }
 
   removeNode(node) {
