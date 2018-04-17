@@ -8,7 +8,6 @@ class Node extends Component {
   constructor(props) {
     super(props);
 
-    this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
@@ -25,8 +24,8 @@ class Node extends Component {
     evt.preventDefault();
     evt.stopPropagation()
   }
+  
   // Move to back of list so that it is on top!
-
   handleMouseMove(evt) {
     const xDiff = this.coords.x - evt.pageX;
     const yDiff = this.coords.y - evt.pageY;
@@ -40,16 +39,6 @@ class Node extends Component {
 
     evt.preventDefault();
     evt.stopPropagation()
-  }
-
-  handleMouseUp(evt) {
-    // document.removeEventListener('mousemove', this.handleMouseMove);
-    // this.coords = {
-    //   x: 0,
-    //   y: 0,
-    // };
-    // evt.preventDefault();
-    // evt.stopPropagation()
   }
 
   handleContextMenu(evt) {

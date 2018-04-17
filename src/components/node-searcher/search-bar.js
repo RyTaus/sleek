@@ -15,6 +15,7 @@ export default class SearchBar extends Component {
     this.props.handleChange(evt);
   }
 
+
   render() {
     return (
       <input

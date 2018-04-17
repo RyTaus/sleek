@@ -60,6 +60,9 @@ class Frame extends Component {
   }
 
   handleContextMenu(evt) {
+    // if (!this.state.searcherActive) {
+    //   return;
+    // }
     this.setState({
       searcherActive: !this.state.searcherActive,
       searcherX: evt.pageX, // for now
@@ -109,6 +112,9 @@ class Frame extends Component {
   }
 
   handleScroll(evt) {
+    if (this.eventHandler.state !== null) {
+      return;
+    }
     const minZoom = 0.2;
     const maxZoom = 3;
     this.setState({

@@ -64,6 +64,12 @@ class NodeSearcher extends Component {
     evt.stopPropagation();
   }
 
+  componentWillReceiveProps(props) {
+    this.setState({
+      searchString: '',
+    });
+  }
+
   render() {
     if (!this.props.active || !this.state.active) {
       return null;

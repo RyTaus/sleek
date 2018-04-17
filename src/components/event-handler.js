@@ -1,6 +1,7 @@
+import React from 'react';
+
 import Node from './node';
 import Size from './../utils/sizes';
-import React from 'react';
 
 const EVENT = {
   DRAG_NODE: 'drag-node',
@@ -54,8 +55,6 @@ class EventHandler {
   }
 
   seedContextMenu(evt) {
-    console.log('seeding...');
-    console.log(this.inFocus);
     this.frame.setState({
       searcherActive: true,
       searcherX: evt.pageX - 200, // for now
