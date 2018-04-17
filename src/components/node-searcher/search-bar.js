@@ -12,9 +12,7 @@ export default class SearchBar extends Component {
   }
 
   handleChange(evt) {
-    this.setState({
-      value: evt.target.value,
-    });
+    this.props.handleChange(evt);
   }
 
   filter(data) {
@@ -28,7 +26,7 @@ export default class SearchBar extends Component {
 
   render() {
     return (
-      <input type="search" id="search" size="30" onChange={this.handleChange} value={this.state.value} placeholder="Search..." autoFocus />
+      <input type="search" id="search" size="30" onChange={this.handleChange} value={this.props.value} placeholder="Search..." autoFocus />
     );
   }
 }

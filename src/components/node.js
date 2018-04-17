@@ -37,14 +37,17 @@ class Node extends Component {
     window.frame.forceUpdate();
 
     evt.preventDefault();
+    evt.stopPropagation()
   }
 
-  handleMouseUp() {
+  handleMouseUp(evt) {
     document.removeEventListener('mousemove', this.handleMouseMove);
     this.coords = {
       x: 0,
       y: 0,
     };
+    evt.preventDefault();
+    evt.stopPropagation()
   }
 
   handleContextMenu(evt) {
