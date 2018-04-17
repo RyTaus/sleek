@@ -120,10 +120,12 @@ class Pin extends Component {
 
   renderLabel() {
     const { x, y } = this.getPosition();
+    const inOffsetFactor = this.props.pin.isConnected() ? 2 : 3;
     return (
       <text
-        x={x + (this.props.pin.direction === Direction.in ? Size.Pin.width * 3 : -Size.Pin.width * 2.5)}
+        x={x + (this.props.pin.direction === Direction.in ? Size.Pin.width * inOffsetFactor : -Size.Pin.width)}
         y={y + (Size.Pin.width * 0.75)}
+        textAnchor={this.props.pin.direction === Direction.in ? 'start' : 'end'}
       >
         {this.props.pin.name}
       </text>

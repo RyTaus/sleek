@@ -16,7 +16,7 @@ export default {
       b: 'Number',
     },
     out: {
-      sum: 'Number',
+      difference: 'Number',
     },
     compile: '({i0} - {i1})',
   },
@@ -26,7 +26,7 @@ export default {
       b: 'Number',
     },
     out: {
-      sum: 'Number',
+      quotient: 'Number',
     },
     compile: '({i0} / {i1})',
   },
@@ -36,7 +36,7 @@ export default {
       b: 'Number',
     },
     out: {
-      sum: 'Number',
+      product: 'Number',
     },
     compile: '({i0} * {i1})',
   },
