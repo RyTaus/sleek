@@ -19,7 +19,9 @@ class Node extends Component {
       x: evt.pageX,
       y: evt.pageY,
     };
-    document.addEventListener('mousemove', this.handleMouseMove);
+    // document.addEventListener('mousemove', this.handleMouseMove);
+    window.eventHandler.state = 'drag-node';
+    window.eventHandler.inFocus = this;
     evt.preventDefault();
     evt.stopPropagation()
   }
@@ -41,13 +43,13 @@ class Node extends Component {
   }
 
   handleMouseUp(evt) {
-    document.removeEventListener('mousemove', this.handleMouseMove);
-    this.coords = {
-      x: 0,
-      y: 0,
-    };
-    evt.preventDefault();
-    evt.stopPropagation()
+    // document.removeEventListener('mousemove', this.handleMouseMove);
+    // this.coords = {
+    //   x: 0,
+    //   y: 0,
+    // };
+    // evt.preventDefault();
+    // evt.stopPropagation()
   }
 
   handleContextMenu(evt) {
@@ -55,6 +57,7 @@ class Node extends Component {
       nodeModels: window.frame.state.nodeModels.filter(nm => nm !== this.props.node),
     });
     this.props.node.remove();
+    window.eventHandler.state = null;
     evt.preventDefault();
     evt.stopPropagation()
   }

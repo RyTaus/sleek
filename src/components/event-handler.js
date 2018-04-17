@@ -44,9 +44,12 @@ class EventHandler {
       evt.preventDefault();
       evt.stopPropagation();
     } else if (this.state === EVENT.DRAG_PIN) {
-      this.coords.x = -this.frame.state.panX + (((evt.pageX) - (window.innerWidth * ((100 - this.frame.state.widthRatio) / 100))) / this.frame.state.zoom); // TODO make relative to sidebar width
-      this.coords.y = -this.frame.state.panY + (evt.pageY / this.frame.state.zoom) - 20;
+      this.coords.x = -this.frame.state.panX + (evt.pageX / this.frame.state.zoom); // TODO make relative to sidebar width
+      this.coords.y = (-this.frame.state.panY + (evt.pageY / this.frame.state.zoom)) - 20;
       window.frame.forceUpdate();
+    } else if (this.state === EVENT.DRAG_NODE) {
+      console.log(this.inFocus);
+      this.inFocus.handleMouseMove(evt);
     }
   }
 
