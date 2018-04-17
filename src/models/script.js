@@ -1,8 +1,13 @@
 import Variable from './variable';
+import TYPE from './script-type';
+
+import { StringLit, BoolLit, NumLit, Map, Func } from './../type/type';
 
 /*
  * The window refs in here should just be throwing things, with the front end
  * parts picking them up and adding them to the console.
+ *
+ * List of types are all types available. Base script-type indicates to include all the default ones.
  */
 
 export default class Script {
@@ -13,17 +18,21 @@ export default class Script {
     this.parent = parent;
     this.type = type;
     this.imports = []; // List of scripts
+    this.types = [];
+    if (type === TYPE.BASE) {
+      this.types = [StringLit, BoolLit, NumLit, Map, Func];
+    }
   }
 
   /**
    *  Closure Stuff
    */
 
-  addVariable(name, type, isConstant) {
-    if (this.hasVariable(name)) {
+  addVariable(variable) {
+    if (this.hasVariable(variable.name)) {
       window.Console.log('cannot add variable');
     }
-    this.variables[name] = new Variable(name, type, isConstant);
+    this.variables[variable.name] = variable;
   }
 
   hasVariable(name) {

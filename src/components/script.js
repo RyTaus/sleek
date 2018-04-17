@@ -30,6 +30,15 @@ export default class Script extends Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
+
+    this.addVariable = this.addVariable.bind(this);
+  }
+
+  addVariable(variable) {
+    this.state.script.addVariable(variable);
+    this.setState({
+      script: this.state.script,
+    });
   }
 
   addNode(node) {
@@ -158,7 +167,13 @@ export default class Script extends Component {
             y={this.state.searcherY}
             handleChange={this.handleNodeSearcherSelect}
           />
-          <Sidebar frame={this} height={`${this.state.heightRatio}%`} width={`${100 - this.state.widthRatio}%`} />
+          <Sidebar
+            addVariable={this.addVariable}
+            variables={this.state.script.variables}
+            types={this.state.script.types}
+            height={`${this.state.heightRatio}%`}
+            width={`${100 - this.state.widthRatio}%`}
+          />
         </div>
       </div>
     );

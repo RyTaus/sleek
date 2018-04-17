@@ -16,7 +16,7 @@ class Project extends Component {
     };
     this.console = new Console({ height: '20%', project: this });
     window.Console = this.console;
-    this.scriptModel = new ScriptModel('test', 'null', ScriptType.BODY);
+    this.scriptModel = new ScriptModel('test', 'null', ScriptType.BASE);
   }
 
   render() {
