@@ -157,7 +157,6 @@ class Frame extends Component {
     return (
       <div>
         <div style={{ height: `${this.state.heightRatio}%` }}>
-          <Sidebar frame={this} height={`${this.state.heightRatio}%`} width={`${100 - this.state.widthRatio}%`} />
           <svg
             className="canvas"
             onContextMenu={this.handleContextMenu}
@@ -184,6 +183,7 @@ class Frame extends Component {
             y={this.state.searcherY}
             handleChange={this.handleNodeSearcherSelect}
           />
+          <Sidebar frame={this} height={`${this.state.heightRatio}%`} width={`${100 - this.state.widthRatio}%`} />
         </div>
       </div>
     );

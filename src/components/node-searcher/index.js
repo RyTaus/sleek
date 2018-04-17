@@ -49,7 +49,8 @@ class NodeSearcher extends Component {
 
   handleClick(item) {
     const parsed = parseNode(item.props.name, item.props.data);
-    const node = new NodeModel(parsed.name, this.props.x, this.props.y, parsed.inPins, parsed.outPins, parsed.compile)
+    const { panX, panY, zoom } = window.frame.state;
+    const node = new NodeModel(parsed.name, ((-panX + this.props.x) / zoom), ((-panY + this.props.y) / zoom), parsed.inPins, parsed.outPins, parsed.compile)
     this.props.handleChange(node);
   }
 
@@ -68,7 +69,7 @@ class NodeSearcher extends Component {
       return null;
     }
     return (
-      <div className="node-searcher container" onWheel={this.handleScroll} style={{ left: this.props.x, top: this.props.y}}>
+      <div className="node-searcher container" onWheel={this.handleScroll} style={{ left: this.props.x, top: this.props.y }}>
         <SearchBar handleChange={this.handleSearch} value={this.state.searchString} />
         <div className="items-container">
             {this.getOptions()}
