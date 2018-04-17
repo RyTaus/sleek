@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 
-import File from './file';
-import Frame from './frames/frame';
+import Script from './script';
 import Console from './console/console';
 import Header from './header';
 
-import Script from './../models/script';
+import ScriptModel from './../models/script';
 import ScriptType from './../models/script-type';
 
 
@@ -17,16 +16,14 @@ class Project extends Component {
     };
     this.console = new Console({ height: '20%', project: this });
     window.Console = this.console;
-    this.files = [new File(), new File()];
-    console.log(this.files);
-    this.script = new Script('test', 'null', ScriptType.BODY);
+    this.scriptModel = new ScriptModel('test', 'null', ScriptType.BODY);
   }
 
   render() {
     return (
       <div>
         <Header tabs={this.files} />
-        <Frame script={this.script} />
+        <Script script={this.scriptModel} />
         {this.console.render()}
       </div>
     );

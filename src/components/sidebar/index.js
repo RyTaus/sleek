@@ -18,4 +18,4 @@ class Sidebar extends Component {
   }
 }
 
-// export default Sidebar;
+export default Sidebar;

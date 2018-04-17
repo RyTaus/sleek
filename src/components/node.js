@@ -47,17 +47,14 @@ class Node extends Component {
     window.frame.setState({
       script: window.frame.state.script,
     });
-    // this.props.node.remove();
     window.eventHandler.state = null;
     evt.preventDefault();
-    evt.stopPropagation()
+    evt.stopPropagation();
   }
 
   render() {
     const { node } = this.props;
     const { x, y } = node;
-    // const x = Math.round(node.x / 10) * 10;
-    // const y = Math.round(node.y / 10) * 10;
     return (
       <g>
         <rect

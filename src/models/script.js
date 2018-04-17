@@ -1,5 +1,10 @@
 import Variable from './variable';
 
+/*
+ * The window refs in here should just be throwing things, with the front end
+ * parts picking them up and adding them to the console.
+ */
+
 export default class Script {
   constructor(name, parent, type) {
     this.name = name;

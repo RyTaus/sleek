@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 
-import { Node } from './../node';
-import EventHandler from './../event-handler/index';
-import Sidebar from './sidebar';
-import NodeSearcher from './../node-searcher/index';
+import { Node } from './node';
+import EventHandler from './event-handler/index';
+import Sidebar from './sidebar/index';
+import NodeSearcher from './node-searcher/index';
 
 
-class Frame extends Component {
+export default class Script extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -164,5 +164,3 @@ class Frame extends Component {
     );
   }
 }
-
-export default Frame;
