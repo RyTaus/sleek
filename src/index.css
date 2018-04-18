@@ -16,6 +16,15 @@ input {
   border: 1px solid rgb(169, 169, 169);
 }
 
+.input-test {
+   overflow: hidden;
+   text-overflow: ellipsis;
+   -webkit-box-orient: vertical;
+   -webkit-line-clamp: 1em; /* number of lines to show */
+   line-height: 1em;        /* fallback */
+   max-height: 1em;       /* fallback */
+}
+
 rect {
   /* rx: 5; */
   /* ry: 5; */

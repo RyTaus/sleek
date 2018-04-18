@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 import NodeModel from './../../models/node';
 
-import nodes from './../../nodes/index';
-import parseNode from './../../nodes/parser';
+import nodes from './../../library/index';
+import parseNode from './../../library/parser';
 
 import SearchBar from './search-bar';
 import ItemGroup from './item-group';

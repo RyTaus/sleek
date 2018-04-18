@@ -138,13 +138,13 @@ class Pin extends Component {
 
     if (pin.type.name === 'Number' || pin.type.name === 'String') {
       return (
-        <foreignObject x={x} y={y} >
+        <foreignObject x={x} y={y} width="50" height="20" style={{ position: 'fixed' }} >
           <input
             className="pin"
             type="text"
             onMouseUp={this.onMouseUp}
             onChange={this.onChange}
-            size="1"
+            size={1.5}
             style={{ 'border-color': pin.type.color }}
             value={pin.value}
           />
@@ -152,7 +152,7 @@ class Pin extends Component {
       );
     } else if (pin.type.name === 'Boolean') {
       return (
-        <foreignObject x={x} y={y} >
+        <foreignObject x={x} y={y} width="60" height="20">
           <input
             className="pin checkbox check-input"
             type="checkbox"
@@ -164,6 +164,8 @@ class Pin extends Component {
         </foreignObject>
       );
     }
+
+    return null;
   }
 
   renderValue() {
