@@ -8,7 +8,7 @@ export default {
     out: {
       sum: 'Number',
     },
-    compile: '({i0} + {i1})',
+    compile: '({a} + {b})',
   },
   subtract: {
     in: {
@@ -18,7 +18,7 @@ export default {
     out: {
       difference: 'Number',
     },
-    compile: '({i0} - {i1})',
+    compile: '({a} - {b})',
   },
   division: {
     in: {
@@ -28,7 +28,7 @@ export default {
     out: {
       quotient: 'Number',
     },
-    compile: '({i0} / {i1})',
+    compile: '({a} / {b})',
   },
   multiply: {
     in: {
@@ -38,7 +38,7 @@ export default {
     out: {
       product: 'Number',
     },
-    compile: '({i0} * {i1})',
+    compile: '({a} * {b})',
   },
   greaterThan: {
     in: {
@@ -48,6 +48,6 @@ export default {
     out: {
       res: 'boolean',
     },
-    compile: '({i0} > {i1})',
+    compile: '({a} > {b})',
   },
 };

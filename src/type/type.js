@@ -3,6 +3,7 @@ export const NUMBER = 'Number';
 export const STRING = 'String';
 export const BOOLEAN = 'Boolean';
 export const LIST = 'List';
+export const LABEL = 'List';
 export const MAP = 'Map';
 export const STRUCT = 'Struct';
 export const FUNC = 'Func';
@@ -54,6 +55,13 @@ export class BoolLit extends Type {
   constructor() {
     super(BOOLEAN, 'red');
     this.defaultValue = false;
+  }
+}
+
+export class Label extends Type {
+  constructor() {
+    super(LABEL, 'gray');
+    this.defaultValue = 'None';
   }
 }
 

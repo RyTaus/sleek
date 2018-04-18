@@ -50,8 +50,6 @@ class Pin extends Component {
     evt.preventDefault();
     evt.stopPropagation();
     const { pin } = this.props;
-    console.log(pin);
-    // pin.removeConnection(0);
 
     while (pin.isConnected()) {
       pin.removeConnection(pin.connections[0]);

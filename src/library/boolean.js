@@ -8,7 +8,7 @@ export default {
     out: {
       res: 'boolean',
     },
-    compile: '({i0} && {i1})',
+    compile: '({a} && {b})',
   },
   or: {
     in: {
@@ -18,7 +18,7 @@ export default {
     out: {
       res: 'boolean',
     },
-    compile: '({i0} || {i1})',
+    compile: '({a} || {b})',
   },
   not: {
     in: {
@@ -27,6 +27,6 @@ export default {
     out: {
       '!a': 'boolean',
     },
-    compile: '!({i0})',
+    compile: '!({a})',
   },
 };

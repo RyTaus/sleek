@@ -1,4 +1,22 @@
 export default {
+  start: {
+    in: {
+    },
+    out: {
+      next: 'flow',
+    },
+    compile: '',
+  },
+  print: {
+    in: {
+      ' ': 'flow',
+      value: 'string',
+    },
+    out: {
+      next: 'flow',
+    },
+    compile: 'console.log({value})',
+  },
   if: {
     in: {
       ' ': 'flow',
@@ -8,7 +26,7 @@ export default {
       true: 'flow',
       false: 'flow',
     },
-    compile: 'if ({i1}) { {o0} } else { {o1} }',
+    compile: 'if ({condition}) { {true} } else { {false} }',
   },
   while: {
     in: {
@@ -19,17 +37,7 @@ export default {
       body: 'flow',
       then: 'flow',
     },
-    compile: 'while ({i1}) { {o1} }',
-  },
-  print: {
-    in: {
-      ' ': 'flow',
-      value: 'string',
-    },
-    out: {
-      next: 'flow',
-    },
-    compile: 'console.log({i1})',
+    compile: 'while ({condition}) { {body} }',
   },
   break: {
     in: {
@@ -38,12 +46,5 @@ export default {
     out: {
     },
     compile: 'break',
-  },
-  start: {
-    in: {},
-    out: {
-      next: 'flow',
-    },
-    compile: '',
   },
 };

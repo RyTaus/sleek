@@ -42,7 +42,6 @@ class EventHandler {
       this.coords.y = (-this.frame.state.panY + (evt.pageY / this.frame.state.zoom)) - 20;
       window.frame.forceUpdate();
     } else if (this.state === EVENT.DRAG_NODE) {
-      console.log(this.inFocus);
       this.inFocus.handleMouseMove(evt);
     }
   }
@@ -92,7 +91,6 @@ class EventHandler {
 
   onPinUp(evt, component) {
     if (this.state === EVENT.DRAG_PIN) {
-      console.log('up');
       const a = this.inFocus.props.pin;
       const b = component.props.pin;
       try {
