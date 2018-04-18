@@ -15,7 +15,7 @@ class Header extends Component {
           <li><button> Save </button></li>
           <li><button> Load </button></li>
           <li><button> Compile </button></li>
-          <li><button> Generate </button></li>
+          <li><button onClick={this.props.generate}> Generate </button></li>
         </ul>
       </div>
     );

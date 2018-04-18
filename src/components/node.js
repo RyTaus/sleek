@@ -55,6 +55,7 @@ class Node extends Component {
   render() {
     const { node } = this.props;
     const { x, y } = node;
+    const bodyHeight = (Math.max(Object.keys(node.inPins).length, Object.keys(node.outPins).length) * Size.Pin.perPin)
     return (
       <g>
         <rect
@@ -62,7 +63,7 @@ class Node extends Component {
           x={x}
           y={y}
           width={Size.Node.width}
-          height={Size.Node.topLabel + Size.Node.botMargin + (Math.max(Object.keys(node.inPins).length, Object.keys(node.outPins).length) * Size.Pin.perPin)}
+          height={Size.Node.topLabel + Size.Node.botMargin + bodyHeight}
           onMouseDown={this.handleMouseDown}
           onMouseUp={this.handleMouseUp}
           onDoubleClick={this.handleDoubleClick}

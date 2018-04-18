@@ -19,12 +19,11 @@ class Sidebar extends Component {
   }
 
   render() {
-    console.log(this.props.variables);
     return (
       <div className="sidebar" style={{ width: this.props.width, height: this.props.height }}>
         <AddVariable types={this.props.types} handleSubmit={this.handleAddVariableSumbit} />
         <div> -------------- </div>
-        Variables
+        Variables:
         {Object.keys(this.props.variables).map(key => (<div style={{ color: this.props.variables[key].type.color}}> {key} </div>))}
         <div> -------------- </div>
       </div>

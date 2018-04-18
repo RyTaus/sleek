@@ -17,12 +17,18 @@ class Project extends Component {
     this.console = new Console({ height: '20%', project: this });
     window.Console = this.console;
     this.scriptModel = new ScriptModel('test', 'null', ScriptType.BASE);
+
+    this.generate = this.generate.bind(this);
+  }
+
+  generate() {
+    window.Console.log(this.scriptModel.generate());
   }
 
   render() {
     return (
       <div>
-        <Header tabs={this.files} />
+        <Header tabs={this.files} generate={this.generate} />
         <Script script={this.scriptModel} />
         {this.console.render()}
       </div>

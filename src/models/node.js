@@ -12,17 +12,23 @@ export default class Node {
     this.init();
   }
 
-  compile() {
+  generate() {
     let str = this.compileString;
-    console.log(this.inPins['a'].compile());
-    // str = str.replace(new RegExp(`{i${0}}`, 'g'), this.inPins['a'].connections[0].compile());
+    // console.log(str);
     Object.keys(this.inPins).forEach((key, i) => {
-      const replacement = this.inPins[key].compile();
-      str = str.replace(new RegExp(`{i${i}}`, 'g'), replacement);
+      if (str.includes(`{i${i}}`)) {
+        const replacement = this.inPins[key].generate();
+        str = str.replace(new RegExp(`{i${i}}`, 'g'), replacement);
+      }
     });
-    // Object.keys(this.outPins).forEach((key, i) => {
-    //   str = str.replace(new RegExp(`{o${i}}`, 'g'), this.outPins[key].compile());
-    // });
+    Object.keys(this.outPins).filter(key => this.outPins[key].type.name === 'Flow').forEach((key, i) => {
+      if (this.outPins[key].connections[0]) {
+        const replacement = this.outPins[key].connections[0].node.generate();
+        str = str.replace(new RegExp(`{o${i}}`, 'g'), replacement);
+      } else {
+        str = str.replace(new RegExp(`{o${i}}`, 'g'), '');
+      }
+    });
     return str;
   }
 
@@ -36,7 +42,11 @@ export default class Node {
   }
 
   getNextNode() {
-    return this.outPins.next;
+    try {
+      return this.outPins.next.connections[0].node;
+    } catch (e) {
+      return null;
+    }
   }
 
   init() {

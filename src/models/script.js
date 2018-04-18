@@ -65,4 +65,21 @@ export default class Script {
     node.remove();
     this.nodes = this.nodes.filter(n => n !== node);
   }
+
+  /**
+   *  generation
+   */
+
+  generate() {
+    let string = '';
+    const starts = this.nodes.filter(node => node.name === 'start').sort(node => node.y).reverse();
+    starts.forEach((start) => {
+      let current = start;
+      while (current) {
+        string += current.generate();
+        current = current.getNextNode();
+      }
+    });
+    return string;
+  }
 }

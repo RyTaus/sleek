@@ -13,7 +13,6 @@ export default class ItemGroup extends Component {
   }
 
   renderItems() {
-    console.log(this.props);
     return Object.keys(this.props.data)
       .filter(key => key.includes(this.props.searcher.state.searchString))
       .map(key => (

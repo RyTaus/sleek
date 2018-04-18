@@ -14,6 +14,7 @@ export class Type {
     this.name = name;
     this.color = color;
     this.properties = [];
+    this.defaultValue = null;
   }
 
   addProperty(prop) {
@@ -38,18 +39,21 @@ export class Flow extends Type {
 export class StringLit extends Type {
   constructor() {
     super(STRING, 'blue');
+    this.defaultValue = '';
   }
 }
 
 export class NumLit extends Type {
   constructor() {
     super(NUMBER, 'green');
+    this.defaultValue = 0;
   }
 }
 
 export class BoolLit extends Type {
   constructor() {
     super(BOOLEAN, 'red');
+    this.defaultValue = false;
   }
 }
 

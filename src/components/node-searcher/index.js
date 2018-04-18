@@ -2,13 +2,10 @@ import React, { Component } from 'react';
 
 import NodeModel from './../../models/node';
 
-import Size from './../../utils/sizes';
-
 import nodes from './../../nodes/index';
 import parseNode from './../../nodes/parser';
 
 import SearchBar from './search-bar';
-import Item from './item';
 import ItemGroup from './item-group';
 
 import './style.css';
@@ -36,8 +33,7 @@ class NodeSearcher extends Component {
   }
 
   getOptionGroup(name, data) {
-    const x = this.name;
-    return (<ItemGroup handleClick={this.handleClick} data={data} name={name} searcher={this}/>);
+    return (<ItemGroup handleClick={this.handleClick} data={data} name={name} searcher={this} />);
   }
 
   getOptions() {
@@ -50,7 +46,9 @@ class NodeSearcher extends Component {
   handleClick(item) {
     const parsed = parseNode(item.props.name, item.props.data);
     const { panX, panY, zoom } = window.frame.state;
-    const node = new NodeModel(parsed.name, ((-panX + this.props.x) / zoom), ((-panY + this.props.y) / zoom), parsed.inPins, parsed.outPins, parsed.compile)
+    const x = ((-panX + this.props.x) / zoom);
+    const y = ((-panY + this.props.y) / zoom);
+    const node = new NodeModel(parsed.name, x, y, parsed.inPins, parsed.outPins, parsed.compile);
     this.props.handleChange(node);
   }
 

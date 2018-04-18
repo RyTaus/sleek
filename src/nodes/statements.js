@@ -8,7 +8,7 @@ export default {
       true: 'flow',
       false: 'flow',
     },
-    compile: 'if ({i1}) { {o1} } else { {o2} } \n {o3}',
+    compile: 'if ({i1}) { {o0} } else { {o1} }',
   },
   while: {
     in: {
@@ -20,6 +20,16 @@ export default {
       then: 'flow',
     },
     compile: 'while ({i1}) { {o1} }',
+  },
+  print: {
+    in: {
+      ' ': 'flow',
+      value: 'string',
+    },
+    out: {
+      next: 'flow',
+    },
+    compile: 'console.log({i1})',
   },
   break: {
     in: {
@@ -34,6 +44,6 @@ export default {
     out: {
       next: 'flow',
     },
-    compile: '{o1}',
+    compile: '/* */',
   },
 };

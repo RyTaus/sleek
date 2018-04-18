@@ -11,7 +11,7 @@ export default class Pin {
     this.direction = direction;
     this.index = index;
     this.connections = [];
-    this.value = '';
+    this.value = this.type.defaultValue;
   }
 
   getPosition() {
@@ -39,7 +39,6 @@ export default class Pin {
   }
 
   canConnect(pin) {
-    console.log(this.direction, pin.direction);
     if (
       this.connections.length < this.maxConnections
       && pin.connections.length < pin.maxConnections
@@ -57,10 +56,6 @@ export default class Pin {
 
   renderConnections() {
     const { x, y } = this.getPosition();
-    // const { pin: pinModel } = this.props;
-    // if (this.direction === Direction.in) {
-    //   return null;
-    // }
     return (
       this.connections.map((pin) => {
         const other = pin.getPosition();
@@ -79,10 +74,6 @@ export default class Pin {
   }
 
   removeConnection(pin) {
-    console.log('----------');
-    // const pin = this.connections[index];
-    console.log(this.connections);
-    console.log(this.connections.filter(p => p !== pin));
     pin.connections = pin.connections.filter(p => p !== this);
     this.connections = this.connections.filter(p => p !== pin);
 
@@ -104,13 +95,14 @@ export default class Pin {
     return this;
   }
 
-  compile() {
+  generateFromValue() {
+    return this.type.name === 'String' ? `'${this.value}'` : this.value;
+  }
+
+  generate() {
     if (this.isConnected()) {
-      // console.log('----------');
-      // console.log(this.node);
-      // console.log(this.connections[0].node);
-      return this.connections[0].node.compile();
+      return this.connections[0].node.generate();
     }
-    return this.value;
+    return this.generateFromValue();
   }
 }

@@ -25,7 +25,6 @@ export default class SearchBar extends Component {
         onChange={this.handleChange}
         value={this.props.value}
         placeholder="Search..."
-        autoFocus
       />
     );
   }
