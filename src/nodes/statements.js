@@ -44,6 +44,6 @@ export default {
     out: {
       next: 'flow',
     },
-    compile: '/* */',
+    compile: '',
   },
 };

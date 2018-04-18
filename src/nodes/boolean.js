@@ -27,6 +27,6 @@ export default {
     out: {
       '!a': 'boolean',
     },
-    compile: '({i0} * {i1})',
+    compile: '!({i0})',
   },
 };
