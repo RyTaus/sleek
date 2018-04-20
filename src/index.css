@@ -26,8 +26,8 @@ input {
 }
 
 rect {
-  /* rx: 5; */
-  /* ry: 5; */
+  rx: 6;
+  ry: 6;
 }
 
 .grid {

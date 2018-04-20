@@ -1,7 +1,6 @@
 import React from 'react';
 
 import Direction from './../utils/direction';
-import PinType from './../utils/pin-type';
 import Size from './../utils/sizes';
 
 export default class Pin {
@@ -12,6 +11,11 @@ export default class Pin {
     this.index = index;
     this.connections = [];
     this.value = this.type.defaultValue;
+
+    this.maxConnections = this.direction === Direction.in ? 1 : Infinity;
+    if (this.type.name === 'Flow') {
+      this.maxConnections = this.direction === Direction.in ? Infinity : 1;
+    }
   }
 
   getPosition() {
@@ -27,7 +31,7 @@ export default class Pin {
     this.node = node;
 
     this.maxConnections = this.direction === Direction.in ? 1 : Infinity;
-    if (this.pinType === PinType.flow) {
+    if (this.type.name === 'Flow') {
       this.maxConnections = this.direction === Direction.in ? Infinity : 1;
     }
 
@@ -38,13 +42,22 @@ export default class Pin {
     return this.connections.length !== 0;
   }
 
+  generateBlock() {
+    if (this.isConnected()) {
+      return this.connections[0].node.generateBlock();
+    }
+    return '';
+  }
+
   canConnect(pin) {
+    console.log(this.getType());
+    console.log(pin.getType());
     if (
       this.connections.length < this.maxConnections
       && pin.connections.length < pin.maxConnections
       && this.direction !== pin.direction
       && !this.connections.includes(pin)
-      && this.type.equals(pin.type)
+      && this.getType().equals(pin.getType())
     ) {
       return true;
     } else if (this === pin) {
@@ -71,6 +84,10 @@ export default class Pin {
         />);
       })
     );
+  }
+
+  getType() {
+    return this.type.getType(this.node);
   }
 
   removeConnection(pin) {

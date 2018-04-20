@@ -1,4 +1,3 @@
-import Variable from './variable';
 import TYPE from './script-type';
 
 import { StringLit, BoolLit, NumLit, Map, Func } from './../type/type';
@@ -74,11 +73,12 @@ export default class Script {
     let string = '';
     const starts = this.nodes.filter(node => node.name === 'start').sort(node => node.y).reverse();
     starts.forEach((start) => {
+      string += start.generateBlock();
       let current = start;
-      while (current) {
-        string += current.generate();
-        current = current.getNextNode();
-      }
+      // while (current) {
+      //   string += current.generate();
+      //   current = current.getNextNode();
+      // }
     });
     return string;
   }

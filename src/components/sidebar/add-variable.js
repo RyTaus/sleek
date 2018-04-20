@@ -26,7 +26,7 @@ export default class AddVariable extends Component {
   }
 
   handleTypeChange(evt) {
-    const index = this.props.types.map(t => t.name).indexOf(evt.target.value)
+    const index = this.props.types.map(t => t.name).indexOf(evt.target.value);
     this.setState({
       type: index,
     });

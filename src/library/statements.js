@@ -1,13 +1,17 @@
+import NodeFactory from './node-factory';
+
+import { Flow, BoolLit } from './../type/type';
+
 export default {
-  start: {
+  start: new NodeFactory('start').pureData({
     in: {
     },
     out: {
       next: 'flow',
     },
     compile: '',
-  },
-  print: {
+  }),
+  print: new NodeFactory('print').pureData({
     in: {
       ' ': 'flow',
       value: 'string',
@@ -16,29 +20,23 @@ export default {
       next: 'flow',
     },
     compile: 'console.log({value})',
-  },
-  if: {
-    in: {
-      ' ': 'flow',
-      condition: 'boolean',
-    },
-    out: {
-      true: 'flow',
-      false: 'flow',
-    },
-    compile: 'if ({condition}) { {true} } else { {false} }',
-  },
-  while: {
-    in: {
-      ' ': 'flow',
-      condition: 'boolean',
-    },
-    out: {
-      body: 'flow',
-      then: 'flow',
-    },
-    compile: 'while ({condition}) { {body} }',
-  },
+  }),
+  if: new NodeFactory('if')
+    .addPin('in', ' ', new Flow())
+    .addPin('in', 'condition', new BoolLit())
+    .addPin('out', 'true', new Flow())
+    .addPin('out', 'false', new Flow())
+    .generateFunction((node) => {
+      return `if (${node.inPins.condition.generate()}) { ${node.outPins.true.generateBlock()} } else { ${node.outPins.false.generateBlock()} }`;
+    }),
+  while: new NodeFactory('while')
+    .addPin('in', ' ', new Flow())
+    .addPin('in', 'condition', new BoolLit())
+    .addPin('out', 'body', new Flow())
+    .addPin('out', 'next', new Flow())
+    .generateFunction((node) => {
+      return `if (${node.inPins.condition.generate()}) { ${node.outPins.body.generateBlock()} }`;
+    }),
   break: {
     in: {
       ' ': 'flow',

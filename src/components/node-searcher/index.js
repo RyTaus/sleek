@@ -19,6 +19,7 @@ class NodeSearcher extends Component {
       seed: null,
       searchString: '',
     }
+    console.log(nodes);
     this.name = 'node-searcher';
     this.handleSearch = this.handleSearch.bind(this);
     this.handleClick = this.handleClick.bind(this);
@@ -44,11 +45,14 @@ class NodeSearcher extends Component {
   }
 
   handleClick(item) {
-    const parsed = parseNode(item.props.name, item.props.data);
+    // const parsed = parseNode(item.props.name, item.props.data);
+    console.log(item);
     const { panX, panY, zoom } = window.frame.state;
     const x = ((-panX + this.props.x) / zoom);
     const y = ((-panY + this.props.y) / zoom);
-    const node = new NodeModel(parsed.name, x, y, parsed.inPins, parsed.outPins, parsed.compile);
+
+    // const node = new NodeModel(parsed.name, x, y, parsed.inPins, parsed.outPins, parsed.compile);
+    const node = item.props.data.export(x, y);
     this.props.handleChange(node);
   }
 

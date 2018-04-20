@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import Direction from './../utils/direction';
-import PinType from './../utils/pin-type';
 import Size from './../utils/sizes';
 import { Type } from './../type/type';
 
@@ -143,7 +142,7 @@ class Pin extends Component {
             onMouseUp={this.onMouseUp}
             onChange={this.onChange}
             size={1.5}
-            style={{ 'border-color': pin.type.color }}
+            style={{ borderColor: pin.type.color }}
             value={pin.value}
           />
         </foreignObject>
@@ -159,6 +158,29 @@ class Pin extends Component {
             style={{ margin: 0, zoom: 1.8, outline: pin.type.color }}
             checked={pin.value}
           />
+        </foreignObject>
+      );
+    } else if (pin.type.name === 'Type') {
+      const script = window.frame.state.script;
+      return (
+        <foreignObject x={x} y={y} width="60" height="20">
+          <select
+            className="pin select check-input"
+            type="checkbox"
+            onMouseUp={this.onMouseUp}
+            onChange={((evt) => {
+              const index = script.types.map(t => t.name).indexOf(evt.target.value);
+              pin.value = new script.types[index]();
+              console.log(pin.value);
+              window.frame.forceUpdate();
+            }).bind(this)}
+            style={{ width: '50px', outline: pin.type.color }}
+            value={pin.value}
+          >
+
+            {script.types.map((type, i) => (<option className={i} > {type.name} </option>))}
+          </select>
+
         </foreignObject>
       );
     }
@@ -190,6 +212,7 @@ class Pin extends Component {
   }
 
   render() {
+    console.log(this.props.pin);
     return (
       <g>
         {this.renderPin()}

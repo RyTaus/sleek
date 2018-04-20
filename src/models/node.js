@@ -1,34 +1,15 @@
 import Direction from './../utils/direction';
 
 export default class Node {
-  constructor(name, x, y, inPins, outPins, compile) {
+  constructor(name, x, y, inPins, outPins, gen) {
     this.name = name;
     this.x = x;
     this.y = y;
     this.inPins = inPins;
     this.outPins = outPins;
-    this.compileString = compile;
+    this.generate = () => gen(this);
 
     this.init();
-  }
-
-  generate() {
-    let str = this.compileString;
-    Object.keys(this.inPins).forEach((key, i) => {
-      if (str.includes(`{${key}}`)) {
-        const replacement = this.inPins[key].generate();
-        str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
-      }
-    });
-    Object.keys(this.outPins).filter(key => this.outPins[key].type.name === 'Flow').forEach((key, i) => {
-      if (this.outPins[key].connections[0]) {
-        const replacement = this.outPins[key].connections[0].node.generate();
-        str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
-      } else {
-        str = str.replace(new RegExp(`{${key}}`, 'g'), '');
-      }
-    });
-    return str;
   }
 
   remove() {
@@ -40,12 +21,29 @@ export default class Node {
     });
   }
 
+  getPinType(pin) {
+    if (pin.type.name.includes('of')) {
+      this.getRelativePinType(pin);
+    }
+    return pin.type;
+  }
+
   getNextNode() {
     try {
       return this.outPins.next.connections[0].node;
     } catch (e) {
       return null;
     }
+  }
+
+  generateBlock() {
+    let string = '';
+    let current = this;
+    while (current) {
+      string += current.generate();
+      current = current.getNextNode();
+    }
+    return string;
   }
 
   init() {

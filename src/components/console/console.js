@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import util from 'util';
+
 class Console extends Component {
   constructor(props) {
     super(props);
@@ -17,7 +19,7 @@ class Console extends Component {
   render() {
     return (
       <div className="console" style={{ height: this.props.height }}>
-        {this.state.output.map((str, i) => (<div> {str} </div>))}
+        {this.state.output.map((str, i) => (<div> {util.inspect(str)} </div>))}
       </div>
     );
   }
