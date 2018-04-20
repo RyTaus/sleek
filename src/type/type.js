@@ -17,6 +17,9 @@ export const ELEM_OF = 'elementType';
 export const PROP_OF = 'PropOf';
 export const KEY_OF = 'keyType';
 export const VAL_OF = 'valType';
+
+export const LIST_OF = 'listOf';
+
 export const INPUT = 'Input';
 
 
@@ -53,27 +56,9 @@ export class T {
 }
 
 export class Input extends T {
-  constructor() {
+  constructor(possible) {
     super(INPUT, 'gray');
-  }
-}
-
-export class Relative extends T {
-  constructor(pinName, of) {
-    super(RELATIVE, 'coral');
-    this.relativeName = pinName;
-    this.type = of;
-  }
-
-  getType(node) {
-    console.log('info: ');
-    console.log(node.inPins, this.relativeName, node.inPins[this.relativeName], node.inPins[this.relativeName].type);
-    if (this.type === SAME) {
-      return node.inPins[this.relativeName].getType(node);
-    } else if (this.type === VALUE) {
-      return node.inPins[this.relativeName].value;
-    }
-    return node.inPins[this.relativeName].getType(node)[this.type];
+    this.possible = possible;
   }
 }
 
@@ -173,6 +158,37 @@ export class Type extends T {
 
   toString() {
     return this.name;
+  }
+}
+
+export class Relative extends T {
+  constructor(pinName, of, value) {
+    super(RELATIVE, 'coral');
+    this.relativeName = pinName;
+    this.type = of;
+    this.isValue = value;
+  }
+
+  getType(node) {
+    if (this.isValue) {
+      const type = node.inPins[this.relativeName].value;
+      if (this.type === LIST_OF) {
+        return new List(type);
+      }
+    }
+    if (this.type === SAME) {
+      return node.inPins[this.relativeName].getType();
+    } else if (this.type === VALUE) {
+      return node.inPins[this.relativeName].value;
+    } else if (this.type === LIST_OF) {
+      // console.log();
+      return new List(node.inPins[this.relativeName].getType());
+    }
+    const type = node.inPins[this.relativeName].getType()[this.type];
+    if (!type) {
+      return new T('UNKNOWN', 'black');
+    }
+    return type;
   }
 }
 

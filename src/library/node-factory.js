@@ -70,7 +70,7 @@ export default class NodeFactory {
     this.out.forEach((pin, i) => {
       outPins[pin.name] = new Pin(pin.name, pin.type, pin.direction, i);
     });
-    console.log(this.genFun);
+    // console.log(this.genFun);
     return new Node(this.name, x, y, inPins, outPins, this.genFun);
   }
 }

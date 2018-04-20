@@ -87,8 +87,6 @@ export default class Pin {
   }
 
   getType() {
-    // console.log(this.name);
-    console.log(this.type);
     if (this.type.name === 'Input') {
       if (!this.isConnected()) {
         return this.type;

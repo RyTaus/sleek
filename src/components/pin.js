@@ -30,7 +30,7 @@ class Pin extends Component {
   }
 
   onChange(evt) {
-    if (this.props.pin.type.name === 'Number') {
+    if (this.props.pin.getType().name === 'Number') {
       if (/^-?\d*\.?\d*$/.test(evt.target.value)) {
         this.props.pin.value = evt.target.value;
       }
@@ -73,7 +73,7 @@ class Pin extends Component {
           x2={other.x + offset}
           y2={other.y + offset}
           strokeWidth="4"
-          stroke={pin.type.color}
+          stroke={pin.getType().color}
         />);
       })
     );
@@ -104,12 +104,12 @@ class Pin extends Component {
       x2={window.eventHandler.x + offset}
       y2={window.eventHandler.y + offset}
       strokeWidth="4"
-      stroke={this.props.pin.type.color}
+      stroke={this.props.pin.getType().color}
     />);
   }
 
   renderPin() {
-    if (this.props.pin.type.name === 'Flow') {
+    if (this.props.pin.getType().name === 'Flow') {
       return this.renderFlow();
     }
     return this.renderValue();
@@ -132,8 +132,8 @@ class Pin extends Component {
   renderInput() {
     const { x, y } = this.getPosition();
     const { pin } = this.props;
-
-    if (pin.type.name === 'Number' || pin.type.name === 'String') {
+    const type = pin.getType();
+    if (type.name === 'Number' || type.name === 'String') {
       return (
         <foreignObject x={x} y={y} width="50" height="20" style={{ position: 'fixed' }} >
           <input
@@ -147,7 +147,7 @@ class Pin extends Component {
           />
         </foreignObject>
       );
-    } else if (pin.type.name === 'Boolean') {
+    } else if (pin.getType().name === 'Boolean') {
       return (
         <foreignObject x={x} y={y} width="60" height="20">
           <input
@@ -155,12 +155,12 @@ class Pin extends Component {
             type="checkbox"
             onMouseUp={this.onMouseUp}
             onChange={((evt) => {pin.value = evt.target.checked; window.frame.forceUpdate();}).bind(this)}
-            style={{ margin: 0, zoom: 1.8, outline: pin.type.color }}
+            style={{ margin: 0, zoom: 1.8, outline: type.color }}
             checked={pin.value}
           />
         </foreignObject>
       );
-    } else if (pin.type.name === 'Type') {
+    } else if (type.name === 'Type') {
       const script = window.frame.state.script;
       return (
         <foreignObject x={x} y={y} width="60" height="20">
@@ -171,14 +171,13 @@ class Pin extends Component {
             onChange={((evt) => {
               const index = script.types.map(t => t.name).indexOf(evt.target.value);
               pin.value = new script.types[index]();
-              console.log(pin.value);
               window.frame.forceUpdate();
             }).bind(this)}
-            style={{ width: '50px', outline: pin.type.color }}
+            style={{ width: '50px', outline: type.color }}
             value={pin.value}
           >
 
-            {script.types.map((type, i) => (<option className={i} > {type.name} </option>))}
+            {script.types.map((t, i) => (<option className={i} > {t.name} </option>))}
           </select>
 
         </foreignObject>
@@ -199,7 +198,7 @@ class Pin extends Component {
   renderBox() {
     const { pin } = this.props;
     const { x, y } = this.getPosition();
-    
+
     return (
       <g>
         <rect
@@ -219,7 +218,6 @@ class Pin extends Component {
 
 
   render() {
-    console.log(this.props.pin);
     return (
       <g>
         {this.renderPin()}
