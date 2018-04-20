@@ -57,7 +57,7 @@ export default class Pin {
       && pin.connections.length < pin.maxConnections
       && this.direction !== pin.direction
       && !this.connections.includes(pin)
-      && this.getType().equals(pin.getType())
+      && this.getType().isCompatible(pin.getType())
     ) {
       return true;
     } else if (this === pin) {
@@ -87,6 +87,14 @@ export default class Pin {
   }
 
   getType() {
+    // console.log(this.name);
+    console.log(this.type);
+    if (this.type.name === 'Input') {
+      if (!this.isConnected()) {
+        return this.type;
+      }
+      return this.connections[0].getType();
+    }
     return this.type.getType(this.node);
   }
 

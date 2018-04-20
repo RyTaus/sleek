@@ -185,7 +185,7 @@ class Pin extends Component {
       );
     }
 
-    return null;
+    return this.renderBox();
   }
 
   renderValue() {
@@ -193,14 +193,20 @@ class Pin extends Component {
     if (!pin.isConnected() && pin.direction === Direction.in) {
       return this.renderInput();
     }
+    return this.renderBox();
+  }
+
+  renderBox() {
+    const { pin } = this.props;
     const { x, y } = this.getPosition();
+    
     return (
       <g>
         <rect
           className={`pin ${pin.connections.length ? 'connected' : ''}`}
           x={x}
           y={y}
-          style={{ stroke: pin.type.color }}
+          style={{ stroke: pin.getType().color }}
           width={Size.Pin.width}
           height={Size.Pin.width}
           onMouseDown={this.onMouseDown}
@@ -210,6 +216,7 @@ class Pin extends Component {
       </g>
     );
   }
+
 
   render() {
     console.log(this.props.pin);

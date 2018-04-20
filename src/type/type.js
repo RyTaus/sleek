@@ -17,6 +17,7 @@ export const ELEM_OF = 'elementType';
 export const PROP_OF = 'PropOf';
 export const KEY_OF = 'keyType';
 export const VAL_OF = 'valType';
+export const INPUT = 'Input';
 
 
 export class T {
@@ -35,12 +36,25 @@ export class T {
     return this.toString() === other.toString();
   }
 
+  isCompatible(other) {
+    if (this.name === INPUT || other.name === INPUT) {
+      return true; // Should be more detailed
+    }
+    return this.equals(other);
+  }
+
   getType() {
     return this;
   }
 
   toString() {
     return this.name;
+  }
+}
+
+export class Input extends T {
+  constructor() {
+    super(INPUT, 'gray');
   }
 }
 
