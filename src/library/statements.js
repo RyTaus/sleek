@@ -15,7 +15,7 @@ export default {
     .addPin('in', ' ', new Flow())
     .addPin('in', 'val', new Input())
     .addPin('out', 'next', new Flow())
-    .generateFunction('console.log({val})'),
+    .generateFunction('window.Console.log({val})'),
   if: new NodeFactory('if')
     .addPin('in', ' ', new Flow())
     .addPin('in', 'condition', new BoolLit())

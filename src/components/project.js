@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import beautify from 'js-beautify';
 
 import Script from './script';
 import Console from './console/console';
@@ -23,8 +24,10 @@ class Project extends Component {
 
   generate() {
     const output = this.scriptModel.generate();
-    window.Console.log(output);
-    window.Console.log(eval(output));
+    console.log(output);
+    console.log(beautify(output));
+    eval(output)
+    // window.Console.log(eval(output));
   }
 
   render() {
