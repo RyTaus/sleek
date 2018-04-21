@@ -1,26 +1,27 @@
+import NodeFactory from './node-factory';
 
 export default {
-  and: {
-    in: {
-      a: 'boolean',
-      b: 'boolean',
-    },
-    out: {
-      res: 'boolean',
-    },
-    compile: '({a} && {b})',
-  },
-  or: {
-    in: {
-      a: 'boolean',
-      b: 'boolean',
-    },
-    out: {
-      res: 'boolean',
-    },
-    compile: '({a} || {b})',
-  },
-  not: {
+  // and: {
+  //   in: {
+  //     a: 'boolean',
+  //     b: 'boolean',
+  //   },
+  //   out: {
+  //     res: 'boolean',
+  //   },
+  //   compile: '({a} && {b})',
+  // },
+  // or: {
+  //   in: {
+  //     a: 'boolean',
+  //     b: 'boolean',
+  //   },
+  //   out: {
+  //     res: 'boolean',
+  //   },
+  //   compile: '({a} || {b})',
+  // },
+  not: new NodeFactory('not').pureData({
     in: {
       a: 'boolean',
     },
@@ -28,5 +29,5 @@ export default {
       '!a': 'boolean',
     },
     compile: '!({a})',
-  },
+  }),
 };

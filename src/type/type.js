@@ -1,33 +1,10 @@
-export const FLOW = 'Flow';
-export const NUMBER = 'Number';
-export const STRING = 'String';
-export const BOOLEAN = 'Boolean';
-export const LIST = 'List';
-export const LABEL = 'Label';
-export const TYPE = 'Type';
-export const MAP = 'Map';
-export const STRUCT = 'Struct';
-export const FUNC = 'Func';
-export const ANY = '*';
-
-export const RELATIVE = 'Relative';
-export const SAME = 'same';
-export const VALUE = 'Value';
-export const ELEM_OF = 'elementType';
-export const PROP_OF = 'PropOf';
-export const KEY_OF = 'keyType';
-export const VAL_OF = 'valType';
-
-export const LIST_OF = 'listOf';
-
-export const INPUT = 'Input';
+import * as Types from './type-type';
 
 
 export class T {
   constructor(name, color = 'black') {
     this.name = name;
     this.color = color;
-    this.properties = [];
     this.defaultValue = null;
   }
 
@@ -40,7 +17,7 @@ export class T {
   }
 
   isCompatible(other) {
-    if (this.name === INPUT || other.name === INPUT) {
+    if (this.name === Types.INPUT || other.name === Types.INPUT) {
       return true; // Should be more detailed
     }
     return this.equals(other);
@@ -57,48 +34,48 @@ export class T {
 
 export class Input extends T {
   constructor(possible) {
-    super(INPUT, 'gray');
+    super(Types.INPUT, 'gray');
     this.possible = possible;
   }
 }
 
 export class Flow extends T {
   constructor() {
-    super(FLOW, 'white');
+    super(Types.FLOW, 'white');
   }
 }
 
 export class StringLit extends T {
   constructor() {
-    super(STRING, 'blue');
+    super(Types.STRING, 'blue');
     this.defaultValue = '';
   }
 }
 
 export class NumLit extends T {
   constructor() {
-    super(NUMBER, 'green');
+    super(Types.NUMBER, 'green');
     this.defaultValue = 0;
   }
 }
 
 export class BoolLit extends T {
   constructor() {
-    super(BOOLEAN, 'red');
+    super(Types.BOOLEAN, 'red');
     this.defaultValue = false;
   }
 }
 
 export class Label extends T {
   constructor() {
-    super(LABEL, 'gray');
+    super(Types.LABEL, 'gray');
     this.defaultValue = 'None';
   }
 }
 
 export class List extends T {
   constructor(elementType) {
-    super(LIST, elementType.color);
+    super(Types.LIST, elementType.color);
     this.elementType = elementType;
   }
 
@@ -109,7 +86,7 @@ export class List extends T {
 
 export class Map extends T {
   constructor(structName, inType, outType) {
-    super(MAP, 'yellow');
+    super(Types.MAP, 'yellow');
     this.keyType = inType;
     this.valType = outType;
   }
@@ -136,7 +113,7 @@ export class Struct extends T {
 
 export class Func extends T {
   constructor(inputTypeDict, returnType) {
-    super(FUNC, 'purple');
+    super(Types.FUNC, 'purple');
     this.returnType = returnType;
     this.inputTypeDict = inputTypeDict;
   }
@@ -152,7 +129,7 @@ export class Func extends T {
 
 export class Type extends T {
   constructor() {
-    super(TYPE, 'skyblue');
+    super(Types.TYPE, 'skyblue');
     this.defaultValue = new NumLit();
   }
 
@@ -163,7 +140,7 @@ export class Type extends T {
 
 export class Relative extends T {
   constructor(pinName, of, value) {
-    super(RELATIVE, 'coral');
+    super(Types.RELATIVE, 'coral');
     this.relativeName = pinName;
     this.type = of;
     this.isValue = value;
@@ -172,15 +149,15 @@ export class Relative extends T {
   getType(node) {
     if (this.isValue) {
       const type = node.inPins[this.relativeName].value;
-      if (this.type === LIST_OF) {
+      if (this.type === Types.LIST_OF) {
         return new List(type);
       }
     }
-    if (this.type === SAME) {
+    if (this.type === Types.SAME) {
       return node.inPins[this.relativeName].getType();
-    } else if (this.type === VALUE) {
+    } else if (this.type === Types.VALUE) {
       return node.inPins[this.relativeName].value;
-    } else if (this.type === LIST_OF) {
+    } else if (this.type === Types.LIST_OF) {
       // console.log();
       return new List(node.inPins[this.relativeName].getType());
     }

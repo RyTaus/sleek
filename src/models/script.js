@@ -68,18 +68,36 @@ export default class Script {
   /**
    *  generation
    */
+  resetNodes() {
+    this.nodes.forEach((node) => {
+      node.label = null
+    });
+  }
 
   generate() {
-    let string = '';
+    function* labelMaker() {
+      let index = 1;
+      while (true) {
+        const label = `_${index}`;
+        console.log('making label');
+        window.prependString = `let ${label};` + window.prependString;
+        console.log(window.prependString);
+        yield label;
+        index += 1;
+      }
+    }
+    window.genString = '';
+    window.prependString = '';
+
+    window.labelGenerator = labelMaker();
     const starts = this.nodes.filter(node => node.name === 'start').sort(node => node.y).reverse();
     starts.forEach((start) => {
-      string += start.generateBlock();
-      let current = start;
-      // while (current) {
-      //   string += current.generate();
-      //   current = current.getNextNode();
-      // }
+      window.genString += start.outPins.next.generate();
     });
-    return string;
+    this.resetNodes();
+
+    return `${window.prependString}  ${window.genString}`;
+    // window.genString = '';
+    // return string;
   }
 }

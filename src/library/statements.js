@@ -22,7 +22,7 @@ export default {
     .addPin('out', 'true', new Flow())
     .addPin('out', 'false', new Flow())
     .generateFunction((node) => {
-      return `if (${node.inPins.condition.generate()}) { ${node.outPins.true.generateBlock()} } else { ${node.outPins.false.generateBlock()} }`;
+      return `if (${node.inPins.condition.generate()}) { ${node.outPins.true.generate()} } else { ${node.outPins.false.generate()} }`;
     }),
   while: new NodeFactory('while')
     .addPin('in', ' ', new Flow())
@@ -30,7 +30,7 @@ export default {
     .addPin('out', 'body', new Flow())
     .addPin('out', 'next', new Flow())
     .generateFunction((node) => {
-      return `if (${node.inPins.condition.generate()}) { ${node.outPins.body.generateBlock()} }`;
+      return `if (${node.inPins.condition.generate()}) { ${node.outPins.body.generate()} }`;
     }),
   break: {
     in: {

@@ -9,6 +9,6 @@ export default {
   statements,
   // number,
   string,
-  // boolean,
+  boolean,
   list,
 };

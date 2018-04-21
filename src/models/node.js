@@ -1,4 +1,5 @@
 import Direction from './../utils/direction';
+import { FLOW } from './../type/type-type';
 
 export default class Node {
   constructor(name, x, y, inPins, outPins, gen) {
@@ -7,7 +8,11 @@ export default class Node {
     this.y = y;
     this.inPins = inPins;
     this.outPins = outPins;
-    this.generate = () => gen(this);
+    this.generateExpression = () => gen(this);
+
+    // for generating. Maybe keep in a table??
+    this.hasGenerated = false;
+    this.label = null;
 
     this.init();
   }
@@ -40,10 +45,34 @@ export default class Node {
     let string = '';
     let current = this;
     while (current) {
-      string += current.generate();
+      string += `${current.generate()};`;
       current = current.getNextNode();
     }
     return string;
+  }
+
+  generate() {
+    console.log(`node: ${this.name} generate`);
+    if (this.label) {
+      return this.label;
+    }
+    if (this.getTotalOutConnections() > 1) {
+      const expression = this.generateExpression();
+      this.label = window.labelGenerator.next().value;
+      return `(${this.label} = ${expression})`;
+    }
+    return this.generateExpression();
+  }
+
+  getTotalOutConnections() {
+    let sum = 0;
+    Object.keys(this.outPins).forEach((key) => {
+      const pin = this.outPins[key];
+      if (pin.type.name !== FLOW) {
+        sum += pin.connections.length;
+      }
+    });
+    return sum;
   }
 
   init() {

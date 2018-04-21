@@ -45,9 +45,9 @@ export default {
     },
     compile: '({a} + {b})',
   }),
-  substring: new NodeFactory('substring')
+  contains: new NodeFactory('contains')
     .addPin('in', 'string', new StringLit())
     .addPin('in', 'substring', new StringLit())
     .addPin('out', 'contains', new BoolLit())
-    .generateFunction('({string}.contains({substring}))'),
+    .generateFunction('({string}.includes({substring}))'),
 };

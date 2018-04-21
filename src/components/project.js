@@ -22,7 +22,9 @@ class Project extends Component {
   }
 
   generate() {
-    window.Console.log(this.scriptModel.generate());
+    const output = this.scriptModel.generate();
+    window.Console.log(output);
+    window.Console.log(eval(output));
   }
 
   render() {

@@ -12,12 +12,8 @@ const defaultGeneration = string => (node) => {
     }
   });
   Object.keys(node.outPins).filter(key => node.outPins[key].type.name === 'Flow').forEach((key) => {
-    if (node.outPins[key].connections[0]) {
-      const replacement = node.outPins[key].connections[0].node.generate();
-      str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
-    } else {
-      str = str.replace(new RegExp(`{${key}}`, 'g'), '');
-    }
+    const replacement = node.outPins[key].generate();
+    str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
   });
   return str;
 };

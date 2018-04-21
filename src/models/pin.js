@@ -3,14 +3,18 @@ import React from 'react';
 import Direction from './../utils/direction';
 import Size from './../utils/sizes';
 
+import { FLOW } from './../type/type-type';
+
+
 export default class Pin {
-  constructor(name, type, direction, index) {
+  constructor(name, type, direction, index, prop = null) {
     this.name = name;
     this.type = type;
     this.direction = direction;
     this.index = index;
     this.connections = [];
     this.value = this.type.defaultValue;
+    this.prop = prop;
 
     this.maxConnections = this.direction === Direction.in ? 1 : Infinity;
     if (this.type.name === 'Flow') {
@@ -42,16 +46,7 @@ export default class Pin {
     return this.connections.length !== 0;
   }
 
-  generateBlock() {
-    if (this.isConnected()) {
-      return this.connections[0].node.generateBlock();
-    }
-    return '';
-  }
-
   canConnect(pin) {
-    console.log(this.getType());
-    console.log(pin.getType());
     if (
       this.connections.length < this.maxConnections
       && pin.connections.length < pin.maxConnections
@@ -119,13 +114,30 @@ export default class Pin {
   }
 
   generateFromValue() {
-    return this.type.name === 'String' ? `'${this.value}'` : this.value;
+    return this.type.name === 'String' ? `"${this.value}"` : this.value;
   }
 
   generate() {
-    if (this.isConnected()) {
-      return this.connections[0].node.generate();
+    if (this.type.name === FLOW) {
+      if (this.direction === Direction.in) {
+        return this.node.generateBlock();
+      }
+      if (this.isConnected()) {
+        return this.connections[0].generate();
+      }
+      return '';
     }
-    return this.generateFromValue();
+
+    if (this.direction === Direction.in) {
+      if (this.isConnected()) {
+        return this.connections[0].generate();
+      }
+      return this.generateFromValue();
+    }
+
+    if (this.prop) {
+      return `${this.node.generate()}.${this.props}`;
+    }
+    return this.node.generate();
   }
 }
