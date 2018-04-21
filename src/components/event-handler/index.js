@@ -68,7 +68,7 @@ class EventHandler {
         x2={this.coords.x}
         y2={this.coords.y}
         strokeWidth="4"
-        stroke={this.inFocus.props.pin.type.color}
+        stroke={this.inFocus.props.pin.getType().color}
       />);
     }
     return null;

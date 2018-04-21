@@ -1,6 +1,6 @@
 import NodeFactory from './node-factory';
 
-import { Flow, BoolLit } from './../type/type';
+import { Flow, BoolLit, Input } from './../type/type';
 
 export default {
   start: new NodeFactory('start').pureData({
@@ -11,16 +11,11 @@ export default {
     },
     compile: '',
   }),
-  print: new NodeFactory('print').pureData({
-    in: {
-      ' ': 'flow',
-      value: 'string',
-    },
-    out: {
-      next: 'flow',
-    },
-    compile: 'console.log({value})',
-  }),
+  print: new NodeFactory('print')
+    .addPin('in', ' ', new Flow())
+    .addPin('in', 'val', new Input())
+    .addPin('out', 'next', new Flow())
+    .generateFunction('console.log({val})'),
   if: new NodeFactory('if')
     .addPin('in', ' ', new Flow())
     .addPin('in', 'condition', new BoolLit())

@@ -142,7 +142,7 @@ class Pin extends Component {
             onMouseUp={this.onMouseUp}
             onChange={this.onChange}
             size={1.5}
-            style={{ borderColor: pin.type.color }}
+            style={{ borderColor: type.color }}
             value={pin.value}
           />
         </foreignObject>
