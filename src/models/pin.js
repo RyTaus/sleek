@@ -136,7 +136,7 @@ export default class Pin {
     }
 
     if (this.prop) {
-      return `${this.node.generate()}.${this.props}`;
+      return `${this.node.generate()}.${this.prop}`;
     }
     return this.node.generate();
   }

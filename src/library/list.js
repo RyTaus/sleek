@@ -13,6 +13,7 @@ export default {
   push: (new NodeFactory('push'))
     .addPin('in', 'list', new Input()) // input should take in a funciton that validates the type
     .addPin('in', 'val', new Relative('list', 'elementType'))
-    .addPin('out', 'elem', new Relative('list', 'same'))
-    .generateFunction('(() => { const L = {list}; L.push({val}); return L })()'),
+    .addPin('out', 'elem', new Relative('list', 'same'), 'arr')
+    .addPin('out', 'len', new NumLit(), 'length')
+    .generateFunction('(() => { const L = {list}; L.push({val}); return { arr: L, length: L.length } })()'),
 };

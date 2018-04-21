@@ -26,8 +26,8 @@ export default class NodeFactory {
     this.generationString = null;
   }
 
-  addPin(direction, name, type) {
-    this[direction].push({ name, type, direction });
+  addPin(direction, name, type, prop) {
+    this[direction].push({ name, type, direction, prop });
     return this;
   }
 
@@ -60,11 +60,11 @@ export default class NodeFactory {
     const outPins = {};
 
     this.in.forEach((pin, i) => {
-      inPins[pin.name] = new Pin(pin.name, pin.type, pin.direction, i);
+      inPins[pin.name] = new Pin(pin.name, pin.type, pin.direction, i, pin.prop);
     });
 
     this.out.forEach((pin, i) => {
-      outPins[pin.name] = new Pin(pin.name, pin.type, pin.direction, i);
+      outPins[pin.name] = new Pin(pin.name, pin.type, pin.direction, i, pin.prop);
     });
     // console.log(this.genFun);
     return new Node(this.name, x, y, inPins, outPins, this.genFun);
