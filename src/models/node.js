@@ -17,6 +17,11 @@ export default class Node {
     this.init();
   }
 
+  setScript(script) {
+    this.script = script;
+    return this;
+  }
+
   remove() {
     Object.keys(this.inPins).forEach((key) => {
       this.inPins[key].removeAllConnections();
@@ -42,13 +47,14 @@ export default class Node {
   }
 
   generateBlock() {
-    let string = '';
     let current = this;
     while (current) {
-      string += `${current.generate()};`;
+      console.log('generating block...');
+      const result = current.generate();
+      this.script.generation.statements.push(result);
+      console.log('result of generation: ', result);
       current = current.getNextNode();
     }
-    return string;
   }
 
   generate() {
@@ -58,7 +64,7 @@ export default class Node {
     }
     if (this.getTotalOutConnections() > 1) {
       const expression = this.generateExpression();
-      this.label = window.labelGenerator.next().value;
+      this.label = this.script.labelGenerator.next().value;
       return `(${this.label} = ${expression})`;
     }
     return this.generateExpression();

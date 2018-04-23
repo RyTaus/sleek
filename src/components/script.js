@@ -15,7 +15,7 @@ export default class Script extends Component {
       heightRatio: 75,
       zoom: 1,
       panX: 0,
-      panY: -30,
+      panY: 0,
       searcherActive: false,
       searcherSeed: null,
     };
@@ -122,7 +122,7 @@ export default class Script extends Component {
           a.createConnection(b);
           b.createConnection(a);
         }
-        window.frame.forceUpdate();
+        this.forceUpdate();
       } catch (err) {
         window.Console.log(err);
       }

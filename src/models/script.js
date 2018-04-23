@@ -21,6 +21,11 @@ export default class Script {
     if (type === TYPE.BASE) {
       this.types = [StringLit, BoolLit, NumLit, Map, Func];
     }
+
+    this.generation = {
+      vars: [],
+      statements: [],
+    };
   }
 
   /**
@@ -57,7 +62,7 @@ export default class Script {
    */
 
   addNode(node) {
-    this.nodes.push(node);
+    this.nodes.push(node.setScript(this));
   }
 
   removeNode(node) {
@@ -68,36 +73,35 @@ export default class Script {
   /**
    *  generation
    */
-  resetNodes() {
+  resetGenerate() {
     this.nodes.forEach((node) => {
-      node.label = null
+      node.label = null;
     });
+    this.generation = {
+      vars: [],
+      statements: [],
+    };
   }
 
   generate() {
-    function* labelMaker() {
+    function* labelMaker(script) {
       let index = 1;
       while (true) {
         const label = `_${index}`;
-        console.log('making label');
-        window.prependString = `let ${label};` + window.prependString;
-        console.log(window.prependString);
+        script.generation.vars.push(label);
         yield label;
         index += 1;
       }
     }
-    window.genString = '';
-    window.prependString = '';
 
-    window.labelGenerator = labelMaker();
+    this.labelGenerator = labelMaker(this);
     const starts = this.nodes.filter(node => node.name === 'start').sort(node => node.y).reverse();
     starts.forEach((start) => {
-      window.genString += start.outPins.next.generate();
+      start.generateBlock();
     });
-    this.resetNodes();
 
-    return `${window.prependString}  ${window.genString}`;
-    // window.genString = '';
-    // return string;
+    const { vars, statements } = this.generation;
+    this.resetGenerate();
+    return `${vars.map(v => `let ${v};`).join()}  ${statements.join(';')}`;
   }
 }
