@@ -3,7 +3,7 @@ import React from 'react';
 import Direction from './../utils/direction';
 import Size from './../utils/sizes';
 
-import { FLOW } from './../type/type-type';
+import { FLOW, INPUT, STRING } from './../type/type-type';
 
 
 export default class Pin {
@@ -17,7 +17,7 @@ export default class Pin {
     this.prop = prop;
 
     this.maxConnections = this.direction === Direction.in ? 1 : Infinity;
-    if (this.type.name === 'Flow') {
+    if (this.type.name === FLOW) {
       this.maxConnections = this.direction === Direction.in ? Infinity : 1;
     }
   }
@@ -35,7 +35,7 @@ export default class Pin {
     this.node = node;
 
     this.maxConnections = this.direction === Direction.in ? 1 : Infinity;
-    if (this.type.name === 'Flow') {
+    if (this.type.name === FLOW) {
       this.maxConnections = this.direction === Direction.in ? Infinity : 1;
     }
 
@@ -82,7 +82,7 @@ export default class Pin {
   }
 
   getType() {
-    if (this.type.name === 'Input') {
+    if (this.type.name === INPUT) {
       if (!this.isConnected()) {
         return this.type;
       }
@@ -114,7 +114,7 @@ export default class Pin {
   }
 
   generateFromValue() {
-    return this.type.name === 'String' ? `"${this.value}"` : this.value;
+    return this.type.name === STRING ? `"${this.value}"` : this.value;
   }
 
   generate() {

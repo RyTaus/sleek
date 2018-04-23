@@ -1,6 +1,8 @@
 import Pin from './../models/pin';
 import Node from './../models/node';
 
+import { FLOW } from './../type/type-type';
+
 import parser from './parser';
 
 const defaultGeneration = string => (node) => {
@@ -11,7 +13,7 @@ const defaultGeneration = string => (node) => {
       str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
     }
   });
-  Object.keys(node.outPins).filter(key => node.outPins[key].type.name === 'Flow').forEach((key) => {
+  Object.keys(node.outPins).filter(key => node.outPins[key].type.name === FLOW).forEach((key) => {
     const replacement = node.outPins[key].generate();
     str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
   });
@@ -27,7 +29,9 @@ export default class NodeFactory {
   }
 
   addPin(direction, name, type, prop) {
-    this[direction].push({ name, type, direction, prop });
+    this[direction].push({
+      name, type, direction, prop,
+    });
     return this;
   }
 
@@ -66,7 +70,7 @@ export default class NodeFactory {
     this.out.forEach((pin, i) => {
       outPins[pin.name] = new Pin(pin.name, pin.type, pin.direction, i, pin.prop);
     });
-    // console.log(this.genFun);
+
     return new Node(this.name, x, y, inPins, outPins, this.genFun);
   }
 }

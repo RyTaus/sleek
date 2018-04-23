@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Direction from './../utils/direction';
 import Size from './../utils/sizes';
 import { Type } from './../type/type';
+import { NUMBER, FLOW, STRING, BOOLEAN, TYPE } from './../type/type-type';
 
 
 class Pin extends Component {
@@ -30,7 +31,7 @@ class Pin extends Component {
   }
 
   onChange(evt) {
-    if (this.props.pin.getType().name === 'Number') {
+    if (this.props.pin.getType().name === BOOLEAN) {
       if (/^-?\d*\.?\d*$/.test(evt.target.value)) {
         this.props.pin.value = evt.target.value;
       }
@@ -109,7 +110,7 @@ class Pin extends Component {
   }
 
   renderPin() {
-    if (this.props.pin.getType().name === 'Flow') {
+    if (this.props.pin.getType().name === FLOW) {
       return this.renderFlow();
     }
     return this.renderValue();
@@ -133,7 +134,7 @@ class Pin extends Component {
     const { x, y } = this.getPosition();
     const { pin } = this.props;
     const type = pin.getType();
-    if (type.name === 'Number' || type.name === 'String') {
+    if ([NUMBER, STRING].includes(type.name)) {
       return (
         <foreignObject x={x} y={y} width="50" height="20" style={{ position: 'fixed' }} >
           <input
@@ -147,7 +148,7 @@ class Pin extends Component {
           />
         </foreignObject>
       );
-    } else if (pin.getType().name === 'Boolean') {
+    } else if (pin.getType().name === BOOLEAN) {
       return (
         <foreignObject x={x} y={y} width="60" height="20">
           <input
@@ -160,7 +161,7 @@ class Pin extends Component {
           />
         </foreignObject>
       );
-    } else if (type.name === 'Type') {
+    } else if (type.name === TYPE) {
       const script = window.frame.state.script;
       return (
         <foreignObject x={x} y={y} width="60" height="20">
