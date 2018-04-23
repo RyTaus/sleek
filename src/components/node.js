@@ -19,8 +19,8 @@ class Node extends Component {
       y: evt.pageY,
     };
     // document.addEventListener('mousemove', this.handleMouseMove);
-    window.eventHandler.state = 'drag-node';
-    window.eventHandler.inFocus = this;
+    this.props.script.eventHandler.state = 'drag-node';
+    this.props.script.eventHandler.inFocus = this;
     evt.preventDefault();
     evt.stopPropagation()
   }
@@ -33,9 +33,9 @@ class Node extends Component {
     this.coords.x = evt.pageX;
     this.coords.y = evt.pageY;
 
-    this.props.node.x -= xDiff * (1 / window.frame.state.zoom);
-    this.props.node.y -= yDiff * (1 / window.frame.state.zoom);
-    window.frame.forceUpdate();
+    this.props.node.x -= xDiff * (1 / this.props.script.state.zoom);
+    this.props.node.y -= yDiff * (1 / this.props.script.state.zoom);
+    this.props.script.forceUpdate();
 
     evt.preventDefault();
     evt.stopPropagation()
@@ -43,11 +43,9 @@ class Node extends Component {
 
   handleContextMenu(evt) {
     // MOVE THIS INTO EVENT-HANDLER. THESE SHOULD JUST CALL ITS... NEED FOR MULTIPLE FILES
-    window.frame.state.script.removeNode(this.props.node);
-    window.frame.setState({
-      script: window.frame.state.script,
-    });
-    window.eventHandler.state = null;
+    this.props.script.state.script.removeNode(this.props.node);
+
+    this.props.script.eventHandler.state = null;
     evt.preventDefault();
     evt.stopPropagation();
   }
@@ -85,8 +83,8 @@ class Node extends Component {
         >
           {node.name}
         </text>
-        {Object.keys(node.inPins).map((pin, i) => (<Pin pin={node.inPins[pin]} x={x} y={y} index={i} />))}
-        {Object.keys(node.outPins).map((pin, i) => (<Pin pin={node.outPins[pin]} x={x} y={y} index={i} />))}
+        {Object.keys(node.inPins).map((pin, i) => (<Pin pin={node.inPins[pin]} x={x} y={y} index={i} script={this.props.script} />))}
+        {Object.keys(node.outPins).map((pin, i) => (<Pin pin={node.outPins[pin]} x={x} y={y} index={i} script={this.props.script} />))}
       </g>
     );
   }
@@ -103,7 +101,6 @@ class BlackBoxNode extends Node {
     console.log('bb node clicked');
   }
 }
-
 
 
 export { Node, BlackBoxNode };

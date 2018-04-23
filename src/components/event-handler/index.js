@@ -38,9 +38,9 @@ class EventHandler {
       evt.preventDefault();
       evt.stopPropagation();
     } else if (this.state === EVENT.DRAG_PIN) {
-      this.coords.x = -this.frame.state.panX + (evt.pageX / this.frame.state.zoom); // TODO make relative to sidebar width
+      this.coords.x = -this.frame.state.panX + (evt.pageX / this.frame.state.zoom);
       this.coords.y = (-this.frame.state.panY + (evt.pageY / this.frame.state.zoom)) - 20;
-      window.frame.forceUpdate();
+      this.frame.forceUpdate();
     } else if (this.state === EVENT.DRAG_NODE) {
       this.inFocus.handleMouseMove(evt);
     }
@@ -98,7 +98,7 @@ class EventHandler {
           a.createConnection(b);
           b.createConnection(a);
         }
-        window.frame.forceUpdate();
+        this.frame.forceUpdate();
       } catch (err) {
         window.Console.log(err);
       }

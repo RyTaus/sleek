@@ -19,10 +19,8 @@ export default class Script extends Component {
       searcherActive: false,
       searcherSeed: null,
     };
-    window.frame = this;
 
     this.eventHandler = new EventHandler(this);
-    window.eventHandler = this.eventHandler;
 
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
@@ -156,7 +154,7 @@ export default class Script extends Component {
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
 
               {pins.map(pin => pin.renderConnections())}
-              {this.state.script.nodes.map(node => (<Node node={node} />))}
+              {this.state.script.nodes.map(node => (<Node node={node} script={this} />))}
               {this.eventHandler.renderLine()}
             </g>
           </svg>
@@ -166,6 +164,7 @@ export default class Script extends Component {
             x={this.state.searcherX}
             y={this.state.searcherY}
             handleChange={this.handleNodeSearcherSelect}
+            script={this}
           />
           <Sidebar
             addVariable={this.addVariable}

@@ -27,7 +27,7 @@ class Pin extends Component {
   }
 
   onMouseUp(evt) {
-    window.eventHandler.onPinUp(evt, this);
+    this.props.script.eventHandler.onPinUp(evt, this);
   }
 
   onChange(evt) {
@@ -38,12 +38,12 @@ class Pin extends Component {
     } else {
       this.props.pin.value = evt.target.value;
     }
-    window.frame.forceUpdate();
+    this.props.script.forceUpdate();
     return true;
   }
 
   onMouseDown(evt) {
-    window.eventHandler.onPinDown(evt, this);
+    this.props.script.eventHandler.onPinDown(evt, this);
   }
 
   onContextMenu(evt) {
@@ -102,8 +102,8 @@ class Pin extends Component {
       className="line"
       x1={x + offset}
       y1={y + offset}
-      x2={window.eventHandler.x + offset}
-      y2={window.eventHandler.y + offset}
+      x2={this.props.script.eventHandler.x + offset}
+      y2={this.props.script.eventHandler.y + offset}
       strokeWidth="4"
       stroke={this.props.pin.getType().color}
     />);
@@ -155,14 +155,14 @@ class Pin extends Component {
             className="pin checkbox check-input"
             type="checkbox"
             onMouseUp={this.onMouseUp}
-            onChange={((evt) => {pin.value = evt.target.checked; window.frame.forceUpdate();}).bind(this)}
+            onChange={((evt) => {pin.value = evt.target.checked; this.props.script.forceUpdate();}).bind(this)}
             style={{ margin: 0, zoom: 1.8, outline: type.color }}
             checked={pin.value}
           />
         </foreignObject>
       );
     } else if (type.name === TYPE) {
-      const script = window.frame.state.script;
+      const script = this.props.script.state.script;
       return (
         <foreignObject x={x} y={y} width="60" height="20">
           <select
@@ -172,7 +172,7 @@ class Pin extends Component {
             onChange={((evt) => {
               const index = script.types.map(t => t.name).indexOf(evt.target.value);
               pin.value = new script.types[index]();
-              window.frame.forceUpdate();
+              this.props.script.forceUpdate();
             }).bind(this)}
             style={{ width: '50px', outline: type.color }}
             value={pin.value}
