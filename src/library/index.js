@@ -7,7 +7,7 @@ import list from './list';
 
 export default {
   statements,
-  // number,
+  number,
   string,
   boolean,
   list,

@@ -114,7 +114,7 @@ export default class Pin {
   }
 
   generateFromValue() {
-    return this.type.name === STRING ? `"${this.value}"` : this.value;
+    return this.getType().name === STRING ? `"${this.value}"` : this.value;
   }
 
   generate() {

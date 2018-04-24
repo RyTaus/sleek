@@ -153,13 +153,22 @@ export class Relative extends T {
         return new List(type);
       }
     }
+    console.log(this);
     if (this.type === Types.SAME) {
       return node.inPins[this.relativeName].getType();
     } else if (this.type === Types.VALUE) {
       return node.inPins[this.relativeName].value;
     } else if (this.type === Types.LIST_OF) {
-      // console.log();
       return new List(node.inPins[this.relativeName].getType());
+    } else if (this.type === Types.INSTANCE) {
+      const name = node.inPins[this.relativeName].value;
+      console.log(name);
+      if (name === 'None') {
+        return new T('UNKNOWN', 'black');
+      }
+      console.log(node.script.getVariable(name));
+      return node.script.getVariable(name).type.getType();
+      // return node.inPins[this.relativeName].getType();
     }
     const type = node.inPins[this.relativeName].getType()[this.type];
     if (!type) {

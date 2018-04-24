@@ -1,6 +1,7 @@
 import NodeFactory from './node-factory';
 
-import { Flow, BoolLit, Input } from './../type/type';
+import { Flow, BoolLit, Input, Label, Relative } from './../type/type';
+import { SAME, INSTANCE } from './../type/type-type';
 
 export default {
   start: new NodeFactory('start').pureData({
@@ -32,12 +33,19 @@ export default {
     .generateFunction((node) => {
       return `if (${node.inPins.condition.generate()}) { ${node.outPins.body.generate()} }`;
     }),
-  break: {
-    in: {
-      ' ': 'flow',
-    },
-    out: {
-    },
-    compile: 'break',
-  },
+  set: new NodeFactory('set')
+    .addPin('in', ' ', new Flow())
+    .addPin('in', 'variable', new Label())
+    .addPin('in', 'value', new Relative('variable', INSTANCE))
+    .addPin('out', 'next', new Flow())
+    .addPin('out', 'newVal', new Relative('value', SAME))
+    .generateFunction((node) => {
+      return `(${node.inPins.variable.generate()} = ${node.inPins.value.generate()})`;
+    }),
+    get: new NodeFactory('get')
+      .addPin('in', 'variable', new Label())
+      .addPin('out', 'value', new Relative('variable', INSTANCE))
+      .generateFunction((node) => {
+        return `(${node.inPins.variable.generate()})`;
+      }),
 };

@@ -12,6 +12,7 @@ export const ANY = '*';
 
 export const RELATIVE = 'Relative';
 export const SAME = 'same';
+export const INSTANCE = 'Instance';
 export const VALUE = 'Value';
 export const ELEM_OF = 'elementType';
 export const PROP_OF = 'PropOf';

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Direction from './../utils/direction';
 import Size from './../utils/sizes';
 import { Type } from './../type/type';
-import { NUMBER, FLOW, STRING, BOOLEAN, TYPE } from './../type/type-type';
+import { NUMBER, FLOW, STRING, BOOLEAN, TYPE, LABEL } from './../type/type-type';
 
 
 class Pin extends Component {
@@ -179,6 +179,31 @@ class Pin extends Component {
           >
 
             {script.types.map((t, i) => (<option className={i} > {t.name} </option>))}
+          </select>
+
+        </foreignObject>
+      );
+    } else if (type.name === LABEL) {
+      const script = this.props.script.state.script;
+      console.log(script);
+      console.log(script);
+      console.log(this.props.pin);
+      return (
+        <foreignObject x={x} y={y} width="60" height="20">
+          <select
+            className="pin select check-input"
+            type="checkbox"
+            onMouseUp={this.onMouseUp}
+            onChange={((evt) => {
+              // const index = script.types.map(t => t.name).indexOf(evt.target.value);
+              pin.value = evt.target.value;
+              this.props.script.forceUpdate();
+            }).bind(this)}
+            style={{ width: '50px', outline: type.color }}
+            value={pin.value}
+          >
+
+            {Object.keys(script.variables).map((t, i) => (<option className={i} > {t} </option>))}
           </select>
 
         </foreignObject>

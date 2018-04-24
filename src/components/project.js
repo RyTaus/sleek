@@ -17,7 +17,7 @@ class Project extends Component {
     };
     this.console = new Console({ height: '20%', project: this });
     window.Console = this.console;
-    this.scriptModel = new ScriptModel('test', 'null', ScriptType.BASE);
+    this.scriptModel = new ScriptModel('test', null, ScriptType.BASE);
 
     this.generate = this.generate.bind(this);
   }
@@ -26,7 +26,7 @@ class Project extends Component {
     const output = this.scriptModel.generate();
     console.log(output);
     console.log(beautify(output));
-    eval(output)
+    // eval(output);
     // window.Console.log(eval(output));
   }
 
