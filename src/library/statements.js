@@ -38,7 +38,6 @@ export default {
     .addPin('in', 'variable', new Label())
     .addPin('in', 'value', new Relative('variable', INSTANCE))
     .addPin('out', 'next', new Flow())
-    .addPin('out', 'newVal', new Relative('value', SAME))
     .generateFunction((node) => {
       return `(${node.inPins.variable.generate()} = ${node.inPins.value.generate()})`;
     }),
