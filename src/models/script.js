@@ -59,7 +59,7 @@ export default class Script {
   }
 
   hasVariable(name) {
-    return name in this.variables;
+    return name in this.getVariables();
   }
 
   removeVariable(name) {
@@ -68,7 +68,7 @@ export default class Script {
 
   getVariable(name) {
     if (this.hasVariable(name)) {
-      return this.variables[name];
+      return this.getVariables()[name];
     } else if (this.parent) {
       return this.parent.getVariable(name);
     }

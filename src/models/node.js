@@ -1,9 +1,11 @@
 import Direction from './../utils/direction';
 import Script, { FunctionDeclarationScript } from './script';
+import Pin from './pin';
 import { FLOW } from './../type/type-type';
+import { Flow } from './../type/type';
 
 export default class Node {
-  constructor(name, x, y, inPins, outPins, gen, script, declarationType = false) {
+  constructor(name, x, y, inPins = {}, outPins = {}, gen, script, declarationType = false) {
     this.name = name;
     this.x = x;
     this.y = y;
@@ -12,6 +14,8 @@ export default class Node {
     this.generateExpression = () => gen(this);
     // this.declType = declerationType; // Func, Class, or Struct
     this.script = script;
+
+    this.specialize();
 
 
     if (declarationType) {
@@ -24,6 +28,17 @@ export default class Node {
     this.label = null;
 
     this.init();
+  }
+
+  specialize() {
+    if (this.name === 'start') {
+      const inPins = { start: new Pin('start', new Flow(), 'out', 0) };
+      const params = this.script.inputs;
+      Object.keys(params).forEach((key, i) => {
+        const param = params[key];
+        inPins[key] = new Pin(key, param.type, 'out', i + 1);
+      });
+    }
   }
 
   remove() {

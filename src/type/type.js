@@ -173,6 +173,7 @@ export class Relative extends T {
       if (variable === 'None') {
         return new T('UNKNOWN', 'black');
       }
+      console.log(node.inPins[this.relativeName]);
       return node.script.getVariable(variable.name).type.getType();
     }
     const type = node.inPins[this.relativeName].getType()[this.type];

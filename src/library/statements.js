@@ -5,14 +5,14 @@ import { SAME, INSTANCE, FUNC } from './../type/type-type';
 import ScriptType from './../models/script-type';
 
 export default {
-  // start: new NodeFactory('start').pureData({
-  //   in: {
-  //   },
-  //   out: {
-  //     next: 'flow',
-  //   },
-  //   compile: '',
-  // }),
+  start: new NodeFactory('start').pureData({
+    in: {
+    },
+    out: {
+      next: 'flow',
+    },
+    compile: '',
+  }),
   print: new NodeFactory('print')
     .addPin('in', ' ', new Flow())
     .addPin('in', 'val', new Input())
@@ -46,7 +46,8 @@ export default {
     .addPin('in', 'variable', new Label())
     .addPin('out', 'value', new Relative('variable', INSTANCE))
     .generateFunction((node) => {
-      return `(${node.inPins.variable.generate()})`;
+      console.log(node);
+      return `(${node.inPins.variable.value.name})`;
     }),
   functionDecl: new NodeFactory('Fun Decl')
     .setDeclType(ScriptType.FUNC)

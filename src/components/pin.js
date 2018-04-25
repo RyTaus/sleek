@@ -193,7 +193,7 @@ class Pin extends Component {
           <DropDownInput
             options={Object.keys(script.getVariables())}
             mapOptionToDisplay={opt => opt}
-            mapDisplayToOption={disp => script.variables[disp]}
+            mapDisplayToOption={disp => script.getVariables()[disp]}
             onSelect={onSelect}
             color={type.color}
             value={pin.value}
