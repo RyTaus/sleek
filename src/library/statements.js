@@ -51,5 +51,5 @@ export default {
   functionDecl: new NodeFactory('Fun Decl')
     .setDeclType(ScriptType.FUNC)
     .addPin('out', 'function', new Func())
-    .generateFunction(node => node.innerScript.generate()),
+    .generateFunction(node => node.innerScript.generateFunction()),
 };

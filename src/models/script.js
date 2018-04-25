@@ -108,14 +108,13 @@ export default class Script {
 
     this.labelGenerator = labelMaker(this);
     const starts = this.nodes.filter(node => node.name === 'start').sort(node => node.y).reverse();
-    console.log(starts);
     starts.forEach((start) => {
       start.generateBlock();
     });
 
     const { vars, statements } = this.generation;
     this.resetGenerate();
-    return `${vars.map(v => `let ${v};`).join()}  ${statements.join(';')}`;
+    return `${vars.map(v => `let ${v};`).join()}  ${statements.join(';')};`;
   }
 }
 
@@ -138,5 +137,9 @@ export class FunctionDeclarationScript extends Script {
       window.Console.log('cannot add input');
     }
     this.outputs[variable.name] = variable;
+  }
+
+  generateFunction() {
+    return `((${Object.keys(this.inputs).join(', ')}) => { ${this.generate()} })`;
   }
 }
