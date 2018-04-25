@@ -5,14 +5,14 @@ import { SAME, INSTANCE, FUNC } from './../type/type-type';
 import ScriptType from './../models/script-type';
 
 export default {
-  start: new NodeFactory('start').pureData({
-    in: {
-    },
-    out: {
-      next: 'flow',
-    },
-    compile: '',
-  }),
+  // start: new NodeFactory('start').pureData({
+  //   in: {
+  //   },
+  //   out: {
+  //     next: 'flow',
+  //   },
+  //   compile: '',
+  // }),
   print: new NodeFactory('print')
     .addPin('in', ' ', new Flow())
     .addPin('in', 'val', new Input())

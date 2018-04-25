@@ -191,7 +191,7 @@ class Pin extends Component {
       return (
         <foreignObject x={x} y={y} width="60" height="20">
           <DropDownInput
-            options={Object.keys(script.variables)}
+            options={Object.keys(script.getVariables())}
             mapOptionToDisplay={opt => opt}
             mapDisplayToOption={disp => script.variables[disp]}
             onSelect={onSelect}

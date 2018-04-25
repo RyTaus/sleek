@@ -27,6 +27,9 @@ export default class Script {
       statements: [],
     };
     console.log(this);
+
+    this.inputs = {};
+    this.outputs = {};
   }
 
   /**
@@ -49,6 +52,10 @@ export default class Script {
       current = current.parent;
     }
     return types;
+  }
+
+  getVariables() {
+    return { ...this.inputs, ...this.variables };
   }
 
   hasVariable(name) {
@@ -121,8 +128,7 @@ export default class Script {
 export class FunctionDeclarationScript extends Script {
   constructor(name, parent) {
     super(name, parent, TYPE.FUNC);
-    this.inputs = {};
-    this.outputs = {};
+
   }
 
   addInput(variable) {
