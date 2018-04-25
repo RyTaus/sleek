@@ -132,6 +132,13 @@ export default class Script extends Component {
     });
   }
 
+  componentWillReceiveProps(props) {
+    console.log(props);
+    this.setState({
+      script: props.script,
+    });
+  }
+
   render() {
     const pins = [];
     this.state.script.nodes
@@ -169,7 +176,7 @@ export default class Script extends Component {
           <Sidebar
             addVariable={this.addVariable}
             variables={this.state.script.variables}
-            types={this.state.script.types}
+            types={this.state.script.getTypes()}
             height={`${this.state.heightRatio}%`}
             width={`${100 - this.state.widthRatio}%`}
           />

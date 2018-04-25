@@ -1,7 +1,8 @@
 import NodeFactory from './node-factory';
 
-import { Flow, BoolLit, NumLit, StringLit, Input, Label, Relative } from './../type/type';
-import { SAME, INSTANCE } from './../type/type-type';
+import { Flow, BoolLit, NumLit, StringLit, Input, Label, Relative, Func } from './../type/type';
+import { SAME, INSTANCE, FUNC } from './../type/type-type';
+import ScriptType from './../models/script-type';
 
 export default {
   start: new NodeFactory('start').pureData({
@@ -47,10 +48,8 @@ export default {
     .generateFunction((node) => {
       return `(${node.inPins.variable.generate()})`;
     }),
-  funCall: new NodeFactory('function call')
-    .addPin('in', ' ', new Flow())
-    .addPin('out', 'next', new Flow())
-    .addPin('in', 'function', new BoolLit())
-    .addPin('in', 'text', new StringLit())
-    .addPin('out', 'result', new NumLit())
+  functionDecl: new NodeFactory('Fun Decl')
+    .setDeclType(ScriptType.FUNC)
+    .addPin('out', 'function', new Func())
+    .generateFunction(node => node.innerScript.generate()),
 };

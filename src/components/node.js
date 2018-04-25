@@ -11,6 +11,7 @@ class Node extends Component {
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
+    this.handleDoubleClick = this.handleDoubleClick.bind(this);
   }
 
   handleMouseDown(evt) {
@@ -48,6 +49,13 @@ class Node extends Component {
     this.props.script.eventHandler.state = null;
     evt.preventDefault();
     evt.stopPropagation();
+  }
+
+  handleDoubleClick(evt) {
+    const { project } = this.props.script.props;
+    if (this.props.node.innerScript) {
+      project.setActiveScript(this.props.node.innerScript);
+    }
   }
 
   render() {

@@ -152,12 +152,13 @@ class Pin extends Component {
         </foreignObject>
       );
     } else if (pin.getType().name === BOOLEAN) {
+      const onChange = ((evt) => { pin.value = evt.target.checked; this.props.script.forceUpdate(); });
       return (
         <foreignObject x={x} y={y} width="90" height="30">
           <Checkbox
             className="pin checkbox check-input"
             onMouseUp={this.onMouseUp}
-            onChange={((evt) => {pin.value = evt.target.checked; this.props.script.forceUpdate();}).bind(this)}
+            onChange={onChange}
             checked={pin.value}
             color={type.color}
           />
@@ -172,7 +173,7 @@ class Pin extends Component {
       return (
         <foreignObject x={x} y={y} width="60" height="20">
           <DropDownInput
-            options={script.types}
+            options={script.getTypes()}
             mapOptionToDisplay={opt => opt.name}
             mapDisplayToOption={disp => script.types[script.types.map(t => t.name).indexOf(disp)]}
             onSelect={onSelect}
@@ -197,20 +198,6 @@ class Pin extends Component {
             color={type.color}
             value={pin.value}
           />
-          <select
-            className="pin select check-input"
-            type="checkbox"
-            onMouseUp={this.onMouseUp}
-            onChange={((evt) => {
-              pin.value = evt.target.value;
-              this.props.script.forceUpdate();
-            }).bind(this)}
-            style={{ width: '50px', outline: type.color }}
-            value={pin.value}
-          >
-
-            {Object.keys(script.variables).map((t, i) => (<option className={i} > {t} </option>))}
-          </select>
 
         </foreignObject>
       );

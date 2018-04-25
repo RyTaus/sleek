@@ -49,11 +49,12 @@ class NodeSearcher extends Component {
 
   handleClick(item) {
     const { panX, panY, zoom } = this.props.script.state;
+    const { script } = this.props.script.props;
     const x = ((-panX + this.props.x) / zoom);
     const y = ((-panY + this.props.y) / zoom);
 
     // const node = new NodeModel(parsed.name, x, y, parsed.inPins, parsed.outPins, parsed.compile);
-    const node = item.props.data.export(x, y);
+    const node = item.props.data.export(x, y, script);
     this.props.handleChange(node);
   }
 

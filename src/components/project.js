@@ -12,29 +12,49 @@ import ScriptType from './../models/script-type';
 class Project extends Component {
   constructor(props) {
     super(props);
+    this.scriptModel = new ScriptModel('test', null, ScriptType.BASE);
+
     this.state = {
-      active: 0,
+      activeScript: this.scriptModel,
     };
     this.console = new Console({ height: '20%', project: this });
     window.Console = this.console;
-    this.scriptModel = new ScriptModel('test', null, ScriptType.BASE);
+
+    this.scriptStack = [];
 
     this.generate = this.generate.bind(this);
+    this.back = this.back.bind(this);
+  }
+
+  setActiveScript(script) {
+    console.log(script);
+    this.scriptStack.push(this.state.activeScript);
+    this.setState({
+      activeScript: script,
+    });
+    this.forceUpdate();
+  }
+
+  back() {
+    if (this.scriptStack.length > 0) {
+      this.setState({
+        activeScript: this.scriptStack.pop(),
+      });
+    }
   }
 
   generate() {
     const output = this.scriptModel.generate();
     console.log(output);
     console.log(beautify(output));
-    // eval(output);
-    // window.Console.log(eval(output));
   }
 
   render() {
+    console.log(this.state.activeScript);
     return (
       <div>
-        <Header tabs={this.files} generate={this.generate} />
-        <Script script={this.scriptModel} />
+        <Header tabs={this.files} generate={this.generate} previousScript={this.back} />
+        <Script script={this.state.activeScript} project={this} />
         {this.console.render()}
       </div>
     );

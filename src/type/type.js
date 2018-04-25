@@ -139,6 +139,12 @@ export class Type extends T {
   }
 }
 
+export class Evaluate extends T {
+  constructor() {
+    super('', 'brown');
+  }
+}
+
 export class Relative extends T {
   // typeFun takes in the relative pin and returns the type
   constructor(pinName, of, value) {

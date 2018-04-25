@@ -14,7 +14,7 @@ class Header extends Component {
         <ul>
           <li><button> Save </button></li>
           <li><button> Load </button></li>
-          <li><button> Compile </button></li>
+          <li><button onClick={this.props.previousScript}> back </button></li>
           <li><button onClick={this.props.generate}> Generate </button></li>
         </ul>
       </div>

@@ -26,6 +26,7 @@ export default class Script {
       vars: [],
       statements: [],
     };
+    console.log(this);
   }
 
   /**
@@ -39,6 +40,17 @@ export default class Script {
     this.variables[variable.name] = variable;
   }
 
+  getTypes() {
+    let types = [];
+    let current = this;
+    while (current) {
+      console.log(current);
+      types = types.concat(current.types);
+      current = current.parent;
+    }
+    return types;
+  }
+
   hasVariable(name) {
     return name in this.variables;
   }
@@ -48,12 +60,10 @@ export default class Script {
   }
 
   getVariable(name) {
-    console.log(this);
-    console.log(name);
     if (this.hasVariable(name)) {
       return this.variables[name];
     } else if (this.parent) {
-      return this.parent.get(name);
+      return this.parent.getVariable(name);
     }
     window.Console.log('var is not in scope');
     return null;
@@ -64,7 +74,7 @@ export default class Script {
    */
 
   addNode(node) {
-    this.nodes.push(node.setScript(this));
+    this.nodes.push(node);
   }
 
   removeNode(node) {

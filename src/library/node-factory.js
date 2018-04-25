@@ -26,6 +26,12 @@ export default class NodeFactory {
     this.in = [];
     this.out = [];
     this.generationString = null;
+    this.declType = null;
+  }
+
+  setDeclType(type) {
+    this.declType = type;
+    return this;
   }
 
   addPin(direction, name, type, prop) {
@@ -50,7 +56,9 @@ export default class NodeFactory {
     return this;
   }
 
-  export(x, y) {
+  export(x, y, script) {
+    console.log(script);
+    console.log(this.declType);
     if (this.data) {
       const {
         name,
@@ -58,7 +66,7 @@ export default class NodeFactory {
         outPins,
         compile,
       } = parser(this.name, this.data);
-      return new Node(name, x, y, inPins, outPins, defaultGeneration(compile));
+      return new Node(name, x, y, inPins, outPins, defaultGeneration(compile), script);
     }
     const inPins = {};
     const outPins = {};
@@ -71,6 +79,6 @@ export default class NodeFactory {
       outPins[pin.name] = new Pin(pin.name, pin.type, pin.direction, i, pin.prop);
     });
 
-    return new Node(this.name, x, y, inPins, outPins, this.genFun);
+    return new Node(this.name, x, y, inPins, outPins, this.genFun, script, this.declType);
   }
 }

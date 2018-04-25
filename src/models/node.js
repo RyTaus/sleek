@@ -1,25 +1,29 @@
 import Direction from './../utils/direction';
+import Script from './script';
 import { FLOW } from './../type/type-type';
 
 export default class Node {
-  constructor(name, x, y, inPins, outPins, gen) {
+  constructor(name, x, y, inPins, outPins, gen, script, declarationType = false) {
     this.name = name;
     this.x = x;
     this.y = y;
     this.inPins = inPins;
     this.outPins = outPins;
     this.generateExpression = () => gen(this);
+    // this.declType = declerationType; // Func, Class, or Struct
+    this.script = script;
+
+
+    if (declarationType) {
+      this.innerScript = new Script('declaration', this.script, declarationType);
+    }
+    console.log(this.innerScript);
 
     // for generating. Maybe keep in a table??
     this.hasGenerated = false;
     this.label = null;
 
     this.init();
-  }
-
-  setScript(script) {
-    this.script = script;
-    return this;
   }
 
   remove() {
