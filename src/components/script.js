@@ -32,8 +32,8 @@ export default class Script extends Component {
     this.addVariable = this.addVariable.bind(this);
   }
 
-  addVariable(variable) {
-    this.state.script.addVariable(variable);
+  addVariable(type, variable) {
+    this.state.script[type](variable);
     this.setState({
       script: this.state.script,
     });
@@ -174,7 +174,10 @@ export default class Script extends Component {
             script={this}
           />
           <Sidebar
+            script={this}
             addVariable={this.addVariable}
+            addInput={this.addInput}
+            addOutput={this.addOutput}
             variables={this.state.script.variables}
             types={this.state.script.getTypes()}
             height={`${this.state.heightRatio}%`}

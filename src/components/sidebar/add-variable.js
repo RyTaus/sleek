@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Variable from './../../models/variable';
+
 
 /**
  *
@@ -40,7 +42,7 @@ export default class AddVariable extends Component {
 
   handleSubmit() {
     const { name, type, isConstant } = this.state;
-    this.props.handleSubmit(name, new this.props.types[type](), isConstant);
+    this.props.handleSubmit(new Variable(name, new this.props.types[type](), isConstant));
     this.setState({
       name: '',
       isConstant: false,

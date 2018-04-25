@@ -117,3 +117,25 @@ export default class Script {
     return `${vars.map(v => `let ${v};`).join()}  ${statements.join(';')}`;
   }
 }
+
+export class FunctionDeclarationScript extends Script {
+  constructor(name, parent) {
+    super(name, parent, TYPE.FUNC);
+    this.inputs = {};
+    this.outputs = {};
+  }
+
+  addInput(variable) {
+    if (variable.name in this.inputs) {
+      window.Console.log('cannot add input');
+    }
+    this.inputs[variable.name] = variable;
+  }
+
+  addOutput(variable) {
+    if (variable.name in this.outputs) {
+      window.Console.log('cannot add input');
+    }
+    this.outputs[variable.name] = variable;
+  }
+}

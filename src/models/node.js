@@ -1,5 +1,5 @@
 import Direction from './../utils/direction';
-import Script from './script';
+import Script, { FunctionDeclarationScript } from './script';
 import { FLOW } from './../type/type-type';
 
 export default class Node {
@@ -15,7 +15,7 @@ export default class Node {
 
 
     if (declarationType) {
-      this.innerScript = new Script('declaration', this.script, declarationType);
+      this.innerScript = new FunctionDeclarationScript('declaration', this.script);
     }
     console.log(this.innerScript);
 
