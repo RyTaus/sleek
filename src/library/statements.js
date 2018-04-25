@@ -1,6 +1,6 @@
 import NodeFactory from './node-factory';
 
-import { Flow, BoolLit, Input, Label, Relative } from './../type/type';
+import { Flow, BoolLit, NumLit, StringLit, Input, Label, Relative } from './../type/type';
 import { SAME, INSTANCE } from './../type/type-type';
 
 export default {
@@ -41,10 +41,16 @@ export default {
     .generateFunction((node) => {
       return `(${node.inPins.variable.generate()} = ${node.inPins.value.generate()})`;
     }),
-    get: new NodeFactory('get')
-      .addPin('in', 'variable', new Label())
-      .addPin('out', 'value', new Relative('variable', INSTANCE))
-      .generateFunction((node) => {
-        return `(${node.inPins.variable.generate()})`;
-      }),
+  get: new NodeFactory('get')
+    .addPin('in', 'variable', new Label())
+    .addPin('out', 'value', new Relative('variable', INSTANCE))
+    .generateFunction((node) => {
+      return `(${node.inPins.variable.generate()})`;
+    }),
+  funCall: new NodeFactory('function call')
+    .addPin('in', ' ', new Flow())
+    .addPin('out', 'next', new Flow())
+    .addPin('in', 'function', new BoolLit())
+    .addPin('in', 'text', new StringLit())
+    .addPin('out', 'result', new NumLit())
 };

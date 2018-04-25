@@ -49,6 +49,7 @@ export default class Script {
 
   getVariable(name) {
     console.log(this);
+    console.log(name);
     if (this.hasVariable(name)) {
       return this.variables[name];
     } else if (this.parent) {

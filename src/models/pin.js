@@ -13,7 +13,7 @@ export default class Pin {
     this.direction = direction;
     this.index = index;
     this.connections = [];
-    this.value = this.type.defaultValue;
+    this.value = type.defaultValue;
     this.prop = prop;
 
     this.maxConnections = this.direction === Direction.in ? 1 : Infinity;

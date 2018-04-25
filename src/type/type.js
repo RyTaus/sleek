@@ -77,6 +77,7 @@ export class List extends T {
   constructor(elementType) {
     super(Types.LIST, elementType.color);
     this.elementType = elementType;
+    this.defaultValue = [];
   }
 
   toString() {
@@ -130,7 +131,7 @@ export class Func extends T {
 export class Type extends T {
   constructor() {
     super(Types.TYPE, 'skyblue');
-    this.defaultValue = new NumLit();
+    this.defaultValue = new StringLit();
   }
 
   toString() {
@@ -139,11 +140,13 @@ export class Type extends T {
 }
 
 export class Relative extends T {
+  // typeFun takes in the relative pin and returns the type
   constructor(pinName, of, value) {
     super(Types.RELATIVE, 'coral');
     this.relativeName = pinName;
     this.type = of;
     this.isValue = value;
+    // this.getTypeFun = typeFun;
   }
 
   getType(node) {
@@ -153,7 +156,6 @@ export class Relative extends T {
         return new List(type);
       }
     }
-    console.log(this);
     if (this.type === Types.SAME) {
       return node.inPins[this.relativeName].getType();
     } else if (this.type === Types.VALUE) {
@@ -161,14 +163,11 @@ export class Relative extends T {
     } else if (this.type === Types.LIST_OF) {
       return new List(node.inPins[this.relativeName].getType());
     } else if (this.type === Types.INSTANCE) {
-      const name = node.inPins[this.relativeName].value;
-      console.log(name);
-      if (name === 'None') {
+      const variable = node.inPins[this.relativeName].value;
+      if (variable === 'None') {
         return new T('UNKNOWN', 'black');
       }
-      console.log(node.script.getVariable(name));
-      return node.script.getVariable(name).type.getType();
-      // return node.inPins[this.relativeName].getType();
+      return node.script.getVariable(variable.name).type.getType();
     }
     const type = node.inPins[this.relativeName].getType()[this.type];
     if (!type) {
@@ -177,6 +176,8 @@ export class Relative extends T {
     return type;
   }
 }
+
+// export const of = (Con, isVal) => (pin) => isVal ? new Con(pin.value)
 
 export const nameToType = (data) => {
   const d = data.toUpperCase();

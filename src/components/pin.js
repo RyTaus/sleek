@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+
+import TextInput from './common/text-input';
+import Checkbox from './common/checkbox';
+import DropDownInput from './common/dropdown-input';
+
 import Direction from './../utils/direction';
 import Size from './../utils/sizes';
 import { Type } from './../type/type';
@@ -136,66 +141,67 @@ class Pin extends Component {
     const type = pin.getType();
     if ([NUMBER, STRING].includes(type.name)) {
       return (
-        <foreignObject x={x} y={y} width="50" height="20" style={{ position: 'fixed' }} >
-          <input
+        <foreignObject x={x} y={y} width="70" height="30" style={{ position: 'fixed' }} >
+          <TextInput
             className="pin"
-            type="text"
             onMouseUp={this.onMouseUp}
             onChange={this.onChange}
-            size={1.5}
-            style={{ borderColor: type.color }}
+            color={type.color}
             value={pin.value}
           />
         </foreignObject>
       );
     } else if (pin.getType().name === BOOLEAN) {
       return (
-        <foreignObject x={x} y={y} width="60" height="20">
-          <input
+        <foreignObject x={x} y={y} width="90" height="30">
+          <Checkbox
             className="pin checkbox check-input"
-            type="checkbox"
             onMouseUp={this.onMouseUp}
             onChange={((evt) => {pin.value = evt.target.checked; this.props.script.forceUpdate();}).bind(this)}
-            style={{ margin: 0, zoom: 1.8, outline: type.color }}
             checked={pin.value}
+            color={type.color}
           />
         </foreignObject>
       );
     } else if (type.name === TYPE) {
-      const script = this.props.script.state.script;
+      const { script } = this.props.script.state;
+      const onSelect = (Selected) => {
+        pin.value = new Selected();
+        this.props.script.forceUpdate();
+      };
       return (
         <foreignObject x={x} y={y} width="60" height="20">
-          <select
-            className="pin select check-input"
-            type="checkbox"
-            onMouseUp={this.onMouseUp}
-            onChange={((evt) => {
-              const index = script.types.map(t => t.name).indexOf(evt.target.value);
-              pin.value = new script.types[index]();
-              this.props.script.forceUpdate();
-            }).bind(this)}
-            style={{ width: '50px', outline: type.color }}
+          <DropDownInput
+            options={script.types}
+            mapOptionToDisplay={opt => opt.name}
+            mapDisplayToOption={disp => script.types[script.types.map(t => t.name).indexOf(disp)]}
+            onSelect={onSelect}
+            color={type.color}
             value={pin.value}
-          >
-
-            {script.types.map((t, i) => (<option className={i} > {t.name} </option>))}
-          </select>
-
+          />
         </foreignObject>
       );
     } else if (type.name === LABEL) {
-      const script = this.props.script.state.script;
-      console.log(script);
-      console.log(script);
-      console.log(this.props.pin);
+      const { script } = this.props.script.state;
+      const onSelect = (selected) => {
+        pin.value = selected;
+        this.props.script.forceUpdate();
+      };
       return (
         <foreignObject x={x} y={y} width="60" height="20">
+          <DropDownInput
+            options={Object.keys(script.variables)}
+            mapOptionToDisplay={opt => opt}
+            mapDisplayToOption={disp => script.variables[disp]}
+            onSelect={onSelect}
+            color={type.color}
+            value={pin.value}
+          />
           <select
             className="pin select check-input"
             type="checkbox"
             onMouseUp={this.onMouseUp}
             onChange={((evt) => {
-              // const index = script.types.map(t => t.name).indexOf(evt.target.value);
               pin.value = evt.target.value;
               this.props.script.forceUpdate();
             }).bind(this)}

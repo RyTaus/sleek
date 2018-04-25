@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 
-class TextInput extends Component {
+
+class Checkbox extends Component {
   constructor(props) {
     super(props);
   }
@@ -9,16 +10,14 @@ class TextInput extends Component {
   render() {
     return (
       <input
-        className="pin"
-        type="text"
+        type="checkbox"
         onMouseUp={this.props.onMouseUp}
         onChange={this.props.onChange}
-        size={1.5}
-        style={{ borderColor: this.props.color }}
-        value={this.props.value}
+        style={{ margin: 0, zoom: 1.8, outline: this.props.color }}
+        checked={this.props.checked}
       />
     );
   }
 }
 
-export default TextInput;
+export default Checkbox
