@@ -54,11 +54,27 @@ export default class Node {
     let current = this;
     while (current) {
       console.log('generating block...');
+      console.log(current);
+
       const result = current.generate();
       this.script.generation.statements.push(result);
       console.log('result of generation: ', result);
       current = current.getNextNode();
     }
+  }
+
+  generateAll() {
+    let str = '';
+    let current = this;
+    while (current) {
+      console.log('generating block...');
+      console.log(current);
+
+      const result = current.generate();
+      str = str + result;
+      current = current.getNextNode();
+    }
+    return str;
   }
 
   generate() {

@@ -108,6 +108,7 @@ export default class Script {
 
     this.labelGenerator = labelMaker(this);
     const starts = this.nodes.filter(node => node.name === 'start').sort(node => node.y).reverse();
+    console.log(starts);
     starts.forEach((start) => {
       start.generateBlock();
     });

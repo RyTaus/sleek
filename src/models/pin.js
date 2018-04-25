@@ -120,10 +120,11 @@ export default class Pin {
   generate() {
     if (this.type.name === FLOW) {
       if (this.direction === Direction.in) {
-        // return this.node.generateBlock();
+        return this.node.generateAll();
         return '';
       }
       if (this.isConnected()) {
+        console.log('generating', this.connections[0]);
         return this.connections[0].generate();
       }
       return '';

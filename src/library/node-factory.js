@@ -13,9 +13,13 @@ const defaultGeneration = string => (node) => {
       str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
     }
   });
-  Object.keys(node.outPins).filter(key => node.outPins[key].type.name === FLOW).forEach((key) => {
-    const replacement = node.outPins[key].generate();
-    str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
+  Object.keys(node.outPins)
+    .filter(key => (node.outPins[key].type.name === FLOW && key !== 'next'))
+    .forEach((key) => {
+      console.log(key);
+      const replacement = node.outPins[key].generate();
+      console.log(replacement);
+      str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
   });
   return str;
 };
