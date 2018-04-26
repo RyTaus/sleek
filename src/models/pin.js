@@ -142,7 +142,6 @@ export default class Pin {
         return this.node.generateAll();
       }
       if (this.isConnected()) {
-        console.log('generating', this.connections[0]);
         return this.connections[0].generate();
       }
       return '';

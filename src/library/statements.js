@@ -46,7 +46,6 @@ export default {
     .addPin('in', 'variable', new Label())
     .addPin('out', 'value', new Relative('variable', INSTANCE))
     .generateFunction((node) => {
-      console.log(node);
       return `(${node.inPins.variable.value.name})`;
     }),
   functionDecl: new NodeFactory('Fun Decl')
@@ -66,7 +65,6 @@ export default {
       const args = Object.keys(node.inPins)
         .filter(key => node.inPins[key].type.name !== FLOW)
         .map(key => `${key}: ${node.inPins[key].generate()}`);
-      console.log(args);
       return `return { ${args.join(', ')}}`
     }),
 };

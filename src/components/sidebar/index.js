@@ -19,7 +19,6 @@ class Sidebar extends Component {
   renderFunctionMenu() {
     const { script } = this.props.script.props;
     // const inputList = Object.keys(script.inputs).map(key => )
-    console.log(this.props.variables);
     return (
       <div>
         Inputs:

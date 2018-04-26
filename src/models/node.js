@@ -21,7 +21,6 @@ export default class Node {
     if (declarationType) {
       this.innerScript = new FunctionDeclarationScript('declaration', this.script, this);
     }
-    console.log(this.innerScript);
 
     // for generating. Maybe keep in a table??
     this.hasGenerated = false;
@@ -38,19 +37,16 @@ export default class Node {
         const param = params[key];
         outPins[key] = (new Pin(key, new Evaluate(param), 'out', i + 1)).init(this);
       });
-      console.log(outPins);
       this.outPins = outPins;
       this.init();
     }
     if (this.name === 'return') {
       const inPins = { next: new Pin('', new Flow(), 'in', 0) };
       const results = this.script.outputs;
-      console.log(results);
       Object.keys(results).forEach((key, index) => {
         const variable = results[key];
         inPins[variable.name] = (new Pin(variable.name, variable.type, 'in', index + 1)).init(this);
       });
-      console.log(inPins);
       this.inPins = inPins;
       this.init();
     }
@@ -62,7 +58,6 @@ export default class Node {
         const param = params[key];
         outPins[key] = (new Pin(key, new Evaluate(param), 'out', i)).init(this);
       });
-      console.log(outPins);
       this.outPins = outPins;
       this.init();
     }
@@ -113,12 +108,8 @@ export default class Node {
   generateBlock() {
     let current = this;
     while (current) {
-      console.log('generating block...');
-      console.log(current);
-
       const result = current.generate();
       this.script.generation.statements.push(result);
-      console.log('result of generation: ', result);
       current = current.getNextNode();
     }
   }
@@ -127,9 +118,6 @@ export default class Node {
     let str = '';
     let current = this;
     while (current) {
-      console.log('generating block...');
-      console.log(current);
-
       const result = current.generate();
       str = str + result;
       current = current.getNextNode();
@@ -138,7 +126,6 @@ export default class Node {
   }
 
   generate() {
-    console.log(`node: ${this.name} generate`);
     if (this.label) {
       return this.label;
     }

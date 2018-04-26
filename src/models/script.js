@@ -26,7 +26,6 @@ export default class Script {
       vars: [],
       statements: [],
     };
-    console.log(this);
 
     this.inputs = {};
     this.outputs = {};
@@ -47,7 +46,6 @@ export default class Script {
     let types = [];
     let current = this;
     while (current) {
-      console.log(current);
       types = types.concat(current.types);
       current = current.parent;
     }
@@ -74,10 +72,6 @@ export default class Script {
     }
     window.Console.log('var is not in scope');
     return null;
-  }
-
-  updateNodes(type) {
-    console.log(type);
   }
 
   /**

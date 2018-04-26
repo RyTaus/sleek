@@ -16,9 +16,7 @@ const defaultGeneration = string => (node) => {
   Object.keys(node.outPins)
     .filter(key => (node.outPins[key].type.name === FLOW && key !== 'next'))
     .forEach((key) => {
-      console.log(key);
       const replacement = node.outPins[key].generate();
-      console.log(replacement);
       str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
   });
   return str;
@@ -61,8 +59,6 @@ export default class NodeFactory {
   }
 
   export(x, y, script) {
-    console.log(script);
-    console.log(this.declType);
     if (this.data) {
       const {
         name,

@@ -27,7 +27,6 @@ class Project extends Component {
   }
 
   setActiveScript(script) {
-    console.log(script);
     this.scriptStack.push(this.state.activeScript);
     this.setState({
       activeScript: script,
@@ -50,7 +49,6 @@ class Project extends Component {
   }
 
   render() {
-    console.log(this.state.activeScript);
     return (
       <div>
         <Header tabs={this.files} generate={this.generate} previousScript={this.back} />

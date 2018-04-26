@@ -33,8 +33,6 @@ export default class Script extends Component {
   }
 
   addVariable(type, variable) {
-    this.state.script.updateNodes(type);
-    console.log(type);
     this.state.script[type](variable);
     this.setState({
       script: this.state.script,
@@ -135,7 +133,6 @@ export default class Script extends Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log(props);
     this.setState({
       script: props.script,
     });
