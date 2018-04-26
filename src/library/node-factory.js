@@ -3,7 +3,7 @@ import Node from './../models/node';
 
 import { FLOW } from './../type/type-type';
 
-import parser from './parser';
+import parser, { parsePin } from './parser';
 
 const defaultGeneration = string => (node) => {
   let str = string;
@@ -51,6 +51,36 @@ export default class NodeFactory {
       this.genFun = defaultGeneration(val);
     }
     return this;
+  }
+
+  // returns true if this can connect to pin
+  filter(pin) {
+    console.log('...', this.name, '...');
+    const direction = { in: 'out', out: 'in' }[pin.direction];
+    if (this.data) {
+      return Object.keys(this.data[direction]).some((key) => {
+        const pinData = this.data[direction][key];
+        console.log('DATA', pinData);
+        const p = parsePin('', pinData, direction, 0);
+        console.log(p, pin);
+        try {
+          return p.canConnect(pin);
+        } catch (e) {
+          return false;
+        }
+      });
+    }
+    return this[direction].some((pinData) => {
+      console.log('CUSTOM', pinData);
+      const p = new Pin(pinData.name, pinData.type, pinData.direction, 0, pinData.prop);
+      console.log(p, pin);
+      
+      try {
+        return p.canConnect(pin);
+      } catch (e) {
+        return false;
+      }
+    });
   }
 
   pureData(data) {

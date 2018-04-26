@@ -3,7 +3,7 @@ import Pin from './../models/pin';
 import Direction from './../utils/direction';
 
 
-const parsePin = (name, data, direction, index) =>
+export const parsePin = (name, data, direction, index) =>
   new Pin(name, nameToType(data), direction, index);
 
 const parseNode = (name, data) => {

@@ -39,12 +39,28 @@ class NodeSearcher extends Component {
     if (this.props.seed === null) {
       return Object.keys(nodes).map(key => this.getOptionGroup(key, nodes[key]));
     }
-    const seedType = this.props.seed.props.pin.type;
-    if (seedType.name === FLOW) {
-      return Object.keys(nodes).map(key => this.getOptionGroup(key, nodes[key]));
-    }
+    const { pin } = this.props.seed.props;
+    
+    const validNodes = this.filterOptions(pin);
+    return Object.keys(validNodes).map(key => this.getOptionGroup(key, validNodes[key]));
+  }
 
-    return this.getOptionGroup(seedType.name.toLowerCase(), nodes[seedType.name.toLowerCase()]);
+  filterOptions(pin) {
+    const self = this;
+
+    const result = {};
+    Object.keys(nodes).forEach((key) => {
+      const type = nodes[key];
+      const validNodes = {};
+      Object.keys(type).forEach((k) => {
+        const node = type[k];
+        if (node.filter(pin)) {
+          validNodes[k] = node
+        }
+      });
+      result[key] = validNodes;
+    });
+    return result;
   }
 
   handleClick(item) {

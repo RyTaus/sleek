@@ -17,8 +17,10 @@ export class T {
   }
 
   isCompatible(other) {
-    if (this.name === Types.INPUT || other.name === Types.INPUT) {
-      return true; // Should be more detailed
+    if (this.name === Types.INPUT) {
+      return this.possible(other); // Should be more detailed
+    } else if (other.name === Types.INPUT) {
+      return other.possible(this);
     }
     return this.equals(other);
   }
