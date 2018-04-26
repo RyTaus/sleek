@@ -71,13 +71,10 @@ class NodeSearcher extends Component {
 
     // const node = new NodeModel(parsed.name, x, y, parsed.inPins, parsed.outPins, parsed.compile);
     const node = item.props.data.export(x, y, script);
-    console.log(this.props.seed);
     if (this.props.seed) {
       const { pin } = this.props.seed.props;
-      console.log(pin);
 
       const pinToConnect = this.getPinToConnect(node);
-      console.log(pinToConnect);
       pin.createConnection(pinToConnect);
       pinToConnect.createConnection(pin);
     }

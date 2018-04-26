@@ -121,7 +121,7 @@ export default class Pin {
 
       Object.keys(outputs).forEach((key, i) => {
         const param = outputs[key];
-        this.node.outPins[key] = (new Pin(param.name, param.type, 'out', i + 1, param.name)).init(this.node);
+        this.node.outPins[key] = (new Pin(param.name, param.type, 'out', i, param.name)).init(this.node);
       });
     }
     this.connections.push(pin);
