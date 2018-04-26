@@ -114,19 +114,7 @@ export default class Script extends Component {
 
   handleNodeSearcherSelect(node) {
     this.addNode(node);
-    if (this.state.searcherSeed) {
-      const a = node.inPins[Object.keys(node.inPins)[0]];
-      const b = this.state.searcherSeed.props.pin;
-      try {
-        if (a.canConnect(b)) {
-          a.createConnection(b);
-          b.createConnection(a);
-        }
-        this.forceUpdate();
-      } catch (err) {
-        window.Console.log(err);
-      }
-    }
+
     this.setState({
       searcherActive: false,
     });

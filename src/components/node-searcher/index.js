@@ -40,7 +40,7 @@ class NodeSearcher extends Component {
       return Object.keys(nodes).map(key => this.getOptionGroup(key, nodes[key]));
     }
     const { pin } = this.props.seed.props;
-    
+
     const validNodes = this.filterOptions(pin);
     return Object.keys(validNodes).map(key => this.getOptionGroup(key, validNodes[key]));
   }
@@ -71,7 +71,34 @@ class NodeSearcher extends Component {
 
     // const node = new NodeModel(parsed.name, x, y, parsed.inPins, parsed.outPins, parsed.compile);
     const node = item.props.data.export(x, y, script);
+    console.log(this.props.seed);
+    if (this.props.seed) {
+      const { pin } = this.props.seed.props;
+      console.log(pin);
+
+      const pinToConnect = this.getPinToConnect(node);
+      console.log(pinToConnect);
+      pin.createConnection(pinToConnect);
+      pinToConnect.createConnection(pin);
+    }
     this.props.handleChange(node);
+  }
+
+  getPinToConnect(node) {
+    const { pin } = this.props.seed.props;
+    const direction = { in: 'outPins', out: 'inPins' }[pin.direction];
+    console.log(this.props);
+    const pins = node[direction];
+    console.log(Object.keys(pins));
+    return Object.keys(pins)
+      .map(key => pins[key])
+      .filter((p) => {
+        try {
+          return p.canConnect(pin)
+        } catch (e) {
+          return false;
+        }
+      })[0];
   }
 
   handleSearch(evt) {

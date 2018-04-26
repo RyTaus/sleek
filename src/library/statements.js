@@ -4,6 +4,8 @@ import { Flow, BoolLit, NumLit, StringLit, Input, Label, Relative, Func } from '
 import { SAME, INSTANCE, FUNC, FLOW } from './../type/type-type';
 import ScriptType from './../models/script-type';
 
+const isFunc = type => type.name === FUNC;
+
 export default {
   start: new NodeFactory('start').pureData({
     in: {
@@ -15,7 +17,7 @@ export default {
   }),
   print: new NodeFactory('print')
     .addPin('in', ' ', new Flow())
-    .addPin('in', 'val', new Input())
+    .addPin('in', 'val', new Input(type => type.name !== FLOW))
     .addPin('out', 'next', new Flow())
     .generateFunction('window.Console.log({val})'),
   if: new NodeFactory('if')
@@ -53,7 +55,7 @@ export default {
     .addPin('out', 'function', new Func())
     .generateFunction(node => node.innerScript.generateFunction()),
   call: new NodeFactory('call')
-    .addPin('in', 'function', new Input())
+    .addPin('in', 'function', new Input(isFunc))
     .generateFunction((node) => {
       const args = Object.keys(node.inPins)
         .filter(key => node.inPins[key].name !== 'function')

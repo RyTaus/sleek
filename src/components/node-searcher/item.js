@@ -13,7 +13,10 @@ export default class Item extends Component {
 
   render() {
     return (
-      <div className="item" onClick={this.handleClick}>{this.props.name} </div>
+      <div
+        className="item"
+        onClick={this.handleClick}>{this.props.name}
+      </div>
     );
   }
 
