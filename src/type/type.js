@@ -140,8 +140,13 @@ export class Type extends T {
 }
 
 export class Evaluate extends T {
-  constructor() {
-    super('', 'brown');
+  constructor(variable) {
+    super(Types.EVALUATE, 'brown');
+    this.variable = variable;
+  }
+
+  generate() {
+    return this.variable.name;
   }
 }
 

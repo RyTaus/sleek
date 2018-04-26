@@ -1,7 +1,7 @@
 import NodeFactory from './node-factory';
 
 import { Flow, BoolLit, NumLit, StringLit, Input, Label, Relative, Func } from './../type/type';
-import { SAME, INSTANCE, FUNC } from './../type/type-type';
+import { SAME, INSTANCE, FUNC, FLOW } from './../type/type-type';
 import ScriptType from './../models/script-type';
 
 export default {
@@ -53,4 +53,15 @@ export default {
     .setDeclType(ScriptType.FUNC)
     .addPin('out', 'function', new Func())
     .generateFunction(node => node.innerScript.generateFunction()),
+  call: new NodeFactory('call')
+    .addPin('in', 'function', new Input())
+    .generateFunction(node => `${node.inPins.function.generate()}()`),
+  return: new NodeFactory('return')
+    .generateFunction(node => {
+      const args = Object.keys(node.inPins)
+        .filter(key => node.inPins[key].type.name !== FLOW)
+        .map(key => `${key}: ${node.inPins[key].generate()}`);
+      console.log(args);
+      return `return { ${args.join(', ')}}`
+    }),
 };

@@ -3,7 +3,7 @@ import React from 'react';
 import Direction from './../utils/direction';
 import Size from './../utils/sizes';
 
-import { FLOW, INPUT, STRING } from './../type/type-type';
+import { FLOW, INPUT, STRING, EVALUATE } from './../type/type-type';
 
 
 export default class Pin {
@@ -87,6 +87,8 @@ export default class Pin {
         return this.type;
       }
       return this.connections[0].getType();
+    } else if (this.type.name === EVALUATE) {
+      return this.type.variable.type;
     }
     return this.type.getType(this.node);
   }
@@ -109,6 +111,19 @@ export default class Pin {
   }
 
   createConnection(pin) {
+    if (this.node.name === 'call' && this.name === 'function') {
+      const script = pin.node.innerScript;
+      const { inputs, outputs } = script;
+      Object.keys(inputs).forEach((key, i) => {
+        const param = inputs[key];
+        this.node.inPins[key] = (new Pin(param.name, param.type, 'in', i + 1)).init(this.node);
+      });
+
+      Object.keys(outputs).forEach((key, i) => {
+        const param = outputs[key];
+        this.node.outPins[key] = (new Pin(param.name, param.type, 'out', i + 1, param.name)).init(this.node);
+      });
+    }
     this.connections.push(pin);
     return this;
   }
@@ -118,16 +133,23 @@ export default class Pin {
   }
 
   generate() {
+    if (this.prop) {
+      return `${this.node.generate()}.${this.prop}`;
+    }
+
     if (this.type.name === FLOW) {
       if (this.direction === Direction.in) {
         return this.node.generateAll();
-        return '';
       }
       if (this.isConnected()) {
         console.log('generating', this.connections[0]);
         return this.connections[0].generate();
       }
       return '';
+    }
+
+    if (this.type.name === EVALUATE) {
+      return this.type.generate();
     }
 
     if (this.direction === Direction.in) {
@@ -137,9 +159,7 @@ export default class Pin {
       return this.generateFromValue();
     }
 
-    if (this.prop) {
-      return `${this.node.generate()}.${this.prop}`;
-    }
+
     return this.node.generate();
   }
 }

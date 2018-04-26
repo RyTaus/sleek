@@ -76,6 +76,10 @@ export default class Script {
     return null;
   }
 
+  updateNodes(type) {
+    console.log(type);
+  }
+
   /**
    *  Node Stuff
    */
@@ -126,15 +130,22 @@ export default class Script {
 }
 
 export class FunctionDeclarationScript extends Script {
-  constructor(name, parent) {
+  constructor(name, parent, node) {
     super(name, parent, TYPE.FUNC);
-
+    this.node = node;
   }
 
   addInput(variable) {
     if (variable.name in this.inputs) {
       window.Console.log('cannot add input');
     }
+    this.nodes
+      .filter(node => node.name === 'start')
+      .forEach(node => node.addPin(variable));
+
+    this.parent.nodes
+      .filter(node => (node.name === 'call' && this.node === node)) // TODO string
+      .forEach(node => node.addPin(variable));
     this.inputs[variable.name] = variable;
   }
 
@@ -142,6 +153,14 @@ export class FunctionDeclarationScript extends Script {
     if (variable.name in this.outputs) {
       window.Console.log('cannot add input');
     }
+
+    this.nodes
+      .filter(node => node.name === 'return')
+      .forEach(node => node.addPin(variable, 'out'));
+
+    this.parent.nodes
+      .filter(node => (node.name === 'call' && this.node === node)) // TODO string
+      .forEach(node => node.addPin(variable, 'out'));
     this.outputs[variable.name] = variable;
   }
 

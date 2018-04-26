@@ -2,7 +2,7 @@ import Direction from './../utils/direction';
 import Script, { FunctionDeclarationScript } from './script';
 import Pin from './pin';
 import { FLOW } from './../type/type-type';
-import { Flow } from './../type/type';
+import { Flow, Evaluate } from './../type/type';
 
 export default class Node {
   constructor(name, x, y, inPins = {}, outPins = {}, gen, script, declarationType = false) {
@@ -19,7 +19,7 @@ export default class Node {
 
 
     if (declarationType) {
-      this.innerScript = new FunctionDeclarationScript('declaration', this.script);
+      this.innerScript = new FunctionDeclarationScript('declaration', this.script, this);
     }
     console.log(this.innerScript);
 
@@ -32,12 +32,57 @@ export default class Node {
 
   specialize() {
     if (this.name === 'start') {
-      const inPins = { start: new Pin('start', new Flow(), 'out', 0) };
+      const outPins = { next: new Pin('next', new Flow(), 'out', 0) };
       const params = this.script.inputs;
       Object.keys(params).forEach((key, i) => {
         const param = params[key];
-        inPins[key] = new Pin(key, param.type, 'out', i + 1);
+        outPins[key] = (new Pin(key, new Evaluate(param), 'out', i + 1)).init(this);
       });
+      console.log(outPins);
+      this.outPins = outPins;
+      this.init();
+    }
+    if (this.name === 'return') {
+      const inPins = { next: new Pin('', new Flow(), 'in', 0) };
+      const results = this.script.outputs;
+      console.log(results);
+      Object.keys(results).forEach((key, index) => {
+        const variable = results[key];
+        inPins[variable.name] = (new Pin(variable.name, variable.type, 'in', index)).init(this);
+      });
+      console.log(inPins);
+      this.inPins = inPins;
+      this.init();
+    }
+    if (this.name === 'call') {
+      const outPins = {};
+      const inPins = {};
+      const params = this.script.inputs;
+      Object.keys(params).forEach((key, i) => {
+        const param = params[key];
+        outPins[key] = (new Pin(key, new Evaluate(param), 'out', i)).init(this);
+      });
+      console.log(outPins);
+      this.outPins = outPins;
+      this.init();
+    }
+  }
+
+  addPin(variable, pinType = 'in') {
+    if (this.name === 'start') {
+      const index = Object.keys(this.outPins).length;
+      this.outPins[variable.name] = (new Pin(variable.name, new Evaluate(variable), 'out', index)).init(this);
+    } else if (this.name === 'return') {
+      const index = Object.keys(this.inPins).length;
+      this.inPins[variable.name] = (new Pin(variable.name, variable.type, 'in', index)).init(this);
+    } else if (this.name === 'call') {
+      if (pinType === 'in') {
+        const index = Object.keys(this.inPins).length;
+        this.inPins[variable.name] = (new Pin(variable.name, variable.type, 'in', index)).init(this);
+      } else {
+        const index = Object.keys(this.outPins).length;
+        this.inPins[variable.name] = (new Pin(variable.name, variable.type, 'out', index, variable.name)).init(this);
+      }
     }
   }
 

@@ -22,3 +22,4 @@ export const VAL_OF = 'valType';
 export const LIST_OF = 'listOf';
 
 export const INPUT = 'Input';
+export const EVALUATE = 'Evaluate';
