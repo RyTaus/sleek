@@ -55,9 +55,14 @@ export default {
     .generateFunction(node => node.innerScript.generateFunction()),
   call: new NodeFactory('call')
     .addPin('in', 'function', new Input())
-    .generateFunction(node => `${node.inPins.function.generate()}()`),
+    .generateFunction((node) => {
+      const args = Object.keys(node.inPins)
+        .filter(key => node.inPins[key].name !== 'function')
+        .map(key => node.inPins[key].generate())
+      return `${node.inPins.function.generate()}(${args.join(', ')})`
+    }),
   return: new NodeFactory('return')
-    .generateFunction(node => {
+    .generateFunction((node) => {
       const args = Object.keys(node.inPins)
         .filter(key => node.inPins[key].type.name !== FLOW)
         .map(key => `${key}: ${node.inPins[key].generate()}`);

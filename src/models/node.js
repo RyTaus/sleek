@@ -48,7 +48,7 @@ export default class Node {
       console.log(results);
       Object.keys(results).forEach((key, index) => {
         const variable = results[key];
-        inPins[variable.name] = (new Pin(variable.name, variable.type, 'in', index)).init(this);
+        inPins[variable.name] = (new Pin(variable.name, variable.type, 'in', index + 1)).init(this);
       });
       console.log(inPins);
       this.inPins = inPins;
