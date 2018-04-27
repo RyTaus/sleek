@@ -9,7 +9,6 @@ class ContextMenu extends Component {
   }
 
   render() {
-    console.log(this.props.options);
     if (!this.props.active) {
       return null;
     }

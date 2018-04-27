@@ -69,7 +69,6 @@ export default class Script extends Component {
         x: evt.pageX,
         y: evt.pageY,
       };
-      console.log('FIRING...');
       document.addEventListener('mousemove', this.handleMouseMove);
       document.addEventListener('mouseup', this.handleMouseUp);
     }

@@ -37,18 +37,6 @@ class EventHandler {
     this.dismissSearcher();
   }
 
-  // onCanvasContextMenu(evt) {
-  //   this.state = EVENT.PAN;
-  //   this.coords = {
-  //     x: evt.pageX,
-  //     y: evt.pageY,
-  //   };
-  //   this.frame.forceUpdate();
-  //
-  //   evt.preventDefault();
-  //   evt.stopPropagation();
-  // }
-
   onMouseMove(evt) {
     if (this.state === EVENT.PAN) {
       const xDiff = this.coords.x - evt.pageX;
@@ -73,7 +61,6 @@ class EventHandler {
   }
 
   seedContextMenu(evt) {
-    console.log(this.inFocus);
     this.frame.setState({
       searcherActive: !this.frame.searcherActive,
       searcherX: evt.pageX, // for now
@@ -104,8 +91,18 @@ class EventHandler {
     return null;
   }
 
+  screenToCanvas(screenX, screenY) {
+    const { panX, panY, zoom } = this.frame.state;
+    const script = this.frame;
+    const x = ((-panX + screenX) / zoom);
+    const y = ((-panY + screenY) / zoom);
+    return { x, y };
+  }
+
   makeGetSetMenu(evt) {
     const variable = this.inFocus;
+
+
     const get = new NodeFactory(`get ${variable.name}`)
       .addPin('out', '', variable.type)
       .generateFunction(() => variable.name);
@@ -120,14 +117,15 @@ class EventHandler {
       });
 
     const script = this.frame;
+    const { x, y } = this.screenToCanvas(evt.clientX, evt.clientY);
     script.makeContextMenu(evt, [
       {
         text: `get ${variable.name}`,
-        onClick: () => script.addNode(get.export(evt.clientX, evt.clientY, script.props.script)),
+        onClick: () => script.addNode(get.export(x, y, script.props.script)),
       },
       {
         text: `set ${variable.name}`,
-        onClick: () => script.addNode(set.export(evt.clientX, evt.clientY, script.props.script)),
+        onClick: () => script.addNode(set.export(x, y, script.props.script)),
       },
     ]);
     this.state = null;
@@ -135,11 +133,13 @@ class EventHandler {
   }
 
   onMouseUp(evt) {
-    console.log(evt);
     if (this.state === EVENT.DRAG_PIN) {
       this.seedContextMenu(evt);
     } else if (this.state === EVENT.DRAG_VAR) {
       this.makeGetSetMenu(evt);
+      this.state = null;
+      this.inFocus = null;
+    } if (this.state === EVENT.DRAG_NODE) {
       this.state = null;
       this.inFocus = null;
     }

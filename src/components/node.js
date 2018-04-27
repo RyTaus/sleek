@@ -30,10 +30,10 @@ class Node extends Component {
   }
 
   handleMouseUp(evt) {
-    this.props.script.eventHandler.state = null;
-    this.props.script.eventHandler.inFocus = null;
-    evt.preventDefault();
-    evt.stopPropagation();
+    console.log('up');
+
+    // evt.preventDefault();
+    // evt.stopPropagation();
   }
 
   // Move to back of list so that it is on top!
