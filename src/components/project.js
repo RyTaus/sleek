@@ -39,6 +39,8 @@ class Project extends Component {
       this.setState({
         activeScript: this.scriptStack.pop(),
       });
+    } else {
+      this.console.log('in top level script');
     }
   }
 
@@ -55,7 +57,7 @@ class Project extends Component {
   render() {
     return (
       <div>
-        <Header tabs={this.files} generate={this.generate} previousScript={this.back} />
+        <Header tabs={this.files} generate={this.generate} previousScript={this.back} scriptName={this.state.activeScript.name}/>
         <Script script={this.state.activeScript} project={this} />
         {this.console.render()}
       </div>

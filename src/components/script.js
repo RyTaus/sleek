@@ -162,8 +162,18 @@ export default class Script extends Component {
             height={`${(this.state.heightRatio / 95) * this.state.height}`}
             width={`${(this.state.widthRatio / 100) * this.state.width}`}
           >
+            <defs>
+              <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
+                <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#222" strokeWidth="0.5" />
+              </pattern>
+              <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
+                <rect width="80" height="80" fill="url(#smallGrid)" />
+                // <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#111" strokeWidth="1" />
+              </pattern>
+            </defs>
 
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
+              <rect className="grid" width="1000%" height="1000%" x="-4000" y="-4000"fill="url(#grid)" />
 
               {pins.map(pin => pin.renderConnections())}
               {this.state.script.nodes.map(node => (<Node node={node} script={this} />))}

@@ -10,13 +10,15 @@ class Header extends Component {
 
   render() {
     return (
-      <div>
+      <div className={this.name}>
         <ul>
-          <li><button> Save </button></li>
-          <li><button> Load </button></li>
-          <li><button onClick={this.props.previousScript}> back </button></li>
-          <li><button onClick={this.props.generate}> Generate </button></li>
+          <li><button> 💾 </button></li>
+          <li><button> ∏ </button></li>
+          <li><button onClick={this.props.previousScript}> ↲ </button></li>
+          <li><button onClick={this.props.generate}> ⚙ </button></li>
         </ul>
+        <span style={{ fontSize: 'small' }}> {this.props.scriptName} </span>
+
       </div>
     );
   }

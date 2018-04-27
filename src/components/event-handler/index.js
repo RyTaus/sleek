@@ -38,8 +38,8 @@ class EventHandler {
       evt.preventDefault();
       evt.stopPropagation();
     } else if (this.state === EVENT.DRAG_PIN) {
-      this.coords.x = -this.frame.state.panX + (evt.pageX / this.frame.state.zoom);
-      this.coords.y = (-this.frame.state.panY + (evt.pageY / this.frame.state.zoom)) - 20;
+      this.coords.x = (-this.frame.state.panX + evt.pageX) / this.frame.state.zoom;
+      this.coords.y = (-this.frame.state.panY + evt.pageY - 25) / this.frame.state.zoom;
       this.frame.forceUpdate();
     } else if (this.state === EVENT.DRAG_NODE) {
       this.inFocus.handleMouseMove(evt);
@@ -100,6 +100,7 @@ class EventHandler {
         }
         this.frame.forceUpdate();
       } catch (err) {
+        console.log(err);
         window.Console.log(err);
       }
     }

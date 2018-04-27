@@ -1,11 +1,12 @@
 .console {
-  border-top: 4px solid black;
+  border-top: 6px solid black;
   width: 100%;
   position: fixed;
   z-index: 2;
   bottom: 0;
   overflow-x: hidden;
-  background-color: white;
+  background-color: #1b1d23;
+
 
 }
 

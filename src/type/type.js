@@ -115,9 +115,9 @@ export class Struct extends T {
 }
 
 export class Func extends T {
-  constructor(inputTypeDict, returnType) {
+  constructor(inputTypeDict = {}, returnTypeDict = {}) {
     super(Types.FUNC, 'purple');
-    this.returnType = returnType;
+    this.returnTypeDict = returnTypeDict;
     this.inputTypeDict = inputTypeDict;
   }
 
@@ -126,7 +126,7 @@ export class Func extends T {
   }
 
   toString() {
-    return `Function<${this.elementType.toString()}>`;
+    return `Function<${this.inputTypeDict.toString()} : ${this.returnTypeDict.toString()}}>`;
   }
 }
 

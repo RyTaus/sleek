@@ -221,10 +221,10 @@ class Pin extends Component {
     return (
       <g>
         <rect
-          className={`pin ${pin.connections.length ? 'connected' : ''}`}
+          className={`pin ${pin.isConnected() ? 'connected' : ''}`}
           x={x}
           y={y}
-          style={{ stroke: pin.getType().color }}
+          style={{ stroke: pin.getType().color, fill: pin.getType().color }}
           width={Size.Pin.width}
           height={Size.Pin.width}
           onMouseDown={this.onMouseDown}
