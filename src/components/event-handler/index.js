@@ -31,7 +31,6 @@ class EventHandler {
   dismissBoth() {
     this.dismissContext();
     this.dismissSearcher();
-    this.frame.forceUpdate();
   }
 
   // onCanvasContextMenu(evt) {
@@ -99,6 +98,7 @@ class EventHandler {
   }
 
   onMouseUp(evt) {
+    console.log(evt);
     if (this.state === EVENT.DRAG_PIN) {
       this.seedContextMenu(evt);
     }

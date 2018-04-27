@@ -34,6 +34,8 @@ export default class Script extends Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
+    this.handleDragPinUp = this.handleDragPinUp.bind(this);
+
 
     this.makeContextMenu = this.makeContextMenu.bind(this);
     this.dismissContextMenu = this.dismissContextMenu.bind(this);
@@ -67,6 +69,7 @@ export default class Script extends Component {
         x: evt.pageX,
         y: evt.pageY,
       };
+      console.log('FIRING...');
       document.addEventListener('mousemove', this.handleMouseMove);
       document.addEventListener('mouseup', this.handleMouseUp);
     }
@@ -118,6 +121,19 @@ export default class Script extends Component {
     evt.preventDefault();
   }
 
+  handleDragPinUp(evt) {
+    if (this.eventHandler.state === 'drag-pin') {
+      this.setState({
+        searcherActive: true,
+        searcherX: evt.pageX, // for now
+        searcherY: evt.pageY,
+        searcherSeed: this.eventHandler.inFocus,
+      });
+      this.eventHandler.state = null;
+      this.eventHandler.inFocus = null;
+    }
+  }
+
   handleMouseUp(evt) {
     if (this.eventHandler.state === 'drag-pin') {
       this.setState({
@@ -126,6 +142,8 @@ export default class Script extends Component {
         searcherY: evt.pageY,
         searcherSeed: this.eventHandler.inFocus,
       });
+      this.eventHandler.state = null;
+      this.eventHandler.inFocus = null;
     }
     evt.preventDefault();
     evt.stopPropagation();
@@ -186,6 +204,7 @@ export default class Script extends Component {
             onContextMenu={this.handleContextMenu}
             onMouseDown={this.handleMouseDown}
             onMouseMove={this.eventHandler.onMouseMove}
+            onMouseUp={this.handleDragPinUp}
             onWheel={this.handleScroll}
             strokeLinecap="round"
             height={`${(this.state.heightRatio / 95) * this.state.height}`}
