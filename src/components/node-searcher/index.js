@@ -114,11 +114,17 @@ class NodeSearcher extends Component {
     if (!this.props.active || !this.state.active) {
       return null;
     }
+
+    const { width, height } = window.visualViewport;
+    const x = this.props.x + 320 > width ? width - 320 : this.props.x;
+    const y = this.props.y + 210 > height ? height - 220 : this.props.y;
+    console.log(this.props.x, this.props.y);
+    console.log(width, height);
     return (
       <div
         className="node-searcher container"
         onWheel={evt => evt.stopPropagation()}
-        style={{ left: this.props.x, top: this.props.y }}
+        style={{ left: x, top: y }}
       >
         <SearchBar handleChange={this.handleSearch} value={this.state.searchString} />
         <div className="items-container">
