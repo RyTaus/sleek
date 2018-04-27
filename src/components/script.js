@@ -163,12 +163,12 @@ export default class Script extends Component {
             width={`${(this.state.widthRatio / 100) * this.state.width}`}
           >
             <defs>
-              <pattern id="smallGrid" width="8" height="8" patternUnits="userSpaceOnUse">
-                <path d="M 8 0 L 0 0 0 8" fill="none" stroke="#222" strokeWidth="0.5" />
+              <pattern id="smallGrid" width="10" height="10" patternUnits="userSpaceOnUse">
+                <path d="M 10 0 L 0 0 0 108" fill="none" stroke="#222" strokeWidth="0.5" />
               </pattern>
-              <pattern id="grid" width="80" height="80" patternUnits="userSpaceOnUse">
-                <rect width="80" height="80" fill="url(#smallGrid)" />
-                // <path d="M 80 0 L 0 0 0 80" fill="none" stroke="#111" strokeWidth="1" />
+              <pattern id="grid" width="100" height="100" patternUnits="userSpaceOnUse">
+                <rect width="100" height="100" fill="url(#smallGrid)" />
+                <path d="M 100 0 L 0 0 0 100" fill="none" stroke="#111" strokeWidth="1" />
               </pattern>
             </defs>
 

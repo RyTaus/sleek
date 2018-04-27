@@ -39,7 +39,7 @@ class EventHandler {
       evt.stopPropagation();
     } else if (this.state === EVENT.DRAG_PIN) {
       this.coords.x = (-this.frame.state.panX + evt.pageX) / this.frame.state.zoom;
-      this.coords.y = (-this.frame.state.panY + evt.pageY - 25) / this.frame.state.zoom;
+      this.coords.y = (-this.frame.state.panY + (evt.pageY - 25)) / this.frame.state.zoom;
       this.frame.forceUpdate();
     } else if (this.state === EVENT.DRAG_NODE) {
       this.inFocus.handleMouseMove(evt);

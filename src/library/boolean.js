@@ -30,4 +30,14 @@ export default {
     },
     compile: '!({a})',
   }),
+  or: new NodeFactory('or').pureData({
+    in: {
+      a: 'boolean',
+      b: 'boolean',
+    },
+    out: {
+      res: 'boolean',
+    },
+    compile: '({a} || {b})',
+  }),
 };
