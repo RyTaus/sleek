@@ -49,6 +49,7 @@ class Project extends Component {
       const output = this.scriptModel.generate();
       console.log(output);
       console.log(beautify(output));
+      eval(output);
     } catch (error) {
       this.console.err(error);
     }

@@ -11,7 +11,9 @@ class Variable extends Component {
   }
 
   onMouseDown(evt) {
-    this.props.script.eventHandler.startVariableDrag(this.props.variable);
+    if (this.props.canPull) {
+      this.props.script.eventHandler.startVariableDrag(this.props.variable);
+    }
     evt.stopPropagation();
     evt.preventDefault();
   }

@@ -140,6 +140,8 @@ class EventHandler {
       this.seedContextMenu(evt);
     } else if (this.state === EVENT.DRAG_VAR) {
       this.makeGetSetMenu(evt);
+      this.state = null;
+      this.inFocus = null;
     }
   }
 

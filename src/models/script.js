@@ -37,7 +37,7 @@ export default class Script {
 
   addVariable(variable) {
     if (this.hasVariable(variable.name)) {
-      window.Console.log('cannot add variable');
+      window.Console.err(`${variable.name} already exists in this scope`);
     }
     this.variables[variable.name] = variable;
   }
