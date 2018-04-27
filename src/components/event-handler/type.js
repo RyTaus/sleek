@@ -3,4 +3,5 @@ export default {
   DRAG_PIN: 'drag-pin',
   NODE_SEARCH: 'node-search',
   PAN: 'pan',
+  DRAG_VARIABLE: 'drag-var',
 };

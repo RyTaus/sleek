@@ -33,7 +33,7 @@ class Node extends Component {
     this.props.script.eventHandler.state = null;
     this.props.script.eventHandler.inFocus = null;
     evt.preventDefault();
-    evt.stopPropagation()
+    evt.stopPropagation();
   }
 
   // Move to back of list so that it is on top!

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import util from 'util';
 
 import { Log, Err } from './entries';
 
@@ -27,7 +28,7 @@ class Console extends Component {
   render() {
     return (
       <div className="console" style={{ height: this.props.height }}>
-        { this.state.output.map(entry => (<entry.Type text={entry.text} />))}
+        { this.state.output.map(entry => (<entry.Type text={util.inspect(entry.text)} />))}
       </div>
     );
   }

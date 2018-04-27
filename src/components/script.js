@@ -204,7 +204,7 @@ export default class Script extends Component {
             onContextMenu={this.handleContextMenu}
             onMouseDown={this.handleMouseDown}
             onMouseMove={this.eventHandler.onMouseMove}
-            onMouseUp={this.handleDragPinUp}
+            onMouseUp={this.eventHandler.onMouseUp}
             onWheel={this.handleScroll}
             strokeLinecap="round"
             height={`${(this.state.heightRatio / 95) * this.state.height}`}

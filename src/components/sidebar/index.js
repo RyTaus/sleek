@@ -27,7 +27,7 @@ class Sidebar extends Component {
     return (
       <div className="variable-type-box">
         <AddVariable name={type} types={this.props.types} handleSubmit={this.handleAddVariable(addName)} />
-        {Object.keys(vars).map(key => (<Variable variable={vars[key]} />))}
+        {Object.keys(vars).map(key => (<Variable variable={vars[key]} script={this.props.script} />))}
       </div>
     );
   }

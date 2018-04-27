@@ -4,6 +4,10 @@ import Size from './../../utils/sizes';
 
 import EVENT from './type';
 
+import { Flow, Label, Relative } from './../../type/type'
+import { INSTANCE } from './../../type/type-type'
+import NodeFactory from './../../library/node-factory';
+
 class EventHandler {
   constructor(frame) {
     this.state = null;
@@ -69,12 +73,15 @@ class EventHandler {
   }
 
   seedContextMenu(evt) {
+    console.log(this.inFocus);
     this.frame.setState({
       searcherActive: !this.frame.searcherActive,
       searcherX: evt.pageX, // for now
       searcherY: evt.pageY,
-      searcherSeed: this.inFocus.props.pin.type.name.toLowerCase(),
+      searcherSeed: this.inFocus,
     });
+    this.state = null;
+
     this.dismissContext();
     evt.preventDefault();
     evt.stopPropagation();
@@ -97,11 +104,49 @@ class EventHandler {
     return null;
   }
 
+  makeGetSetMenu(evt) {
+    const variable = this.inFocus;
+    const get = new NodeFactory(`get ${variable.name}`)
+      .addPin('out', '', variable.type)
+      .generateFunction(() => variable.name);
+
+    const set = new NodeFactory(`set ${variable.name}`)
+      .addPin('in', ' ', new Flow())
+      .addPin('in', 'value', variable.type)
+      .addPin('out', 'next', new Flow())
+      .addPin('out', 'value', variable.type)
+      .generateFunction((node) => {
+        return `(${variable.name} = ${node.inPins.value.generate()})`;
+      });
+
+    const script = this.frame;
+    script.makeContextMenu(evt, [
+      {
+        text: `get ${variable.name}`,
+        onClick: () => script.addNode(get.export(evt.clientX, evt.clientY, script.props.script)),
+      },
+      {
+        text: `set ${variable.name}`,
+        onClick: () => script.addNode(set.export(evt.clientX, evt.clientY, script.props.script)),
+      },
+    ]);
+    this.state = null;
+    this.inFocus = null;
+  }
+
   onMouseUp(evt) {
     console.log(evt);
     if (this.state === EVENT.DRAG_PIN) {
       this.seedContextMenu(evt);
+    } else if (this.state === EVENT.DRAG_VAR) {
+      this.makeGetSetMenu(evt);
     }
+  }
+
+  startVariableDrag(variable) {
+    this.state = EVENT.DRAG_VAR;
+    this.inFocus = variable;
+    console.log(this.inFocus);
   }
 
 
