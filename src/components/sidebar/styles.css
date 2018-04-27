@@ -1,0 +1,89 @@
+.variable {
+  padding: 2px 5px 8px 5px;
+  border-width: 2px;
+  border-style: solid;
+  margin-top: 6px;
+  border-radius: 4px;
+  background-color: rgb(30, 30, 40);
+
+}
+
+.variable:hover {
+  background-color: rgb(190, 190, 200);
+  color: black;
+
+}
+
+.variable-name {
+  vertical-align: top;
+  pointer-events: none;
+  user-select: none;
+
+  -webkit-touch-callout: none; /* iOS Safari */
+  -webkit-user-select: none; /* Safari */
+   -khtml-user-select: none; /* Konqueror HTML */
+     -moz-user-select: none; /* Firefox */
+      -ms-user-select: none; /* Internet Explorer/Edge */
+          user-select: none;
+}
+
+.variable-constant {
+  float: right;
+  vertical-align: middle;
+}
+
+.variable-delete {
+  float: right;
+  color: white;
+  background-color: black;
+  border-color: white;
+  border-radius: 4px;
+  width: 30px;
+  user-select: none;
+}
+
+.add-var-button {
+  float: right;
+  color: white;
+  background-color: black;
+  border-color: white;
+  border-radius: 4px;
+  width: 30px;
+  user-select: none;
+}
+
+.add-var-button:hover {
+  background-color: rgb(60, 170, 60);
+}
+
+.variable-delete:hover {
+  background-color: rgb(230, 60, 60);
+  color: black;
+}
+
+.variable-type-box {
+  border-bottom: 1px solid white;
+  padding-bottom: 5px;
+  padding-top: 10px;
+}
+
+.new-var-popup {
+  margin: 10px -10px;
+  /* margin-top: 10px; */
+  /* border-bottom: 1px solid white; */
+  padding: 10px;
+  padding-top: 20px;
+  border-radius: 10px;
+  background-color: rgb(10, 10, 10);
+}
+
+.add-variable-title {
+  padding-bottom: 5px;
+}
+
+.sidebar {
+  background-color: rgb(50, 50, 70);
+  color: lightgray;
+  padding: 5px 10px;
+  border-left: 6px solid black;
+}

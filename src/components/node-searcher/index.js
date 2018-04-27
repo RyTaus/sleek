@@ -104,7 +104,7 @@ class NodeSearcher extends Component {
     });
   }
 
-  componentWillReceiveProps(props) {
+  componentWillReceiveProps() {
     this.setState({
       searchString: '',
     });

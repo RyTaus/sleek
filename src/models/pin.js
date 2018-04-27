@@ -75,7 +75,7 @@ export default class Pin {
           x2={other.x + offset}
           y2={other.y + offset}
           strokeWidth="4"
-          stroke={pin.type.color}
+          stroke={pin.getType().color}
         />);
       })
     );

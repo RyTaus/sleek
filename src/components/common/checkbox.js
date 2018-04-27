@@ -8,13 +8,17 @@ class Checkbox extends Component {
 
 
   render() {
+    const zoom = this.props.zoom !== undefined ? this.props.zoom : 1.8;
+    console.log(this.props.disabled);
     return (
       <input
+        className={this.props.className}
         type="checkbox"
         onMouseUp={this.props.onMouseUp}
         onChange={this.props.onChange}
-        style={{ margin: 0, zoom: 1.8, outline: this.props.color }}
+        style={{ margin: 0, zoom: zoom, outline: this.props.color }}
         checked={this.props.checked}
+        disabled={this.props.disabled !== undefined}
       />
     );
   }

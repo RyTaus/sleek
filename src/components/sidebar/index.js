@@ -2,8 +2,11 @@ import React, { Component } from 'react';
 
 
 import AddVariable from './add-variable';
+import Variable from './variable';
 
 import ScriptType from './../../models/script-type';
+
+import './styles.css';
 
 class Sidebar extends Component {
   constructor(props) {
@@ -16,22 +19,26 @@ class Sidebar extends Component {
     return variable => this.props.addVariable(type, variable);
   }
 
+  renderVariableList(type) {
+    const { script } = this.props.script.props;
+
+    const addName = `add${type.substring(0, type.length - 1)}`;
+    const vars = script[type.toLowerCase()];
+    return (
+      <div className="variable-type-box">
+        <AddVariable name={type} types={this.props.types} handleSubmit={this.handleAddVariable(addName)} />
+        {Object.keys(vars).map(key => (<Variable variable={vars[key]} />))}
+      </div>
+    );
+  }
+
   renderFunctionMenu() {
     const { script } = this.props.script.props;
     // const inputList = Object.keys(script.inputs).map(key => )
     return (
       <div>
-        Inputs:
-        <AddVariable types={this.props.types} handleSubmit={this.handleAddVariable('addInput')} />
-        <div> -------------- </div>
-        {Object.keys(script.inputs).map(key => (<div style={{ color: script.inputs[key].type.color}}> {key} </div>))}
-        <div> -------------- </div>
-
-        Outputs:
-        <AddVariable types={this.props.types} handleSubmit={this.handleAddVariable('addOutput')} />
-        <div> -------------- </div>
-        {Object.keys(script.outputs).map(key => (<div style={{ color: script.outputs[key].type.color}}> {key} </div>))}
-        <div> -------------- </div>
+        {this.renderVariableList('Inputs')}
+        {this.renderVariableList('Outputs')}
       </div>
     );
   }
@@ -40,12 +47,8 @@ class Sidebar extends Component {
     const { script } = this.props.script.props;
     return (
       <div className="sidebar" style={{ width: this.props.width, height: this.props.height }}>
-        <AddVariable types={this.props.types} handleSubmit={this.handleAddVariable('addVariable')} />
-        <div> -------------- </div>
-        Variables:
-        {Object.keys(this.props.variables).map(key => (<div style={{ color: this.props.variables[key].type.color}}> {key} </div>))}
-        <div> -------------- </div>
-        <div> -------------- </div>
+        {this.renderVariableList('Variables')}
+
         {script.type === ScriptType.FUNC ? this.renderFunctionMenu() : null}
       </div>
     );

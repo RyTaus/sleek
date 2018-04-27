@@ -5,15 +5,16 @@ import { SAME, INSTANCE, FUNC, FLOW } from './../type/type-type';
 import ScriptType from './../models/script-type';
 
 const isFunc = type => type.name === FUNC;
-
+// const args = Object.keys(node.inPins)
+//   .filter(key => node.inPins[key].type.name !== FLOW)
+//   .map(key => `${key}: ${node.inPins[key].generate()}`);
+// return `return { ${args.join(', ')}}`
 export default {
-  start: new NodeFactory('start').pureData({
-    in: {
-    },
-    out: {
-      next: 'flow',
-    },
-    compile: '',
+  start: new NodeFactory('start').generateFunction((node) => {
+    const args = Object.keys(node.outPins)
+      .filter(key => node.outPins[key].type.name !== FLOW)
+      .map(key => `${key}: ${node.outPins[key].generate()}`);
+    return `{ ${args.join(', ')}}`
   }),
   print: new NodeFactory('print')
     .addPin('in', ' ', new Flow())
