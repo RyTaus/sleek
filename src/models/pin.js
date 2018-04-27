@@ -94,6 +94,8 @@ export default class Pin {
   }
 
   removeConnection(pin) {
+    console.log(this);
+    console.log(pin);
     pin.connections = pin.connections.filter(p => p !== this);
     this.connections = this.connections.filter(p => p !== pin);
 

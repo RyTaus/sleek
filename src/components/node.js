@@ -44,7 +44,15 @@ class Node extends Component {
 
   handleContextMenu(evt) {
     // MOVE THIS INTO EVENT-HANDLER. THESE SHOULD JUST CALL ITS... NEED FOR MULTIPLE FILES
-    this.props.script.state.script.removeNode(this.props.node);
+    const { script } = this.props.script.state;
+    const options = [{
+      text: 'delete node',
+      onClick: () => {
+        script.removeNode(this.props.node);
+        this.props.script.forceUpdate();
+      },
+    }]
+    this.props.script.makeContextMenu(evt, options);
 
     this.props.script.eventHandler.state = null;
     evt.preventDefault();

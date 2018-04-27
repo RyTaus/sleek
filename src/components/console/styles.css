@@ -6,12 +6,12 @@
   bottom: 0;
   overflow-x: hidden;
   background-color: #1b1d23;
-
+  padding-top: 5px;
 
 }
 
 .console-entry {
-  padding: 10px 40px;
+  padding: 5px 40px;
 }
 
 .console-log {

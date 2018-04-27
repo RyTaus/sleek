@@ -4,6 +4,7 @@ import { Node } from './node';
 import EventHandler from './event-handler/index';
 import Sidebar from './sidebar/index';
 import NodeSearcher from './node-searcher/index';
+import ContextMenu from './context-menu/index';
 
 
 export default class Script extends Component {
@@ -16,6 +17,8 @@ export default class Script extends Component {
       zoom: 1,
       panX: 0,
       panY: 0,
+      contextActive: false,
+      contextOptions: [],
       searcherActive: false,
       searcherSeed: null,
 
@@ -31,6 +34,9 @@ export default class Script extends Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
+
+    this.makeContextMenu = this.makeContextMenu.bind(this);
+    this.dismissContextMenu = this.dismissContextMenu.bind(this);
 
     this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
@@ -60,6 +66,21 @@ export default class Script extends Component {
       };
       document.addEventListener('mousemove', this.handleMouseMove);
     }
+  }
+
+  makeContextMenu(evt, options) {
+    this.setState({
+      contextActive: true,
+      contextOptions: options,
+      contextX: evt.clientX,
+      contextY: evt.clientY,
+    });
+  }
+
+  dismissContextMenu() {
+    this.setState({
+      contextActive: false,
+    });
   }
 
   handleContextMenu(evt) {
@@ -187,6 +208,12 @@ export default class Script extends Component {
             y={this.state.searcherY}
             handleChange={this.handleNodeSearcherSelect}
             script={this}
+          />
+          <ContextMenu
+            active={this.state.contextActive}
+            options={this.state.contextOptions}
+            x={this.state.contextX}
+            y={this.state.contextY}
           />
           <Sidebar
             script={this}

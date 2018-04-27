@@ -48,17 +48,37 @@ class Pin extends Component {
   }
 
   onMouseDown(evt) {
-    this.props.script.eventHandler.onPinDown(evt, this);
+    if (evt.nativeEvent.which === 1) {
+      this.props.script.eventHandler.onPinDown(evt, this);
+    }
   }
 
   onContextMenu(evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    const { pin } = this.props;
+    const { pin, script } = this.props;
 
-    while (pin.isConnected()) {
-      pin.removeConnection(pin.connections[0]);
+    const options = pin.connections.map((connection) => {
+      return {
+        text: `remove ${connection.toString()}`,
+        onClick: () => {
+          pin.removeConnection(connection);
+          script.forceUpdate();
+        },
+      };
+    });
+    if (options.length !== 0) {
+      options.unshift('divider');
     }
+    options.unshift({
+      text: 'remove all connections',
+      onClick: () => {
+        pin.removeAllConnections();
+        script.forceUpdate();
+      },
+    });
+
+    script.makeContextMenu(evt, options);
   }
 
   // Since they are offset by a g they need nodes x
