@@ -84,7 +84,7 @@ class Node extends Component {
           onContextMenu={this.handleContextMenu}
         />
         <rect
-          className="node node-label-bg"
+          className={`node node-label-bg ${node.declarationType}`}
           x={x + 1}
           y={y + 1}
           width={Size.Node.width - 2}

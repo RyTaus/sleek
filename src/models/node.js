@@ -12,7 +12,7 @@ export default class Node {
     this.inPins = inPins;
     this.outPins = outPins;
     this.generateExpression = () => gen(this);
-    // this.declType = declerationType; // Func, Class, or Struct
+    this.declarationType = declarationType; // Func, Class, or Struct
     this.script = script;
 
     this.specialize();

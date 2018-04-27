@@ -78,6 +78,15 @@ rect {
   stroke: none;
   fill: rgb(120, 120, 150);
   pointer-events: none;
+}
+
+.block-func {
+  fill: rgb(90, 60, 120);
+
+}
+
+.block-class {
+  fill: rgb(40, 60, 120);
 
 }
 
