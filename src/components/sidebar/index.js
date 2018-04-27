@@ -46,7 +46,11 @@ class Sidebar extends Component {
   render() {
     const { script } = this.props.script.props;
     return (
-      <div className="sidebar" style={{ width: this.props.width, height: this.props.height }}>
+      <div
+        className="sidebar"
+        style={{ width: this.props.width, height: this.props.height }}
+        onClick={this.props.script.eventHandler.dismissBoth}
+      >
         {this.renderVariableList('Variables')}
 
         {script.type === ScriptType.FUNC ? this.renderFunctionMenu() : null}

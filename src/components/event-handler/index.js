@@ -9,19 +9,42 @@ class EventHandler {
     this.state = null;
     this.frame = frame;
     this.onMouseMove = this.onMouseMove.bind(this);
-    this.onCanvasContextMenu = this.onCanvasContextMenu.bind(this);
+    // this.onCanvasContextMenu = this.onCanvasContextMenu.bind(this);
     this.onMouseUp = this.onMouseUp.bind(this);
+    this.dismissSearcher = this.dismissSearcher.bind(this);
+    this.dismissContext = this.dismissContext.bind(this);
+    this.dismissBoth = this.dismissBoth.bind(this);
   }
 
-  onCanvasContextMenu(evt) {
-    this.state = EVENT.PAN;
-    this.coords = {
-      x: evt.pageX,
-      y: evt.pageY,
-    };
-    evt.preventDefault();
-    evt.stopPropagation();
+  dismissSearcher() {
+    this.frame.setState({
+      searcherActive: false,
+    });
   }
+
+  dismissContext() {
+    this.frame.setState({
+      contextActive: false,
+    });
+  }
+
+  dismissBoth() {
+    this.dismissContext();
+    this.dismissSearcher();
+    this.frame.forceUpdate();
+  }
+
+  // onCanvasContextMenu(evt) {
+  //   this.state = EVENT.PAN;
+  //   this.coords = {
+  //     x: evt.pageX,
+  //     y: evt.pageY,
+  //   };
+  //   this.frame.forceUpdate();
+  //
+  //   evt.preventDefault();
+  //   evt.stopPropagation();
+  // }
 
   onMouseMove(evt) {
     if (this.state === EVENT.PAN) {
@@ -48,11 +71,12 @@ class EventHandler {
 
   seedContextMenu(evt) {
     this.frame.setState({
-      searcherActive: true,
+      searcherActive: !this.frame.searcherActive,
       searcherX: evt.pageX, // for now
       searcherY: evt.pageY,
       searcherSeed: this.inFocus.props.pin.type.name.toLowerCase(),
     });
+    this.dismissContext();
     evt.preventDefault();
     evt.stopPropagation();
   }
@@ -85,6 +109,7 @@ class EventHandler {
     this.state = EVENT.DRAG_PIN;
     this.coords = component.getPosition();
     this.inFocus = component;
+    this.dismissContext();
     evt.preventDefault();
     evt.stopPropagation();
   }

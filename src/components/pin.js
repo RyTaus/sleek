@@ -49,6 +49,7 @@ class Pin extends Component {
 
   onMouseDown(evt) {
     if (evt.nativeEvent.which === 1) {
+      this.props.script.eventHandler.dismissBoth();
       this.props.script.eventHandler.onPinDown(evt, this);
     }
   }

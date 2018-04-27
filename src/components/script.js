@@ -58,13 +58,17 @@ export default class Script extends Component {
   }
 
   handleMouseDown(evt) {
+    this.eventHandler.dismissBoth();
+
     this.forceUpdate();
+
     if (evt.button === 0 && evt.target.className.baseVal === 'canvas') {
       this.coords = {
         x: evt.pageX,
         y: evt.pageY,
       };
       document.addEventListener('mousemove', this.handleMouseMove);
+      document.addEventListener('mouseup', this.handleMouseUp);
     }
   }
 
@@ -74,6 +78,7 @@ export default class Script extends Component {
       contextOptions: options,
       contextX: evt.clientX,
       contextY: evt.clientY,
+      dismiss: this.eventHandler.dismissBoth,
     });
   }
 
@@ -84,8 +89,10 @@ export default class Script extends Component {
   }
 
   handleContextMenu(evt) {
+    console.log(this.state.searcherActive);
     this.setState({
       searcherActive: !this.state.searcherActive,
+      contextActive: false,
       searcherX: evt.pageX,
       searcherY: evt.pageY,
       searcherSeed: null,
@@ -124,6 +131,7 @@ export default class Script extends Component {
     evt.stopPropagation();
     this.eventHandler.state = null;
     document.removeEventListener('mousemove', this.handleMouseMove);
+    document.removeEventListener('mouseup', this.handleMouseUp);
     this.forceUpdate();
   }
 
@@ -131,6 +139,7 @@ export default class Script extends Component {
     if (this.eventHandler.state !== null) {
       return;
     }
+    this.eventHandler.dismissBoth();
     const minZoom = 0.2;
     const maxZoom = 3;
     this.setState({
@@ -176,7 +185,6 @@ export default class Script extends Component {
             className="canvas"
             onContextMenu={this.handleContextMenu}
             onMouseDown={this.handleMouseDown}
-            onMouseUp={this.handleMouseUp}
             onMouseMove={this.eventHandler.onMouseMove}
             onWheel={this.handleScroll}
             strokeLinecap="round"
@@ -214,6 +222,7 @@ export default class Script extends Component {
             options={this.state.contextOptions}
             x={this.state.contextX}
             y={this.state.contextY}
+            dismiss={this.state.dismiss}
           />
           <Sidebar
             script={this}

@@ -10,6 +10,9 @@ class ContextMenu extends Component {
 
   render() {
     console.log(this.props.options);
+    if (!this.props.active) {
+      return null;
+    }
     return (
       <div
         className={this.name}
@@ -27,7 +30,7 @@ class ContextMenu extends Component {
               </div>
             );
           }
-          return (<div className="context-option" onClick={opt.onClick}> {opt.text} </div>)
+          return (<div className="context-option" onClick={() => { opt.onClick(); this.props.dismiss(); }}> {opt.text} </div>)
         })}
       </div>
     )

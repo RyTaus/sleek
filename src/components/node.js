@@ -20,6 +20,8 @@ class Node extends Component {
       y: evt.pageY,
     };
     // document.addEventListener('mousemove', this.handleMouseMove);
+    this.props.script.eventHandler.dismissBoth();
+
     this.props.script.eventHandler.state = 'drag-node';
     this.props.script.eventHandler.inFocus = this;
     evt.preventDefault();
@@ -60,6 +62,7 @@ class Node extends Component {
   }
 
   handleDoubleClick(evt) {
+    this.props.script.eventHandler.dismissBoth();
     const { project } = this.props.script.props;
     if (this.props.node.innerScript) {
       project.setActiveScript(this.props.node.innerScript);
