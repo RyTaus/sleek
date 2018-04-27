@@ -59,7 +59,7 @@ export default class Pin {
       return false;
     }
 
-    throw 'cannot connect';
+    throw `cannot connect: ${this.toString()} to ${pin.toString()}`;
   }
 
   renderConnections() {
@@ -129,6 +129,9 @@ export default class Pin {
   }
 
   generateFromValue() {
+    if (this.value === null) {
+      throw `${this.toString()} has no value!!`;
+    }
     return this.getType().name === STRING ? `"${this.value}"` : this.value;
   }
 
@@ -160,5 +163,9 @@ export default class Pin {
 
 
     return this.node.generate();
+  }
+
+  toString() {
+    return `${this.name}{ ${this.node.name}, ${this.direction}, ${this.type.toString()} }`;
   }
 }

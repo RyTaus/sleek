@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
-import util from 'util';
+
+import { Log, Err } from './entries';
+
+import './styles.css';
 
 class Console extends Component {
   constructor(props) {
@@ -12,14 +15,19 @@ class Console extends Component {
   }
 
   log(str) {
-    this.state.output.push(str);
+    this.state.output.unshift({ Type: Log, text: str });
+    this.props.project.forceUpdate();
+  }
+
+  err(str) {
+    this.state.output.unshift({ Type: Err, text: str });
     this.props.project.forceUpdate();
   }
 
   render() {
     return (
       <div className="console" style={{ height: this.props.height }}>
-        {this.state.output.map((str, i) => (<div> {util.inspect(str)} </div>))}
+        { this.state.output.map(entry => (<entry.Type text={entry.text} />))}
       </div>
     );
   }

@@ -18,6 +18,9 @@ export default class Script extends Component {
       panY: 0,
       searcherActive: false,
       searcherSeed: null,
+
+      width: 0,
+      height: 0,
     };
 
     this.eventHandler = new EventHandler(this);
@@ -28,6 +31,8 @@ export default class Script extends Component {
     this.handleScroll = this.handleScroll.bind(this);
     this.handleContextMenu = this.handleContextMenu.bind(this);
     this.handleNodeSearcherSelect = this.handleNodeSearcherSelect.bind(this);
+
+    this.updateWindowDimensions = this.updateWindowDimensions.bind(this);
 
     this.addVariable = this.addVariable.bind(this);
   }
@@ -108,7 +113,7 @@ export default class Script extends Component {
     const minZoom = 0.2;
     const maxZoom = 3;
     this.setState({
-      zoom: [minZoom, this.state.zoom + (evt.deltaY > 0 ? 0.05 : -0.05), maxZoom].sort()[1],
+      zoom: [minZoom, this.state.zoom + (evt.deltaY > 0 ? -0.05 : 0.05), maxZoom].sort()[1],
     });
   }
 
@@ -126,6 +131,19 @@ export default class Script extends Component {
     });
   }
 
+  componentDidMount() {
+    this.updateWindowDimensions();
+    window.addEventListener('resize', this.updateWindowDimensions);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.updateWindowDimensions);
+  }
+
+  updateWindowDimensions() {
+    this.setState({ width: window.visualViewport.width, height: window.visualViewport.height });
+  }
+
   render() {
     const pins = [];
     this.state.script.nodes
@@ -141,8 +159,8 @@ export default class Script extends Component {
             onMouseMove={this.eventHandler.onMouseMove}
             onWheel={this.handleScroll}
             strokeLinecap="round"
-            width={`${this.state.widthRatio}%`}
-            height="600"
+            height={`${(this.state.heightRatio / 95) * this.state.height}`}
+            width={`${(this.state.widthRatio / 100) * this.state.width}`}
           >
 
             <g transform={`translate(${this.state.panX}, ${this.state.panY}) scale(${this.state.zoom})`}>
@@ -167,7 +185,7 @@ export default class Script extends Component {
             addOutput={this.addOutput}
             variables={this.state.script.variables}
             types={this.state.script.getTypes()}
-            height={`${this.state.heightRatio}%`}
+            height={`${this.state.heightRatio + 2}%`}
             width={`${100 - this.state.widthRatio}%`}
           />
         </div>

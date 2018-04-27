@@ -94,17 +94,6 @@ rect {
   fill: rgb(250, 250, 250, .7);
 }
 
-.console {
-  width: 100%; /* Full-height: remove this if you want "auto" height */
-  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
-  z-index: 2; /* Stay on top */
-  bottom: 0;
-  overflow-x: hidden; /* Disable horizontal scroll */
-  background-color: white;
-
-  border: 1px solid blue;
-  padding-top: 20px;
-}
 
 .sidebar {
   /* height: 100%; /* Full-height: remove this if you want "auto" height */ */

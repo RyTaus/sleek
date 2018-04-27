@@ -43,9 +43,13 @@ class Project extends Component {
   }
 
   generate() {
-    const output = this.scriptModel.generate();
-    console.log(output);
-    console.log(beautify(output));
+    try {
+      const output = this.scriptModel.generate();
+      console.log(output);
+      console.log(beautify(output));
+    } catch (error) {
+      this.console.err(error);
+    }
   }
 
   render() {
