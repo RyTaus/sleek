@@ -1,14 +1,20 @@
 import NodeFactory from './node-factory';
-import { Flow, BoolLit, NumLit, Type, Relative, Input, List } from './../type/type';
-import { LIST } from './../type/type-type';
+import { Flow, BoolLit, NumLit, Type, Relative, Input, List, Func } from './../type/type';
+import { LIST, FUNC } from './../type/type-type';
 
 const isList = type => type.name === LIST;
+const isFunc = type => type.name === FUNC;
+
 
 export default {
   makeList: (new NodeFactory('makeList'))
     .addPin('in', 'type', new Type())
     .addPin('out', 'new-list', new Relative('type', 'listOf', 'value'))
     .generateFunction('[]'),
+  map: new NodeFactory('map')
+    .addPin('in', 'list', new Input(isList))
+    .addPin('in', 'func', new Input(isFunc))
+    .addPin('out', 'list', new Relative('list', 'output')),
   pop: (new NodeFactory('pop'))
     .addPin('in', 'list', new Input(isList))
     .addPin('out', 'elem', new Relative('list', 'elementType'))

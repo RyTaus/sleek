@@ -115,10 +115,10 @@ export class Struct extends T {
 }
 
 export class Func extends T {
-  constructor(inputTypeDict = {}, returnTypeDict = {}) {
+  constructor(inputs = {}, outputs = {}) {
     super(Types.FUNC, 'purple');
-    this.returnTypeDict = returnTypeDict;
-    this.inputTypeDict = inputTypeDict;
+    this.inputs = inputs;
+    this.outputs = outputs;
   }
 
   getInputType(name) {
@@ -168,6 +168,9 @@ export class Relative extends T {
       if (this.type === Types.LIST_OF) {
         return new List(type);
       }
+    }
+    if (this.type === 'output') {
+      return node.inPins[this.relativeName].connections[0].getType();
     }
     if (this.type === Types.SAME) {
       return node.inPins[this.relativeName].getType();

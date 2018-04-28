@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Variable from './../../models/variable';
 
+import TextInput from './../common/text-input';
+
 
 /**
  *
@@ -71,6 +73,7 @@ export default class AddVariable extends Component {
   // />
 
   render() {
+    const isValid = str => (str.length === 0) || /[_$A-z][$[\w]*/.test(str);
     return (
       <div>
         <div className="add-variable-title">
@@ -84,7 +87,13 @@ export default class AddVariable extends Component {
         </div>
 
         <div className="new-var-popup" style={{ display: this.state.display }}>
-          <input type="text" value={this.state.name} onChange={this.handleNameChange} />
+          <TextInput
+            className="var-name-input"
+            value={this.state.name}
+            onChange={this.handleNameChange}
+            color="white"
+            isValid={isValid}
+          />
 
           <select onChange={this.handleTypeChange} >
             {this.props.types.map((type, index) => (<option className={index}> {type.name} </option>))}

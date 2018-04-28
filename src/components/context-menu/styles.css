@@ -1,10 +1,13 @@
 .context-menu {
-  background-color: black;
+  background-color: #0b0d13;
+  color: rgba(211, 218, 231, 0.8);
   position: absolute;
-  border-radius: 2px;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  border-radius: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   font-size: small;
+  border: 1px solid #AAA;
+  box-shadow:5px 5px 5px rgba(0,0,0,0.5);
 }
 
 .context-divider-top {
@@ -20,11 +23,11 @@
 
 .context-option {
   padding: 4px 5px;
-  border-radius: 3px;
+  /* border-radius: 3px; */
   cursor: pointer;
 }
 
 .context-option:hover {
-  color: black;
-  background-color: white;
+  color: #1b1d23;
+  background-color: rgba(211, 218, 231, 0.8);
 }

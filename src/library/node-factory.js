@@ -18,7 +18,7 @@ const defaultGeneration = string => (node) => {
     .forEach((key) => {
       const replacement = node.outPins[key].generate();
       str = str.replace(new RegExp(`{${key}}`, 'g'), replacement);
-  });
+    });
   return str;
 };
 

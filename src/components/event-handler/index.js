@@ -100,6 +100,9 @@ class EventHandler {
   }
 
   makeGetSetMenu(evt) {
+    if (this.inFocus === null) {
+      return;
+    }
     const variable = this.inFocus;
 
 

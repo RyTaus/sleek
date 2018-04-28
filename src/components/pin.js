@@ -161,6 +161,8 @@ class Pin extends Component {
     const { pin } = this.props;
     const type = pin.getType();
     if ([NUMBER, STRING].includes(type.name)) {
+      const regex = type.name === NUMBER ? /^-?\d*\.?\d*$/ : /.*/;
+      const isValid = str => regex.test(str);
       return (
         <foreignObject x={x} y={y} width="70" height="30" style={{ position: 'fixed' }} >
           <TextInput
@@ -169,6 +171,8 @@ class Pin extends Component {
             onChange={this.onChange}
             color={type.color}
             value={pin.value}
+            isValid={isValid}
+            width={40}
           />
         </foreignObject>
       );

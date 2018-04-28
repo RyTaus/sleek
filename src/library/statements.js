@@ -10,12 +10,9 @@ const isFunc = type => type.name === FUNC;
 //   .map(key => `${key}: ${node.inPins[key].generate()}`);
 // return `return { ${args.join(', ')}}`
 export default {
-  start: new NodeFactory('start').generateFunction((node) => {
-    const args = Object.keys(node.outPins)
-      .filter(key => node.outPins[key].type.name !== FLOW)
-      .map(key => `${key}: ${node.outPins[key].generate()}`);
-    return `{ ${args.join(', ')}}`
-  }),
+  start: new NodeFactory('start')
+    .addPin('out', ' ', new Flow())
+    .generateFunction(''),
   print: new NodeFactory('print')
     .addPin('in', ' ', new Flow())
     .addPin('in', 'val', new Input(type => type.name !== FLOW))

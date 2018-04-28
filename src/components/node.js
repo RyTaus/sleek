@@ -24,6 +24,7 @@ class Node extends Component {
 
     this.props.script.eventHandler.state = 'drag-node';
     this.props.script.eventHandler.inFocus = this;
+    this.props.script.eventHandler.dismissBoth();
     evt.preventDefault();
     evt.stopPropagation()
     // this.props.script.eventHandler.dismissBoth();

@@ -2,11 +2,12 @@ import TYPE from './script-type';
 
 import { StringLit, BoolLit, NumLit, Map, Func } from './../type/type';
 
-/*
+/**
  * The window refs in here should just be throwing things, with the front end
  * parts picking them up and adding them to the console.
  *
- * List of types are all types available. Base script-type indicates to include all the default ones.
+ * List of types are all types available. Base script-type indicates to
+ * include all the default ones.
  */
 
 export default class Script {
