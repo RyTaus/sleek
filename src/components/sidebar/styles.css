@@ -67,15 +67,25 @@
 }
 
 .variable-type-box {
-  border-bottom: 1px solid white;
+  border-bottom: 1px solid rgba(211, 218, 231, 0.8);
   padding-bottom: 5px;
   padding-top: 10px;
+}
+
+input {
+  background-color: #040503;
+  color: rgba(211, 218, 231, 0.8);
+
 }
 
 .new-var-popup {
   margin: 10px -10px;
   /* margin-top: 10px; */
   /* border-bottom: 1px solid white; */
+  border: 1px solid #AAA;
+  box-shadow:5px 5px 5px rgba(0,0,0,0.5);
+
+
   padding: 10px;
   padding-top: 20px;
   border-radius: 10px;
@@ -88,7 +98,6 @@
 
 .sidebar {
   background-color: #21252b;
-  color: lightgray;
   padding: 5px 10px;
   border-left: 6px solid black;
   /* padding-bottom: 10%; */
