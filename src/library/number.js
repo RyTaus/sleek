@@ -160,4 +160,13 @@ export default {
     },
     compile: '({a} < {b})',
   }),
+  Number: new NodeFactory('Number').pureData({
+    in: {
+      num: 'Number',
+    },
+    out: {
+      res: 'Number',
+    },
+    compile: '({num})',
+  }),
 };

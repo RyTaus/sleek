@@ -14,7 +14,7 @@ export default class ItemGroup extends Component {
 
   renderItems() {
     return Object.keys(this.props.data)
-      .filter(key => key.includes(this.props.searcher.state.searchString))
+      .filter(key => key.toLowerCase().includes(this.props.searcher.state.searchString.toLowerCase()))
       .sort()
       .map(key => (
         <Item
@@ -33,7 +33,7 @@ export default class ItemGroup extends Component {
   }
 
   render() {
-    if (Object.keys(this.props.data).filter(key => key.includes(this.props.searcher.state.searchString)).length === 0) {
+    if (Object.keys(this.props.data).filter(key => key.toLowerCase().includes(this.props.searcher.state.searchString.toLowerCase())).length === 0) {
         return null;
       }
     return (

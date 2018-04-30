@@ -1,6 +1,6 @@
 import TYPE from './script-type';
 
-import { StringLit, BoolLit, NumLit, Map, Func } from './../type/type';
+import { StringLit, BoolLit, NumLit, List, Func } from './../type/type';
 
 /**
  * The window refs in here should just be throwing things, with the front end
@@ -20,7 +20,7 @@ export default class Script {
     this.imports = []; // List of scripts
     this.types = [];
     if (type === TYPE.BASE) {
-      this.types = [StringLit, BoolLit, NumLit, Map, Func];
+      this.types = [StringLit, BoolLit, NumLit, List, Func];
     }
 
     this.generation = {

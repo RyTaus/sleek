@@ -35,7 +35,7 @@ import { BoolLit, StringLit } from './../type/type';
 // };
 
 export default {
-  string: new NodeFactory('string').pureData({
+  String: new NodeFactory('string').pureData({
     in: {
       str: 'String',
     },

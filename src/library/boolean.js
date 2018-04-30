@@ -10,6 +10,15 @@ export default {
     },
     compile: '!({a})',
   }),
+  Boolean: new NodeFactory('Boolean').pureData({
+    in: {
+      val: 'boolean',
+    },
+    out: {
+      res: 'boolean',
+    },
+    compile: '({val})',
+  }),
 
 
   or: new NodeFactory('or').pureData({
