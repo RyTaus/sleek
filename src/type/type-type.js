@@ -21,6 +21,7 @@ export const KEY_OF = 'keyType';
 export const VAL_OF = 'valType';
 
 export const LIST_OF = 'listOf';
+export const SET_OF = 'setOf';
 
 export const INPUT = 'Input';
 export const EVALUATE = 'Evaluate';

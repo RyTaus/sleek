@@ -44,7 +44,7 @@ export default {
       return `for (let _index_ = ${start.generate()}; _index_ < ${stop.generate()}; _index_ += ${step.generate()})
       { ${node.outPins.body.generate()} };`
     }),
-  set: new NodeFactory('set')
+  assign: new NodeFactory('assign')
     .addPin('in', ' ', new Flow())
     .addPin('in', 'variable', new Label())
     .addPin('in', 'value', new Relative('variable', INSTANCE))

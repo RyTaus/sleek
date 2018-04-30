@@ -95,7 +95,7 @@ export class SetLit extends T {
   }
 
   toString() {
-    return `List<${this.elementType.toString()}>`;
+    return `Set<${this.elementType.toString()}>`;
   }
 }
 
@@ -145,7 +145,7 @@ export class Func extends T {
 export class Type extends T {
   constructor() {
     super(Types.TYPE, 'skyblue');
-    this.defaultValue = new StringLit();
+    this.defaultValue = new BoolLit();
   }
 
   toString() {
@@ -180,6 +180,9 @@ export class Relative extends T {
       if (this.type === Types.LIST_OF) {
         return new List(type);
       }
+      if (this.type === Types.SET_OF) {
+        return new SetLit(type);
+      }
     }
     if (this.type === 'output') {
       return node.inPins[this.relativeName].connections[0].getType();
@@ -190,6 +193,8 @@ export class Relative extends T {
       return node.inPins[this.relativeName].value;
     } else if (this.type === Types.LIST_OF) {
       return new List(node.inPins[this.relativeName].getType());
+    } else if (this.type === Types.SET_OF) {
+      return new SetLit(node.inPins[this.relativeName].getType());
     } else if (this.type === Types.INSTANCE) {
       const variable = node.inPins[this.relativeName].value;
       if (variable === 'None') {

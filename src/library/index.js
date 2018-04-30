@@ -4,6 +4,7 @@ import statements from './statements';
 import string from './string';
 import list from './list';
 import func from './function';
+import set from './set';
 
 
 export default {
@@ -13,4 +14,5 @@ export default {
   boolean,
   list,
   function: func,
+  set,
 };
