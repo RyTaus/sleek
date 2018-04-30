@@ -3,6 +3,7 @@
   height: 85%;
   border-radius: 4px;
   font-size: .85em;
+  text-transform: capitalize;
 }
 
 .items-container-inner {
@@ -17,6 +18,7 @@
   padding-left: 25px;
   cursor: pointer;
   margin-top: 2px;
+  text-transform: none;
 
   /* background-color: #3b3d43; */
   /* border-radius: 6px; */

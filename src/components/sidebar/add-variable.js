@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Variable from './../../models/variable';
 
-import { BoolLit, List, SetLit } from './../../type/type';
+import { NumLit, StringLit, BoolLit, List, SetLit, Map, Func } from './../../type/type';
 
 import TextInput from './../common/text-input';
 
@@ -26,6 +26,7 @@ export default class AddVariable extends Component {
       BoolLit: 'Boolean',
       List: 'List',
       Func: 'Function',
+      Map: 'Map',
       SetLit: 'Set',
     };
 
@@ -46,7 +47,26 @@ export default class AddVariable extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNewClick = this.handleNewClick.bind(this);
     this.renderTree = this.renderTree.bind(this);
+
+    this.getValidChildTypes = this.getValidChildTypes.bind(this);
+    // this.generateChildSelect = this.generateChildSelect.bind(this);
   }
+
+  getValidChildTypes(type) {
+    if ([List, SetLit].includes(type)) {
+      return [NumLit, StringLit, BoolLit, List, SetLit, Func];
+    }
+    if ([Map].includes(type)) {
+      return [[NumLit, StringLit, BoolLit], [NumLit, StringLit, BoolLit, List, SetLit, Func]];
+    }
+    return [];
+  }
+
+  // generateChildSelect(type) {
+  //   if ([List, SetLit].includes(type)) {
+  //     return [NumLit, StringLit, BoolLit, List, SetLit, Func];
+  //   }
+  // }
 
   handleNameChange(evt) {
     this.setState({
@@ -121,32 +141,19 @@ export default class AddVariable extends Component {
   }
 
   renderTree() {
-    console.log(this.state.type);
     return (
       <div>
         {this.state.type.map((type, i) => {
           return (
-            <select id={i} onChange={this.handleTypeChange} >
+            <select id={i} onChange={this.handleTypeChange} style={{ display: 'block' }}>
               {this.props.types.map((t, index) => (<option className={index}> {this.mapTypeToName[t.name]} </option>))}
             </select>
           );
         })}
       </div>
-    )
-    // if ([List, SetLit].includes(this.state.type)) {
-    //   return (
-    //     <select onChange={this.handleSubTypeChange} >
-    //       {this.props.types.map((type, index) => (<option className={index}> {this.mapTypeToName[type.name]} </option>))}
-    //     </select>
-    //   );
-    // }
+    );
   }
 
-  // <input
-  //   type="checkbox"
-  //   checked={this.state.isConstant}
-  //   onChange={this.handleIsConstantChange}
-  // />
 
   render() {
     const isValid = str => (str.length === 0) || /[_$A-z][$[\w]*/.test(str);

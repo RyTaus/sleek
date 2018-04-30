@@ -1,6 +1,6 @@
 import TYPE from './script-type';
 
-import { StringLit, BoolLit, NumLit, List, Func, SetLit } from './../type/type';
+import { StringLit, BoolLit, NumLit, List, Func, Map, SetLit } from './../type/type';
 
 /**
  * The window refs in here should just be throwing things, with the front end
