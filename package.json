@@ -6,6 +6,7 @@
   "homepage": "./",
   "dependencies": {
     "js-beautify": "^1.7.5",
+    "prepack": "^0.2.33",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-bootstrap": "^0.32.1",

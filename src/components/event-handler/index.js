@@ -6,7 +6,7 @@ import EVENT from './type';
 
 import { Flow, Label, Relative } from './../../type/type'
 import { INSTANCE } from './../../type/type-type'
-import NodeFactory from './../../library/node-factory';
+import NodeFactory from './../../library/tools/node-factory';
 
 class EventHandler {
   constructor(frame) {

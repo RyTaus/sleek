@@ -1,4 +1,4 @@
-import NodeFactory from './node-factory';
+import NodeFactory from './tools/node-factory';
 
 
 export default {

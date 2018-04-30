@@ -1,4 +1,4 @@
-import NodeFactory from './node-factory';
+import NodeFactory from './tools/node-factory';
 import { Flow, BoolLit, NumLit, Type, Relative, Input, List, Func } from './../type/type';
 import { LIST, FUNC } from './../type/type-type';
 

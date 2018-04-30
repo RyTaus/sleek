@@ -1,4 +1,4 @@
-import NodeFactory from './node-factory';
+import NodeFactory from './tools/node-factory';
 import { BoolLit, StringLit } from './../type/type';
 // export default {
 //   concat: {
@@ -35,6 +35,74 @@ import { BoolLit, StringLit } from './../type/type';
 // };
 
 export default {
+  string: new NodeFactory('string').pureData({
+    in: {
+      str: 'String',
+    },
+    out: {
+      res: 'String',
+    },
+    compile: '({str})',
+  }),
+  lowercase: new NodeFactory('lowercase').pureData({
+    in: {
+      str: 'String',
+    },
+    out: {
+      res: 'String',
+    },
+    compile: '({str}.toLowerCase())',
+  }),
+  uppercase: new NodeFactory('uppercase').pureData({
+    in: {
+      str: 'String',
+    },
+    out: {
+      res: 'String',
+    },
+    compile: '({str}.toUpperCase())',
+  }),
+  length: new NodeFactory('length').pureData({
+    in: {
+      str: 'String',
+    },
+    out: {
+      length: 'Number',
+    },
+    compile: '({str}.length)',
+  }),
+  'character at': new NodeFactory('character at').pureData({
+    in: {
+      str: 'String',
+      index: 'Number',
+    },
+    out: {
+      character: 'String',
+    },
+    compile: '({str}.charAt({index}))',
+  }),
+  trim: new NodeFactory('trim').pureData({
+    in: {
+      str: 'String',
+    },
+    out: {
+      res: 'String',
+    },
+    compile: '({str}.trim())',
+  }),
+  substring: new NodeFactory('substring').pureData({
+    in: {
+      str: 'String',
+      start: 'Number',
+      end: 'Number',
+    },
+    out: {
+      substring: 'String',
+    },
+    compile: '({str}.slice({start}, {end}))',
+  }),
+
+
   concat: new NodeFactory('concat').pureData({
     in: {
       a: 'String',

@@ -1,7 +1,7 @@
-import Pin from './../models/pin';
-import Node from './../models/node';
+import Pin from './../../models/pin';
+import Node from './../../models/node';
 
-import { FLOW } from './../type/type-type';
+import { FLOW } from './../../type/type-type';
 
 import parser, { parsePin } from './parser';
 

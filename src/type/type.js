@@ -49,21 +49,21 @@ export class Flow extends T {
 
 export class StringLit extends T {
   constructor() {
-    super(Types.STRING, 'blue');
+    super(Types.STRING, '#61B329');
     this.defaultValue = '';
   }
 }
 
 export class NumLit extends T {
   constructor() {
-    super(Types.NUMBER, 'green');
+    super(Types.NUMBER, '#EE3B3B');
     this.defaultValue = 0;
   }
 }
 
 export class BoolLit extends T {
   constructor() {
-    super(Types.BOOLEAN, 'red');
+    super(Types.BOOLEAN, '#388E8E');
     this.defaultValue = false;
   }
 }
@@ -126,7 +126,7 @@ export class Func extends T {
   }
 
   toString() {
-    return `Function<${this.inputTypeDict.toString()} : ${this.returnTypeDict.toString()}}>`;
+    return `Function<${this.inputs.toString()} : ${this.outputs.toString()}}>`;
   }
 }
 

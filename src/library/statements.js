@@ -1,18 +1,14 @@
-import NodeFactory from './node-factory';
+import NodeFactory from './tools/node-factory';
 
 import { Flow, BoolLit, NumLit, StringLit, Input, Label, Relative, Func } from './../type/type';
 import { SAME, INSTANCE, FUNC, FLOW } from './../type/type-type';
 import ScriptType from './../models/script-type';
 
 const isFunc = type => type.name === FUNC;
-// const args = Object.keys(node.inPins)
-//   .filter(key => node.inPins[key].type.name !== FLOW)
-//   .map(key => `${key}: ${node.inPins[key].generate()}`);
-// return `return { ${args.join(', ')}}`
 export default {
   start: new NodeFactory('start')
     .addPin('out', ' ', new Flow())
-    .generateFunction(''),
+    .generateFunction('"start"'),
   print: new NodeFactory('print')
     .addPin('in', ' ', new Flow())
     .addPin('in', 'val', new Input(type => type.name !== FLOW))

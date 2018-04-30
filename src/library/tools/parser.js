@@ -1,6 +1,6 @@
-import { nameToType } from './../type/type';
-import Pin from './../models/pin';
-import Direction from './../utils/direction';
+import { nameToType } from './../../type/type';
+import Pin from './../../models/pin';
+import Direction from './../../utils/direction';
 
 
 export const parsePin = (name, data, direction, index) =>

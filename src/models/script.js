@@ -120,7 +120,7 @@ export default class Script {
 
     const { vars, statements } = this.generation;
     this.resetGenerate();
-    return `${vars.map(v => `let ${v};`).join()}  ${statements.join(';')};`;
+    return `${Object.keys(this.variables).map(n => `let ${n};`).join()}${vars.map(v => `let ${v};`).join()}  ${statements.join(';')};`;
   }
 }
 
