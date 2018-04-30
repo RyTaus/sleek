@@ -44,6 +44,16 @@ export default {
     },
     compile: '({str})',
   }),
+  equals: new NodeFactory('equals').pureData({
+    in: {
+      a: 'String',
+      b: 'String',
+    },
+    out: {
+      res: 'Boolean',
+    },
+    compile: '({a}.equals({b}))',
+  }),
   lowercase: new NodeFactory('lowercase').pureData({
     in: {
       str: 'String',

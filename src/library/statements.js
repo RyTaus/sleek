@@ -1,6 +1,7 @@
 import NodeFactory from './tools/node-factory';
 
-import { Flow, BoolLit, NumLit, StringLit, Input, Label, Relative, Func } from './../type/type';
+import Variable from './../models/variable';
+import { Flow, BoolLit, NumLit, StringLit, Input, Label, Relative, Func, Evaluate,  } from './../type/type';
 import { SAME, INSTANCE, FUNC, FLOW } from './../type/type-type';
 import ScriptType from './../models/script-type';
 
@@ -30,6 +31,19 @@ export default {
     .generateFunction((node) => {
       return `if (${node.inPins.condition.generate()}) { ${node.outPins.body.generate()} }`;
     }),
+  for: new NodeFactory('for')
+    .addPin('in', ' ', new Flow())
+    .addPin('in', 'start', new NumLit())
+    .addPin('in', 'stop', new NumLit())
+    .addPin('in', 'step', new NumLit())
+    .addPin('out', 'body', new Flow())
+    .addPin('out', 'index', new Evaluate(new Variable('_index_', new NumLit())))
+    .addPin('out', 'next', new Flow())
+    .generateFunction((node) => {
+      const { start, stop, step } = node.inPins;
+      return `for (let _index_ = ${start.generate()}; _index_ < ${stop.generate()}; _index_ += ${step.generate()})
+      { ${node.outPins.body.generate()} };`
+    }),
   set: new NodeFactory('set')
     .addPin('in', ' ', new Flow())
     .addPin('in', 'variable', new Label())
@@ -43,24 +57,5 @@ export default {
     .addPin('out', 'value', new Relative('variable', INSTANCE))
     .generateFunction((node) => {
       return `(${node.inPins.variable.value.name})`;
-    }),
-  functionDecl: new NodeFactory('Fun Decl')
-    .setDeclType(ScriptType.FUNC)
-    .addPin('out', 'function', new Func())
-    .generateFunction(node => node.innerScript.generateFunction()),
-  call: new NodeFactory('call')
-    .addPin('in', 'function', new Input(isFunc))
-    .generateFunction((node) => {
-      const args = Object.keys(node.inPins)
-        .filter(key => node.inPins[key].name !== 'function')
-        .map(key => node.inPins[key].generate())
-      return `${node.inPins.function.generate()}(${args.join(', ')})`
-    }),
-  return: new NodeFactory('return')
-    .generateFunction((node) => {
-      const args = Object.keys(node.inPins)
-        .filter(key => node.inPins[key].type.name !== FLOW)
-        .map(key => `${key}: ${node.inPins[key].generate()}`);
-      return `return { ${args.join(', ')}}`
     }),
 };
