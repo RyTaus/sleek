@@ -16,6 +16,10 @@ export default {
     .addPin('in', 'val', new Relative('set', 'elementType'))
     .addPin('out', 'set', new Relative('set', 'same'))
     .generateFunction('({set}.add({val}))'),
+  size: (new NodeFactory('size'))
+    .addPin('in', 'set', new Input(isSet))
+    .addPin('out', 'set', new NumLit())
+    .generateFunction('({set}.size)'),
   has: (new NodeFactory('has'))
     .addPin('in', 'set', new Input(isSet))
     .addPin('in', 'val', new Relative('set', 'elementType'))

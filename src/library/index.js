@@ -5,6 +5,7 @@ import string from './string';
 import list from './list';
 import func from './function';
 import set from './set';
+import convert from './convert';
 
 
 export default {
@@ -15,4 +16,5 @@ export default {
   list,
   function: func,
   set,
+  convert,
 };

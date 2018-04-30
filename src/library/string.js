@@ -1,38 +1,5 @@
 import NodeFactory from './tools/node-factory';
-import { BoolLit, StringLit } from './../type/type';
-// export default {
-//   concat: {
-//     in: {
-//       a: 'Number',
-//       b: 'Number',
-//     },
-//     out: {
-//       new: 'Number',
-//     },
-//     compile: '({a} + {b})',
-//   },
-//   substring: {
-//     in: {
-//       string: 'String',
-//       start: 'Number',
-//       end: 'Number',
-//     },
-//     out: {
-//       new: 'String',
-//     },
-//     compile: '({string}.substring({start}, {end}))',
-//   },
-//   includes: {
-//     in: {
-//       string: 'String',
-//       substring: 'String',
-//     },
-//     out: {
-//       new: 'Boolean',
-//     },
-//     compile: '({string}.includes({substring}))',
-//   },
-// };
+import { BoolLit, StringLit, List } from './../type/type';
 
 export default {
   String: new NodeFactory('string').pureData({
@@ -128,4 +95,9 @@ export default {
     .addPin('in', 'substring', new StringLit())
     .addPin('out', 'contains', new BoolLit())
     .generateFunction('({string}.includes({substring}))'),
+  split: new NodeFactory('contains')
+    .addPin('in', 'string', new StringLit())
+    .addPin('in', 'spliton', new StringLit())
+    .addPin('out', 'res', new List(new StringLit()))
+    .generateFunction('({string}.split({spliton}))'),
 };
