@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+import './styles.css';
 
 class Checkbox extends Component {
   constructor(props) {
@@ -8,18 +9,20 @@ class Checkbox extends Component {
 
 
   render() {
-    const zoom = this.props.zoom !== undefined ? this.props.zoom : 1.8;
+    const zoom = this.props.zoom !== undefined ? this.props.zoom : 1.7;
     console.log(this.props.disabled);
     return (
-      <input
-        className={this.props.className}
-        type="checkbox"
-        onMouseUp={this.props.onMouseUp}
-        onChange={this.props.onChange}
-        style={{ margin: 0, zoom: zoom, outline: this.props.color }}
-        checked={this.props.checked}
-        disabled={this.props.disabled !== undefined}
-      />
+      <div className="checkbox-container" >
+        <input
+          className={this.props.className}
+          type="checkbox"
+          onMouseUp={this.props.onMouseUp}
+          onChange={this.props.onChange}
+          style={{ margin: 0, zoom: zoom, 'box-shadow': this.props.color, position: 'inherit' }}
+          checked={this.props.checked}
+          disabled={this.props.disabled !== undefined}
+        />
+      </div>
     );
   }
 }
