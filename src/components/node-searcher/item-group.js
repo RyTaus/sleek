@@ -15,6 +15,7 @@ export default class ItemGroup extends Component {
   renderItems() {
     return Object.keys(this.props.data)
       .filter(key => key.includes(this.props.searcher.state.searchString))
+      .sort()
       .map(key => (
         <Item
           handleClick={this.props.handleClick}

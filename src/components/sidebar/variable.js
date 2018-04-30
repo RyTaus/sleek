@@ -29,8 +29,6 @@ class Variable extends Component {
       >
         <span className="variable-name"> {name} </span>
         <button className="variable-delete"> X </button>
-
-        <Checkbox className="variable-constant" checked={isConstant} disabled zoom={1.6} />
       </div>
     );
   }

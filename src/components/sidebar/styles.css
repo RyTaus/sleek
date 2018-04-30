@@ -1,5 +1,5 @@
 .variable {
-  padding: 2px 5px 8px 5px;
+  padding: 2px 5px 2px 5px;
   border-width: 2px;
   border-style: solid;
   margin-top: 6px;
@@ -45,6 +45,8 @@
   border-radius: 4px;
   width: 30px;
   user-select: none;
+  font-size: x-small;
+
 }
 
 .add-var-button {
@@ -73,7 +75,7 @@
 }
 
 input {
-  background-color: #040503;
+  background-color: #141514;
   color: rgba(211, 218, 231, 0.8);
 
 }

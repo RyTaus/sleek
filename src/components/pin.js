@@ -181,11 +181,11 @@ class Pin extends Component {
       return (
         <foreignObject x={x} y={y} width="90" height="30">
           <Checkbox
-            className="pin checkbox check-input"
+            className="pin check-input"
             onMouseUp={this.onMouseUp}
             onChange={onChange}
             checked={pin.value}
-            color={type.color}
+            color={pin.getType().color}
           />
         </foreignObject>
       );

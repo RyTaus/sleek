@@ -37,12 +37,12 @@ class NodeSearcher extends Component {
 
   getOptions() {
     if (this.props.seed === null) {
-      return Object.keys(nodes).map(key => this.getOptionGroup(key, nodes[key]));
+      return Object.keys(nodes).sort().map(key => this.getOptionGroup(key, nodes[key]));
     }
     const { pin } = this.props.seed.props;
 
     const validNodes = this.filterOptions(pin);
-    return Object.keys(validNodes).map(key => this.getOptionGroup(key, validNodes[key]));
+    return Object.keys(validNodes).sort().map(key => this.getOptionGroup(key, validNodes[key]));
   }
 
   filterOptions(pin) {
