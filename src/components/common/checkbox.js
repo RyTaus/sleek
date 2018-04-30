@@ -10,7 +10,6 @@ class Checkbox extends Component {
 
   render() {
     const zoom = this.props.zoom !== undefined ? this.props.zoom : 1.7;
-    console.log(this.props.disabled);
     return (
       <div className="checkbox-container" >
         <input

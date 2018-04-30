@@ -8,6 +8,16 @@ class Variable extends Component {
     this.name = 'variable';
 
     this.onMouseDown = this.onMouseDown.bind(this);
+    this.variableToDisplay = this.variableToDisplay.bind(this);
+  }
+
+  variableToDisplay(type) {
+    if (type.name === 'List') {
+      return `[ ${this.variableToDisplay(type.elementType)} ]`;
+    } else if (type.name === 'Set') {
+      return `{ ${this.variableToDisplay(type.elementType)} }`;
+    }
+    return this.props.variable.name;
   }
 
   onMouseDown(evt) {
@@ -27,7 +37,7 @@ class Variable extends Component {
         style={{ borderColor: type.color }}
         onMouseDown={this.onMouseDown}
       >
-        <span className="variable-name"> {name} </span>
+        <span className="variable-name"> {this.variableToDisplay(this.props.variable.type)} </span>
         <button className="variable-delete"> X </button>
       </div>
     );

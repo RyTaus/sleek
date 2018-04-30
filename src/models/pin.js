@@ -138,7 +138,6 @@ export default class Pin {
   }
 
   generate() {
-    console.log(this);
     if (this.prop) {
       return `${this.node.generate()}.${this.prop}`;
     }

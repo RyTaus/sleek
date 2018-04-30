@@ -87,6 +87,18 @@ export class List extends T {
   }
 }
 
+export class SetLit extends T {
+  constructor(elementType) {
+    super(Types.SET, elementType.color);
+    this.elementType = elementType;
+    this.defaultValue = new Set([]);
+  }
+
+  toString() {
+    return `List<${this.elementType.toString()}>`;
+  }
+}
+
 export class Map extends T {
   constructor(structName, inType, outType) {
     super(Types.MAP, 'yellow');
