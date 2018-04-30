@@ -15,8 +15,7 @@ export default class AddVariable extends Component {
     super(props);
     this.state = {
       name: '',
-      type: BoolLit,
-      subType: BoolLit,
+      type: [BoolLit],
       isConstant: false,
       display: 'none',
     };
@@ -39,9 +38,10 @@ export default class AddVariable extends Component {
     //   Set: 'Set',
     // };
 
+    this.special = [List, SetLit];
+
     this.handleNameChange = this.handleNameChange.bind(this);
     this.handleTypeChange = this.handleTypeChange.bind(this);
-    this.handleSubTypeChange = this.handleSubTypeChange.bind(this);
     this.handleIsConstantChange = this.handleIsConstantChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleNewClick = this.handleNewClick.bind(this);
@@ -55,18 +55,27 @@ export default class AddVariable extends Component {
   }
 
   handleTypeChange(evt) {
+    // console.log(Object.assign({}, evt));
+    let { type } = this.state;
+    const id = parseInt(evt.target.id, 10);
     const index = this.props.types.map(t => this.mapTypeToName[t.name]).indexOf(evt.target.value);
+    const chosenType = this.props.types[index];
+
+    this.state.type[id] = this.props.types[index];
+
+
+    if (id === type.length - 1) {
+      if (this.special.includes(chosenType)) {
+        type.push(BoolLit);
+      }
+    } else if (!this.special.includes(chosenType)) {
+      type = type.slice(0, id + 1);
+    }
     this.setState({
-      type: this.props.types[index],
+      type,
     });
   }
 
-  handleSubTypeChange(evt) {
-    const index = this.props.types.map(t => this.mapTypeToName[t.name]).indexOf(evt.target.value);
-    this.setState({
-      subType: this.props.types[index],
-    });
-  }
 
   handleIsConstantChange(evt) {
     this.setState({
@@ -75,15 +84,20 @@ export default class AddVariable extends Component {
   }
 
   handleSubmit() {
-    const { name, type, subType } = this.state;
-    if ([List, SetLit].includes(this.state.type)) {
-      this.props.handleSubmit(new Variable(name, new type(new subType())));
-    } else {
-      this.props.handleSubmit(new Variable(name, new type()));
+    const { name, type } = this.state;
+
+    const types = type.reverse();
+    let result = new (types.shift())();
+    while (types.length) {
+      result = new (types.shift())(result);
     }
+
+    this.props.handleSubmit(new Variable(name, result));
+
+
     this.setState({
       name: '',
-      isConstant: false,
+      type: [BoolLit],
       display: 'none',
     });
   }
@@ -91,24 +105,41 @@ export default class AddVariable extends Component {
   handleNewClick() {
     if (this.state.display === 'none') {
       this.setState({
+        name: '',
+        type: [BoolLit],
+        isConstant: false,
         display: 'block',
       });
     } else {
       this.setState({
+        name: '',
+        type: [BoolLit],
+        isConstant: false,
         display: 'none',
       });
     }
   }
 
   renderTree() {
-    if ([List, SetLit].includes(this.state.type)) {
-      return (
-        <select onChange={this.handleSubTypeChange} >
-          {this.props.types.map((type, index) => (<option className={index}> {this.mapTypeToName[type.name]} </option>))}
-        </select>
-      );
-    }
-    return null;
+    console.log(this.state.type);
+    return (
+      <div>
+        {this.state.type.map((type, i) => {
+          return (
+            <select id={i} onChange={this.handleTypeChange} >
+              {this.props.types.map((t, index) => (<option className={index}> {this.mapTypeToName[t.name]} </option>))}
+            </select>
+          );
+        })}
+      </div>
+    )
+    // if ([List, SetLit].includes(this.state.type)) {
+    //   return (
+    //     <select onChange={this.handleSubTypeChange} >
+    //       {this.props.types.map((type, index) => (<option className={index}> {this.mapTypeToName[type.name]} </option>))}
+    //     </select>
+    //   );
+    // }
   }
 
   // <input
@@ -140,11 +171,10 @@ export default class AddVariable extends Component {
             isValid={isValid}
           />
 
-          <select onChange={this.handleTypeChange} >
-            {this.props.types.map((type, index) => (<option className={index}> {this.mapTypeToName[type.name]} </option>))}
-          </select>
-          <input type="button" checked={this.state.isConstant} value="make" onClick={this.handleSubmit} />
           {this.renderTree()}
+
+          <input type="button" checked={this.state.isConstant} value="make" onClick={this.handleSubmit} />
+
         </div>
       </div>
     );
