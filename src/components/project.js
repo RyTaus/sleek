@@ -12,7 +12,7 @@ import ScriptType from './../models/script-type';
 class Project extends Component {
   constructor(props) {
     super(props);
-    this.scriptModel = new ScriptModel('test', null, ScriptType.BASE);
+    this.scriptModel = new ScriptModel('sleek script', null, ScriptType.BASE);
 
     this.state = {
       activeScript: this.scriptModel,

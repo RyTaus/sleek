@@ -1,4 +1,8 @@
-
+select {
+  border-radius: 4px;
+  background-color: #141514;
+  color: rgba(211, 218, 231, 0.8);
+}
 
 body {
   margin: 0;

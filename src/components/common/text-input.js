@@ -21,6 +21,7 @@ class TextInput extends Component {
         onChange={this.onChange}
         style={{ borderColor: this.props.color, width: this.props.width }}
         value={this.props.value}
+        placeholder={this.props.placeholder}
       />
     );
   }

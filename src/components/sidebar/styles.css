@@ -17,6 +17,8 @@
 .var-name-input {
   border-radius: 5px;
   width: auto;
+  padding-left: 5px;
+  
 }
 
 .variable-name {
@@ -46,17 +48,30 @@
   width: 30px;
   user-select: none;
   font-size: x-small;
+}
 
+.type-select {
+  margin-top: 2px;
 }
 
 .add-var-button {
   float: right;
-  color: white;
-  background-color: black;
-  border-color: white;
+  color: rgba(211, 218, 231, 0.8);
+  background-color: #141514;
   border-radius: 4px;
   width: 30px;
   user-select: none;
+}
+
+.submit-button {
+  float: right;
+  color: white;
+  background-color: #141514;
+  border-radius: 4px;
+  /* width: 30px; */
+  user-select: none;
+  box-shadow:5px 5px 5px rgba(0,0,0,0.5);
+
 }
 
 .add-var-button:hover {

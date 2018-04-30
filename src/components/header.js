@@ -8,14 +8,16 @@ class Header extends Component {
     this.name = 'header';
   }
 
+  // <li><button> 💾 </button></li>
+  // <li><button> ∏ </button></li>
+
   render() {
     return (
-      <div className={this.name}>
+      <div className={this.name} style={{ color: 'white' }}>
         <ul>
-          <li><button> 💾 </button></li>
-          <li><button> ∏ </button></li>
-          <li><button onClick={this.props.previousScript}> ↲ </button></li>
-          <li><button onClick={this.props.generate}> ⚙ </button></li>
+          <li><button style={{ color: 'white' }} className="add-var-button" onClick={this.props.generate}> ⚙ </button></li>
+          <li><button style={{ color: 'white' }} className="add-var-button" onClick={this.props.previousScript}> ↲ </button></li>
+
         </ul>
         <span style={{ fontSize: 'small' }}> {this.props.scriptName} </span>
 

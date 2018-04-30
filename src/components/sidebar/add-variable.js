@@ -145,7 +145,7 @@ export default class AddVariable extends Component {
       <div>
         {this.state.type.map((type, i) => {
           return (
-            <select id={i} onChange={this.handleTypeChange} style={{ display: 'block' }}>
+            <select className="type-select" id={i} onChange={this.handleTypeChange} style={{ display: 'block' }}>
               {this.props.types.map((t, index) => (<option className={index}> {this.mapTypeToName[t.name]} </option>))}
             </select>
           );
@@ -176,11 +176,19 @@ export default class AddVariable extends Component {
             onChange={this.handleNameChange}
             color="white"
             isValid={isValid}
+            placeholder="name..."
           />
 
           {this.renderTree()}
 
-          <input type="button" checked={this.state.isConstant} value="make" onClick={this.handleSubmit} />
+          <button
+            className="submit-button"
+            checked={this.state.isConstant}
+            value="make"
+            onClick={this.handleSubmit}
+          >
+            create
+          </button>
 
         </div>
       </div>
